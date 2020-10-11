@@ -17,7 +17,7 @@ class EnvLoader
    // methods
    private function loadEnvVariables()
    {
-      $envFile = file($this->pathToEnvFile . '/.env');
+      $envFile = file($this->pathToEnvFile . '/.env', FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES);
       foreach($envFile as $variable) {
          $splitted = explode('=', $variable);
          $this->MY_ENV[$splitted[0]] = $splitted[1];
