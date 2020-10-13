@@ -1,0 +1,12 @@
+{ 
+   "name": "develop", 
+   "scripts": {}, 
+   "env": {}, 
+   "formazione": {}, 
+   "addons": [], 
+   "buildpacks": [ 
+     { 
+       "url": " heroku / nodejs " 
+     } 
+   ] 
+ }
