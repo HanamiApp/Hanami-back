@@ -1,7 +1,9 @@
 <?php
 
-   namespace resources\config;
-   include __DIR__ . '/EnvLoader.php';
+
+   namespace App\Resources\Config;
+
+   require_once 'EnvLoader.php';
 
    class Database
    {

@@ -1,6 +1,6 @@
 <?php
 
-  namespace src\Services;
+  namespace App\Services;
   // include of all Controllers
   $controllersDir = __DIR__ . '/../Controllers';
   foreach( glob("${controllersDir}/*") as $file ) {
@@ -11,13 +11,16 @@
   class RequestProcessor
   {
     // request processor function
-    public static function process($method, $endpoint, $id)
+    public static function process($method, $endpoint, $id = null)
     {
-      $controllerName = ucfirst($endpoint) . "Controller";
+      $controllerName = '\App\Controllers\\' . ucfirst($endpoint) . "Controller";
       // request heandler
       switch($method) {
         case 'GET':
-          $controllerName::index();
+          if ( $id == null )
+            $controllerName::index();
+          else
+            $controllerName::get($id);
         break;
         case 'POST':
           $controllerName::create();

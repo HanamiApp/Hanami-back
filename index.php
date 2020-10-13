@@ -1,5 +1,8 @@
 <?php
 
+   namespace App;
+   use App\Resources\Config\EnvLoader;
+   use App\Services\RequestProcessor;
 
    require_once __DIR__ . '/src/Services/RequestProcessor.php';
    // include the EnvLoader module and load all local variables

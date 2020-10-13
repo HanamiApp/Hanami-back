@@ -1,6 +1,6 @@
 <?php
 
-  namespace src\Services\Security;
+  namespace App\Services\Security;
 
   class RequestChecker
   {

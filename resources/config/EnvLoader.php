@@ -1,6 +1,7 @@
 <?php
 
-   namespace resources\config;
+
+   namespace App\Resources\Config;
 
    class EnvLoader
    {

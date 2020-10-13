@@ -1,15 +1,22 @@
 <?php
 
 
-  namespace src\Controllers;
+  namespace App\Controllers;
+  use App\Services\Security\RequestChecker as RequestChecker;
+  
   require_once __DIR__ . '/../Services/Security/RequestChecker.php';
 
   class UserController
   {
-    // method that responde at GET
+    // method that responde at GET with all users
     public function index()
     {
       echo "User index";
+    }
+    // method that responde at GET with the user correspond at given id
+    public function get($id = null)
+    {
+      echo "User get";
     }
     // method that responde at POST
     public function create()
