@@ -2,8 +2,7 @@
 
 
    namespace App\Resources\Config;
-
-   require_once 'EnvLoader.php';
+   use \PDO  as PDO;
 
    class Database
    {
@@ -16,11 +15,10 @@
 
       public function __construct()
       {
-         $envLoader = new EnvLoader(__DIR__ . '/../../');
-         $this->HOST = $envLoader->getVariable('HOST');
-         $this->DB_NAME = $envLoader->getVariable('DB_NAME');
-         $this->USERNAME = $envLoader->getVariable('MYSQL_USERNAME');
-         $this->PASSWORD = $envLoader->getVariable('MYSQL_PASSWORD');
+         $this->HOST = getenv('HOST');
+         $this->DB_NAME = getenv('DB_NAME');
+         $this->USERNAME = getenv('MYSQL_USERNAME');
+         $this->PASSWORD = getenv('MYSQL_PASSWORD');
       }
 
       public function connect()
