@@ -1,6 +1,7 @@
 <?php
 
 
+  namespace src\Controllers;
   require_once __DIR__ . '/../Services/Security/RequestChecker.php';
 
   class UserController

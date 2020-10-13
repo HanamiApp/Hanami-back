@@ -1,6 +1,6 @@
 <?php
 
-
+   namespace resources\config;
    include __DIR__ . '/EnvLoader.php';
 
    class Database

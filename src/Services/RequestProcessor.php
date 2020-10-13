@@ -1,6 +1,6 @@
 <?php
 
-
+  namespace src\Services;
   // include of all Controllers
   $controllersDir = __DIR__ . '/../Controllers';
   foreach( glob("${controllersDir}/*") as $file ) {
