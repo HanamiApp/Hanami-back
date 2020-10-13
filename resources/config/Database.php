@@ -1,5 +1,6 @@
 <?php
 
+
    include __DIR__ . '/EnvLoader.php';
 
    class Database
