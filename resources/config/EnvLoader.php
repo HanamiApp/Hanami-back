@@ -3,30 +3,13 @@
 
 class EnvLoader
 {
-   // Class variables
-   private $pathToEnvFile;
-   private $MY_ENV = Array();
-   
-   // costruttore
-   public function __construct($path)
+   // method that load all local variables  
+   public static function load()
    {
-      $this->pathToEnvFile = $path;
-      $this->loadEnvVariables();
-   }
-
-   // methods
-   private function loadEnvVariables()
-   {
-      $envFile = file($this->pathToEnvFile . '/.env', FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES);
+      $envFile = file($_SERVER['DOCUMENT_ROOT'] . '/.env', FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES);
       foreach($envFile as $variable) {
-         $splitted = explode('=', $variable);
-         $this->MY_ENV[$splitted[0]] = $splitted[1];
+         putenv($variable);
       }
-   }
-
-   public function getVariable($key)
-   {
-      return $this->MY_ENV[$key];
    }
 
 }
