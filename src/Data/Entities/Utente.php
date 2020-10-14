@@ -1,9 +1,12 @@
 <?php
 
-  namespace App\Data\Entities;
 
-  class User
+  namespace App\Data\Entities;
+  require_once 'RegioneEnum.php';
+
+  class Utente
   {
+
     private $id;
     private $nome;
     private $cognome;
@@ -22,6 +25,7 @@
     }
 
     // getters and setters
+    // id
     public function getId()
     {
       return $this->id;
@@ -31,6 +35,7 @@
       $this->id = $id;
     }
 
+    // nome
     public function getNome()
     {
       return $this->nome;
@@ -40,6 +45,7 @@
       $this->nome= $nome;
     }
 
+    // cognome
     public function getCognome()
     {
       return $this->cognome;
@@ -49,6 +55,7 @@
       $this->cognome= $cognome;
     }
 
+    // email
     public function getEmail()
     {
       return $this->email;
@@ -58,6 +65,7 @@
       $this->email= $email;
     }
 
+    // password
     public function getPassword()
     {
       return $this->password;
@@ -67,13 +75,14 @@
       $this->password= $password;
     }
 
+    // regione
     public function getRegione()
     {
       return $this->regione;
     }
     public function setRegione($regione)
     {
-      $this->regione= $regione;
+      $this->regione= RegioneEnum::$regione;
     }
 
   }

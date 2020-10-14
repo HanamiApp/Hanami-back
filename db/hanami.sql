@@ -27,7 +27,7 @@ Create table utente(
    id int auto_increment primary key,
    nome varchar(20) not null,
    cognome varchar(30) not null,
-   email varchar(100) not null,
+   email varchar(100) not null unique,
    `password` varchar(30) not null,
    regione ENUM('abruzzo', 'basilicata', 'calabria', 'campania', 'emilia romagna', 
                'friuli-venezia giulia', 'lazio', 'liguria', 'lombardia', 'marche', 'molise',
@@ -81,7 +81,7 @@ create table luogo(
    regione ENUM('abruzzo', 'basilicata', 'calabria', 'campania', 'emilia romagna', 
                'friuli-venezia giulia', 'lazio', 'liguria', 'lombardia', 'marche', 'molise',
                'piemonte', 'puglia', 'sardegna', 'sicilia', 'toscana', 'trentino-alto adige',
-               'umbria', 'valle d aosta', 'veneto') not null,
+               'umbria', "valle d'aosta", 'veneto') not null,
    coordinate float
 );
 
@@ -172,6 +172,11 @@ create table gruppo(
    id int auto_increment primary key,
    nome varchar(30) not null
 );
+
+/* gruppi utenza di default */
+INSERT INTO gruppo(nome) VALUES('ospite');
+INSERT INTO gruppo(nome) VALUES('amministratore');
+INSERT INTO gruppo(nome) VALUES('giardiniere');
 
 create table utente_gruppo(
    id int auto_increment primary key,
