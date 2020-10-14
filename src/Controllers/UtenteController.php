@@ -28,6 +28,7 @@
     // method that responde at POST ( registration method )
     public function create()
     {
+      // TODO: password hashing
       RequestChecker::validateRequest();
       $UtenteDao = new UtenteDao();
       $GruppoDao = new GruppoDao();
@@ -39,7 +40,8 @@
       $UtenteDao->store($Utente);
       $Gruppo = $GruppoDao->getByNome($gruppo);
       $GruppoDao->connectUtente($Gruppo, $Utente);
-      echo "User create";
+      print_r($_SESSION);
+      echo "User create correctly";
     }
     // method that responde at PUT
     public function update($id = null)
