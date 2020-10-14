@@ -3,11 +3,13 @@
 
   namespace App\Controllers;
   use App\Services\Security\RequestChecker as RequestChecker;
+  use App\Services\Security\TokenManager as TokenManager;
   use App\Data\Entities\Utente;
   use App\Data\Entities\GruppoEnum as GruppoEnum;
   use App\Data\Dao\UtenteDao as UtenteDao;
   use App\Data\Dao\GruppoDao as GruppoDao;
   require_once __DIR__ . '/../Services/Security/RequestChecker.php';
+  require_once __DIR__ . '/../Services/Security/TokenManager.php';
   require_once __DIR__ . '/../Data/Entities/Utente.php';
   require_once __DIR__ . '/../Data/Entities/GruppoEnum.php';
   require_once __DIR__ . '/../Data/Dao/UtenteDao.php';
@@ -29,6 +31,7 @@
     public function create()
     {
       // TODO: password hashing
+      // TODO: informarsi se il token deve essere messo nel DB
       RequestChecker::validateRequest();
       $UtenteDao = new UtenteDao();
       $GruppoDao = new GruppoDao();
@@ -40,8 +43,7 @@
       $UtenteDao->store($Utente);
       $Gruppo = $GruppoDao->getByNome($gruppo);
       $GruppoDao->connectUtente($Gruppo, $Utente);
-      print_r($_SESSION);
-      echo "User create correctly";
+      echo TokenManager::generateJWT($Utente);
     }
     // method that responde at PUT
     public function update($id = null)
