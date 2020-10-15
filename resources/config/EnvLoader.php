@@ -1,6 +1,8 @@
 <?php
 
 
+   namespace App\Resources\Config;
+
    class EnvLoader
    {
       // method that load all local variables  
