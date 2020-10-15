@@ -17,7 +17,7 @@
       $payload = json_encode([
         'uid' => $Utente->getId(),
         'aud' => ['ALL'],
-        'exp' => time() + 20
+        'exp' => time() + ( 60 * 60 ) // 1 hour expiration time
       ]);
       // encode the Header
       $base64UrlHeader = base64_encode($header);
@@ -31,6 +31,7 @@
       return $jwt;
     }
 
+    // metodo che valida il token JWT dato
     public static function validateJWT($jwt)
     {
       $tokenParts = explode('.', $jwt);
