@@ -15,8 +15,9 @@
         'algo' => 'HS256' 
       ]);
       $payload = json_encode([
-        'user_id' => $Utente->getId()
-        // TODO: aggiungere un qualcosa di simile ad un timestamp
+        'uid' => $Utente->getId(),
+        'aud' => ['ALL'],
+        'exp' => time() + 20
       ]);
       // encode the Header
       $base64UrlHeader = base64_encode($header);
@@ -37,8 +38,9 @@
       $payload = base64_decode($tokenParts[1]);
       $signatureProvided = $tokenParts[2];
 
-      // TODO: aggiungere il controllo sul tempo di scadenza
-
+      // Controlliamo se il Token e scaduto ( expired )
+      if ( $_SERVER['REQUEST_TIME'] > json_decode($payload)->{'exp'} ) return false;
+      
       // riproduciamo la signature da header, payload e secret
       $secret = getenv('SECRET');
       $base64UrlHeader = base64_encode($header);

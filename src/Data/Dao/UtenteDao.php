@@ -20,6 +20,7 @@
       $this->S_ID_BY_EMAIL = "SELECT id FROM utente WHERE email=:email";
     }
 
+    // TODO: usare metodo @noemisurr quando sara pronto
     // funczione che controlla se esiste gia un utente con la 'mail' data
     public function isEmailUsed($email)
     {
