@@ -1,5 +1,6 @@
 <?php
 
+
    namespace App;
    use App\Resources\Config\EnvLoader;
    use App\Services\RequestProcessor;
@@ -20,7 +21,16 @@
    $endpoint = $explodedUri[1];
    $id = intval($explodedUri[2]);
 
-   RequestProcessor::process($_SERVER['REQUEST_METHOD'], $endpoint, $id);
+   // dobbiamo differenziare le chiamate RESTFULL da quello non
+   // localhost:8080/login ( no RESTFULL )
+   // localhost:8080/api/login/{id} ( RESTFULL )
+   if ( count($explodedUri) < 3 ) {
+      // no REST call
+      RequestProcessor::BaseProcess($_SERVER['REQUEST_METHOD'], $endpoint = $explodedUri[1]);
+   } else {
+      // REST call
+      RequestProcessor::RestProcess($_SERVER['REQUEST_METHOD'], $endpoint = $explodedUri[2], $id = $explodedUri[3]);
+   }
    
    
 ?>
