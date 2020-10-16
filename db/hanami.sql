@@ -1,7 +1,6 @@
 CREATE DATABASE IF NOT EXISTS Hanami;
 USE Hanami;
 
-
 DROP TABLE IF EXISTS gruppo_servizio;
 DROP TABLE IF EXISTS servizio;
 DROP TABLE IF EXISTS utente_gruppo;
@@ -70,7 +69,6 @@ create table pianta(
    id int auto_increment primary key,
    genere varchar(50),
    specie varchar(50),
-   nome varchar(50) not null,
    co2 float not null
 );
 
@@ -99,10 +97,13 @@ create table stato_pianta(
 
 create table utente_pianta(
    id int auto_increment primary key,
+   nome varchar(50) not null,
    regalo boolean default 0,
    id_luogo int,
    id_stato_pianta int,
    id_stato_regalo int,
+   id_utente int,
+   id_pianta int,
    foreign key (id_luogo) references luogo(id)
       on delete cascade
       on update cascade,
@@ -110,6 +111,12 @@ create table utente_pianta(
       on delete cascade
       on update cascade,
    foreign key (id_stato_regalo) references stato_regalo(id)
+      on delete cascade
+      on update cascade,
+   foreign key (id_utente) references utente(id)
+      on delete cascade
+      on update cascade,
+   foreign key (id_pianta) references pianta(id)
       on delete cascade
       on update cascade
 );

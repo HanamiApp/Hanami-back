@@ -25,6 +25,7 @@
     // method that responde at GET with the user correspond at given id
     public function get($id = null)
     {
+      if ( $id == null ) die('WrongIdProvided'); 
       echo "User get";
     }
     // method that responde at POST ( registration method )
@@ -49,7 +50,7 @@
     public function update($id = null)
     {
       RequestChecker::validateRequest();
-      if ( $id == null || gettype($id) != 'integer' ) die('WrongIdProvided'); 
+      if ( $id == null ) die('WrongIdProvided'); 
       echo "User update, id: ${id}";
     }
     // method that responde at DELETE
