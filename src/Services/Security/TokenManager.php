@@ -15,9 +15,10 @@
         'algo' => 'HS256' 
       ]);
       $payload = json_encode([
-        'uid' => $Utente->getId(),
-        'aud' => ['ALL'],
-        'exp' => time() + ( 60 * 60 ) // 1 hour expiration time
+        'sub' => $Utente->getId(),
+        'iat' => time(),
+        'exp' => time() + ( 60 * 60 ), // 1 hour expiration time
+        'aud' => ['ALL']
       ]);
       // encode the Header
       $base64UrlHeader = base64_encode($header);
