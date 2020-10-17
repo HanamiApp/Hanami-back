@@ -10,11 +10,11 @@ DROP TABLE IF EXISTS task;
 DROP TABLE IF EXISTS utente_obiettivo;
 DROP TABLE IF EXISTS obiettivo;
 DROP TABLE IF EXISTS aggiornamento;
-DROP TABLE IF EXISTS utente_pianta;
+DROP TABLE IF EXISTS pianta;
 DROP TABLE IF EXISTS stato_pianta;
 DROP TABLE IF EXISTS stato_regalo;
 DROP TABLE IF EXISTS luogo;
-DROP TABLE IF EXISTS pianta;
+DROP TABLE IF EXISTS specie;
 DROP TABLE IF EXISTS spostamento;
 DROP TABLE IF EXISTS mezzo;
 DROP TABLE IF EXISTS notifica;
@@ -65,10 +65,10 @@ create table spostamento(
       ON DELETE CASCADE
 );
 
-create table pianta(
+create table specie(
    id int auto_increment primary key,
    genere varchar(50),
-   specie varchar(50),
+   nome varchar(50),
    co2 float not null
 );
 
@@ -95,7 +95,7 @@ create table stato_pianta(
    giorno date
 );
 
-create table utente_pianta(
+create table pianta(
    id int auto_increment primary key,
    nome varchar(50) not null,
    regalo boolean default 0,
@@ -103,7 +103,7 @@ create table utente_pianta(
    id_stato_pianta int,
    id_stato_regalo int,
    id_utente int,
-   id_pianta int,
+   id_specie int,
    foreign key (id_luogo) references luogo(id)
       on delete cascade
       on update cascade,
@@ -116,7 +116,7 @@ create table utente_pianta(
    foreign key (id_utente) references utente(id)
       on delete cascade
       on update cascade,
-   foreign key (id_pianta) references pianta(id)
+   foreign key (id_specie) references specie(id)
       on delete cascade
       on update cascade
 );
@@ -127,9 +127,9 @@ create table aggiornamento(
    ora time,
    intervento varchar(100) not null,
    path_img varchar(1000),
-   id_utente_pianta int,
+   id_pianta int,
    id_utente int,
-   foreign key (id_utente_pianta) references utente_pianta(id)
+   foreign key (id_pianta) references pianta(id)
       on update CASCADE
       on delete cascade,
    foreign key (id_utente) references utente(id)
