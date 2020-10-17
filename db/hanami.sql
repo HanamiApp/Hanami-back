@@ -121,6 +121,9 @@ create table pianta(
       on update cascade
 );
 
+/* inserimento di una pianta di prova */
+INSERT INTO pianta(nome) VALUES('baobab');
+
 create table aggiornamento(
    id int auto_increment primary key,
    `data` date not null,
@@ -136,6 +139,10 @@ create table aggiornamento(
       on update cascade
       on delete cascade
 );
+
+/* inserimento aggiornamento di prova */
+INSERT INTO aggiornamento(`data`, intervento, id_pianta) VALUES('2020-01-01', 'potatura', 1);
+INSERT INTO aggiornamento(`data`, intervento, id_pianta) VALUES('2020-01-02', 'controllo', 1);
 
 create table obiettivo(
    id int auto_increment primary key,
