@@ -1,9 +1,9 @@
 <?php
 
 
-  namespace App\Controllers;
+  namespace App\Data\Entities;
   
-  class UpdateController
+  class Update
   {
 
     private $id;
