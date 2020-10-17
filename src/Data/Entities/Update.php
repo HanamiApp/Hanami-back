@@ -3,6 +3,7 @@
 
   namespace App\Data\Entities;
   
+  
   class Update
   {
 
@@ -14,7 +15,7 @@
     private $id_pianta;
     private $id_utente;
 
-    public function __contruct($data, $ora, $intervento, $path_img, $id_pianta, $id_utente)
+    public function __construct($data = null, $ora = null, $intervento = null, $path_img = null, $id_pianta = null, $id_utente = null)
     {
       $this->id = null;
       $this->data = $data;
@@ -31,9 +32,9 @@
     {
       return $this->id;
     }
-    public function setId()
+    public function setId($id)
     {
-      return $this->id;
+      $this->id = $id;
     }
 
     // data
@@ -41,9 +42,9 @@
     {
       return $this->data;
     }
-    public function setData()
+    public function setData($data)
     {
-      return $this->data;
+      $this->data = $data;
     }
 
     // ora
@@ -51,9 +52,9 @@
     {
       return $this->ora;
     }
-    public function setOra()
+    public function setOra($ora)
     {
-      return $this->ora;
+      $this->ora = $ora;
     }
 
     // intervento
@@ -61,9 +62,9 @@
     {
       return $this->intervento;
     }
-    public function setIntervento()
+    public function setIntervento($intervento)
     {
-      return $this->intervento;
+      $this->intervento = $intervento;
     }
 
     // path_img
@@ -71,9 +72,9 @@
     {
       return $this->path_img;
     }
-    public function setPathImg()
+    public function setPathImg($path_img)
     {
-      return $this->path_img;
+      $this->path_img = $path_img;
     }
 
     // id_pianta
@@ -81,9 +82,9 @@
     {
       return $this->id_pianta;
     }
-    public function setIdPianta()
+    public function setIdPianta($id_pianta)
     {
-      return $this->id_pianta;
+      $this->id_pianta = $id_pianta;
     }
 
     // id_utente
@@ -91,9 +92,24 @@
     {
       return $this->id_utente;
     }
-    public function setIdUtente()
+    public function setIdUtente($id_utente)
     {
-      return $this->id_utente;
+      $this->id_utente = $id_utente;
+    }
+
+    // toString
+    public function __toString()
+    {
+      $description = [
+        'id' => $this->id,
+        'data' => $this->data,
+        'ora' => $this->ora,
+        'intervento' => $this->intervento,
+        'path_img' => $this->path_img,
+        'id_pianta' => $this->id_pianta,
+        'id_utente' => $this->id_utente
+      ];
+      return json_encode($description);
     }
 
   }
