@@ -17,7 +17,6 @@
     public function get($id = null)
     {
       if ( $id == null ) die('WrongIdProvided'); 
-      
     }
     // method that responde at POST ( registration method )
     public function create()

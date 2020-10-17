@@ -21,10 +21,16 @@
    $endpoint = $explodedUri[1];
    $id = intval($explodedUri[2]);
 
-   // dobbiamo differenziare le chiamate RESTFULL da quelle non
-   // localhost:8080/login ( no RESTFULL )
-   // localhost:8080/api/login/{id} ( RESTFULL con /{id} opzionale )
-   if ( count($explodedUri) < 3 ) {
+   die();
+
+   // dobbiamo differenziare le chiamate REST da quelle non
+   // localhost:8080/tonno ( no REST )
+   // localhost:8080/tonno/{id} ( no REST )
+   // localhost:8080/tonno/{id}/papera ( no REST )
+   // localhost:8080/api/tonno ( REST )
+   // localhost:8080/api/tonno/{id} ( REST )
+   // localhost:8080/api/tonno/{id}/papera ( REST )
+   if ( !$endpoint === 'api' ) {
       // no REST call
       RequestProcessor::BaseProcess($_SERVER['REQUEST_METHOD'], $endpoint = $explodedUri[1]);
    } else {
