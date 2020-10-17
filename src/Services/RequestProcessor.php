@@ -1,19 +1,23 @@
 <?php
 
   namespace App\Services;
-  // include of all Controllers
-  $controllersDir = __DIR__ . '/../Controllers';
-  foreach( glob("${controllersDir}/*") as $file ) {
+  // include all REST Controllers
+  $restControllersDir = __DIR__ . '/../Controllers/Rest';
+  foreach( glob("${restControllersDir}/*.php") as $file ) {
     include_once($file);
   }
-
+  // include all no REST Controllers
+  $controllersDir = __DIR__ . '/../Controllers';
+  foreach ( glob("${controllersDir}/*.php") as $file ) {
+    include_once($file);
+  }
   
   class RequestProcessor
   {
     // request processor function
     public static function RestProcess($method, $endpoint, $id = null)
     {
-      $controllerName = '\App\Controllers\\' . ucfirst($endpoint) . "Controller";
+      $controllerName = '\App\Controllers\Rest\\' . ucfirst($endpoint) . "Controller";
       // request heandler
       switch($method) {
         case 'GET':
@@ -34,6 +38,11 @@
         default:
           echo "method HTTP not accepted";
       }
+    }
+
+    public function ProvBaseProcess($method, $endpoint, $id = null)
+    {
+      //
     }
 
   }
