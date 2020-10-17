@@ -1,9 +1,9 @@
 <?php
 
 
-  namespace App\Controllers;
+  namespace App\Controllers\Rest;
   use App\Services\Security\RequestChecker as RequestChecker;
-  require_once __DIR__ . '/../Services/Security/RequestChecker.php';
+  require_once __DIR__ . '/../../Services/Security/RequestChecker.php';
 
   // TODO: da sostituire con il controller che fara simone
   class TreeprovController

@@ -1,19 +1,19 @@
 <?php
 
 
-  namespace App\Controllers;
+  namespace App\Controllers\Rest;
   use App\Services\Security\RequestChecker as RequestChecker;
   use App\Services\Security\TokenManager as TokenManager;
   use App\Data\Entities\Utente;
   use App\Data\Enums\GruppoEnum as GruppoEnum;
   use App\Data\Dao\UtenteDao as UtenteDao;
   use App\Data\Dao\GruppoDao as GruppoDao;
-  require_once __DIR__ . '/../Services/Security/RequestChecker.php';
-  require_once __DIR__ . '/../Services/Security/TokenManager.php';
-  require_once __DIR__ . '/../Data/Entities/Utente.php';
-  require_once __DIR__ . '/../Data/Enums/GruppoEnum.php';
-  require_once __DIR__ . '/../Data/Dao/UtenteDao.php';
-  require_once __DIR__ . '/../Data/Dao/GruppoDao.php';
+  require_once __DIR__ . '/../../Services/Security/RequestChecker.php';
+  require_once __DIR__ . '/../../Services/Security/TokenManager.php';
+  require_once __DIR__ . '/../../Data/Entities/Utente.php';
+  require_once __DIR__ . '/../../Data/Enums/GruppoEnum.php';
+  require_once __DIR__ . '/../../Data/Dao/UtenteDao.php';
+  require_once __DIR__ . '/../../Data/Dao/GruppoDao.php';
 
   class UtenteController
   {
