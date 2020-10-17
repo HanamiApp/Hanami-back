@@ -21,15 +21,9 @@
    $endpoint = $explodedUri[1];
    $id = intval($explodedUri[2]);
 
-   die();
-
    // dobbiamo differenziare le chiamate REST da quelle non
-   // localhost:8080/tonno ( no REST )
-   // localhost:8080/tonno/{id} ( no REST )
-   // localhost:8080/tonno/{id}/papera ( no REST )
-   // localhost:8080/api/tonno ( REST )
-   // localhost:8080/api/tonno/{id} ( REST )
-   // localhost:8080/api/tonno/{id}/papera ( REST )
+   // localhost:8080/... ( no REST )
+   // localhost:8080/api/... ( REST )
    if ( !$endpoint === 'api' ) {
       // no REST call
       RequestProcessor::BaseProcess($_SERVER['REQUEST_METHOD'], $endpoint = $explodedUri[1]);
