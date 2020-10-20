@@ -34,6 +34,9 @@ Create table utente(
                'umbria', 'valle d aosta', 'veneto') not null
 );
 
+/* inserimento utente di default per i test */
+INSERT INTO utente(nome, cognome, email, `password`, regione) VALUES('admin', 'admin', 'admin@admin.com','admin', 'ABRUZZO');
+
 Create table notifica(
    id int auto_increment primary key,
    titolo varchar(30) not null,
@@ -133,7 +136,7 @@ create table aggiornamento(
    id_pianta int,
    id_utente int,
    foreign key (id_pianta) references pianta(id)
-      on update CASCADE
+      on update cascade
       on delete cascade,
    foreign key (id_utente) references utente(id)
       on update cascade
@@ -141,8 +144,8 @@ create table aggiornamento(
 );
 
 /* inserimento aggiornamento di prova */
-INSERT INTO aggiornamento(`data`, intervento, id_pianta) VALUES('2020-01-01', 'potatura', 1);
-INSERT INTO aggiornamento(`data`, intervento, id_pianta) VALUES('2020-01-02', 'controllo', 1);
+INSERT INTO aggiornamento(`data`, intervento, id_pianta, id_utente) VALUES('2020-01-01', 'potatura', 1, 1);
+INSERT INTO aggiornamento(`data`, intervento, id_pianta, id_utente) VALUES('2020-01-02', 'controllo', 1, 1);
 
 create table obiettivo(
    id int auto_increment primary key,
