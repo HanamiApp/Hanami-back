@@ -20,7 +20,7 @@
       $this->id = null;
       $this->data = $data;
       $this->ora = $ora;
-      $this->intervanto = $intervanto;
+      $this->intervento = $intervanto;
       $this->path_img = $path_img;
       $this->id_pianta = $id_pianta;
       $this->id_utente = $id_utente;
@@ -109,7 +109,7 @@
         'id_pianta' => $this->id_pianta,
         'id_utente' => $this->id_utente
       ];
-      return json_encode($description);
+      return $description;
     }
 
   }
