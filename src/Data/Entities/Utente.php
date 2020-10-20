@@ -15,7 +15,7 @@
     private $password;
     private $regione;
 
-    public function __construct($nome, $cognome, $email, $password, $regione)
+    public function __construct($nome = null, $cognome = null, $email = null, $password = null, $regione = null)
     {
       $this->id = null;
       $this->nome = $nome;
@@ -83,7 +83,21 @@
     }
     public function setRegione($regione)
     {
-      $this->regione= RegioneEnum::getValueOf($regione);
+      $this->regione = RegioneEnum::getValueOf($regione);
+    }
+
+    //toString
+    public function __toString()
+    {
+      $utente = [
+        'id' => $this->id,
+        'nome' => $this->nome,
+        'cognome' => $this->cognome,
+        'email' => $this->email,
+        'password' => $this->password,
+        'regione' => $this->regione
+      ];
+      return $utente;
     }
 
   }
