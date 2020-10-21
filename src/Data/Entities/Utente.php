@@ -14,7 +14,7 @@
     private $password;
     private $regione;
 
-    public function __construct($nome, $cognome, $email, $password, $regione)
+    public function __construct($nome = null, $cognome = null, $email = null, $password = null, $regione = null)
     {
       $this->id = null;
       $this->nome = $nome;
