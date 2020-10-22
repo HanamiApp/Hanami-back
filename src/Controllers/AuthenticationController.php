@@ -24,9 +24,10 @@
 
          if( $user != null && ( $insertPassword == $userPassword )){
             echo "utenteValido";
+            $TokenManager = new TokenManager();
             $jwt = $TokenManager::generateJWT($user);
             $refresh_jwt = $TokenManager::generateRefreshJWT($user);
-            echo $jwt;
+            echo $jwt . "---------";
             echo $refresh_jwt;
             // TODO: mandare il token al frontend (per adesso con una echo)
          }            
