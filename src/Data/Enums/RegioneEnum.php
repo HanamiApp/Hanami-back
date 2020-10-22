@@ -1,7 +1,8 @@
 <?php
 
 
-namespace App\Data\Enum;
+
+namespace App\Data\Entities;
 
 abstract class RegioneEnum
 {
@@ -30,6 +31,7 @@ abstract class RegioneEnum
   {
     $class = new \ReflectionClass(__CLASS__);
     // se $key e null o non e presente allora ritorniamo 'DEFAULT
+    if ( !array_key_exists($key, $class->getConstants()) ) return RegioneEnum::DEFAULT;
     return $class->getConstants()[$key];
   }
 
