@@ -15,22 +15,28 @@
       
       public function authenticate()
       {
-         echo "authenticate";
-         //RequestChecker::validateRequest();
+         echo "authenticate!";
          $UtenteDao = new UtenteDao();
          $post_json = json_decode(file_get_contents('php://input'));
          $user = $UtenteDao->getUserByEmail($post_json->{"email"});
          $userPassword = $user->getPassword();
          $insertPassword = $post_json->{"password"};
 
-         if( $utente != null && ( $insertPassword == $userPassword ))
-            echo "utenteValido"; 
-         else echo "utenteNonValido";
-
-         # assegnare un token e un refresh token 
-         // salvare token nel db? 
-         # mandare il token al front end 
+         if( $user != null && ( $insertPassword == $userPassword )){
+            echo "utenteValido";
+            $jwt = $TokenManager::generateJWT($user);
+            $refresh_jwt = $TokenManager::generateRefreshJWT($user);
+            echo $jwt;
+            echo $refresh_jwt;
+            // TODO: mandare il token al frontend (per adesso con una echo)
+         }            
+         else{
+            echo "utenteNonValido";
+         }
       }
+
+      //TODO ogni richiesta che faccio deve controllare il token/sessione
+
    }
 
 ?>

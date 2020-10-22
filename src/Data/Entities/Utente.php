@@ -82,7 +82,7 @@
     }
     public function setRegione($regione)
     {
-      $this->regione= RegioneEnum::$regione;
+      $this->regione= RegioneEnum::getValueOf($regione);
     }
 
   }

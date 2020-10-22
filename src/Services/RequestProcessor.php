@@ -42,11 +42,6 @@
 
       // Assumo che tutte le richieste siano POST
       $controllerName::authenticate();
-
-      $controllerName->authenticate();
-      $AuthenticationController::authenticate();
-      $AuthenticationController->authenticate();
-
     }
 
   }
