@@ -1,7 +1,6 @@
 <?php
 
 
-
   namespace App\Data\Entities;
 
   abstract class RegioneEnum
@@ -36,5 +35,6 @@
     }
 
   }
+
 
 ?>
