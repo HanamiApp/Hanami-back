@@ -36,6 +36,14 @@
       }
     }
 
+    public static function BaseProcess($method, $endpoint)
+    {
+      $controllerName = '\App\Controllers\\' . ucfirst($endpoint) . "Controller";
+
+      // Assumo che tutte le richieste siano POST
+      $controllerName::authenticate();
+    }
+
   }
 
 
