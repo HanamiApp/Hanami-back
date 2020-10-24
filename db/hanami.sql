@@ -93,10 +93,14 @@ create table stato_regalo(
 );
 
 create table stato_pianta(
-   id int auto_increment primary key,
+   id int auto_increment primary key, 
    stato ENUM('trasporto', 'piantata', 'deceduta') not null,
    stato_vitale ENUM('buono stato', 'assetata', 'rinsecchita', 'incolta') not null,
-   giorno date
+   giorno date,
+   id_pianta int,
+   foreign key (id_pianta) references pianta(id)
+      on delete cascade
+      on update cascade
 );
 
 create table utente_pianta(

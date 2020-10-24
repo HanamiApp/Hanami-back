@@ -21,6 +21,7 @@
       $this->I_PIANTA = "INSERT INTO pianta(genere, specie, nome, co2, descrizione) VALUES(:genere, :specie, :nome, :co2, :descrizione)";
       $this->D_PLANT = "DELETE FROM pianta WHERE id=:id";
       $this->U_QR_PLANT = "UPDATE pianta SET qrcode = :qrcode WHERE id = :id";
+      $this->S_PLANT = "SELECT * FROM pianta AS a INNER JOIN stato_pianta AS b ON a.id = b.id_pianta WHERE a.id = :id ;";
     }
 
     public function store($Pianta)
@@ -51,6 +52,17 @@
       $stmt->bindValue(':qrcode', $Pianta->getQRCode(), PDO::PARAM_STR);
       $stmt->bindValue(':id', $Pianta->getId(), PDO::PARAM_STR);
       $stmt->execute();
+    }
+
+    public function getPianta($id)
+    {
+      
+      $stmt = $this->connection->prepare($this->S_PLANT);
+      $stmt->bindValue(':id', $id, PDO::PARAM_STR);
+      $stmt->execute();
+      $Pianta = $stmt->fetch(PDO::FETCH_ASSOC);
+
+      return $Pianta;
     }
 
   }

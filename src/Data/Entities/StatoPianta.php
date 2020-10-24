@@ -8,13 +8,15 @@ class StatoPianta{
    private $stato;
    private $stato_vitale;
    private $giorno;
+   private $id_pianta;
 
-   public function __construct($stato, $stato_vitale, $giorno)
+   public function __construct()
    {
       $this->id = null;
-      $this->stato = $stato;
-      $this->stato_vitale = $stato_vitale;
-      $this->giorno = $giorno;
+      $this->stato = 'trasporto';
+      $this->stato_vitale = 'buono stato';
+      //$this->giorno = date("d/m/Y");
+      $this->giorno = date("Y/m/d");
    }
 
    // id
@@ -55,6 +57,16 @@ class StatoPianta{
     public function setGiorno($giorno)
     {
       $this->giorno = $giorno;
+    }
+
+    // id_pianta
+    public function getIdPianta()
+    {
+      return $this->id_pianta;
+    }
+    public function setIdPianta($id_pianta)
+    {
+      $this->id_pianta = $id_pianta;
     }
 
 }
