@@ -24,6 +24,7 @@
    // dobbiamo differenziare le chiamate RESTFULL da quello non
    // localhost:8080/login ( no RESTFULL )
    // localhost:8080/api/login/{id} ( RESTFULL )
+   // file_put_contents('/Users/simone/Desktop/Hanami/Hanami-back/src/Debug/debug.txt', print_r($explodedUri, true), FILE_APPEND);
    if ( count($explodedUri) < 3 ) {
       // no REST call
       RequestProcessor::BaseProcess($_SERVER['REQUEST_METHOD'], $endpoint = $explodedUri[1]);

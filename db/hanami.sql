@@ -1,5 +1,5 @@
-CREATE DATABASE IF NOT EXISTS Hanami;
-USE Hanami;
+CREATE DATABASE IF NOT EXISTS hanami;
+USE hanami;
 
 
 DROP TABLE IF EXISTS gruppo_servizio;
@@ -71,7 +71,9 @@ create table pianta(
    genere varchar(50),
    specie varchar(50),
    nome varchar(50) not null,
-   co2 float not null
+   co2 float not null,
+   descrizione text not null, 
+   qrcode text
 );
 
 create table luogo(

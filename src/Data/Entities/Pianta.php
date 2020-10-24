@@ -11,6 +11,7 @@ namespace App\Data\Entities;
     private $descrizione;
     private $genere;
     private $co2;
+    private $qrcode;
 
     public function __construct($genere, $specie, $nome, $co2, $descrizione)
     {
@@ -83,4 +84,14 @@ namespace App\Data\Entities;
       $this->co2 = $co2;
     }
 
+    // qrcode
+    public function getQRCode()
+    {
+      return $this->qrcode;
+    }
+    public function setQRCode($qrcode)
+    {
+      $this->qrcode = $qrcode;
+    }
+    
    }
