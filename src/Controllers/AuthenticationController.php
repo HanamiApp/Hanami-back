@@ -23,27 +23,21 @@
       
       public function authenticate()
       {
-         /*echo "authenticate!";
-         $UtenteDao = new UtenteDao();
          $post_json = json_decode(file_get_contents('php://input'));
-         $user = $UtenteDao->getUserByEmail($post_json->{"email"});
-         $userPassword = $user->getPassword();
-         $insertPassword = $post_json->{"password"};
+         switch($post_json->{"action"}){
+            case "login":
+               AuthenticationController::login($post_json);
+               break;
+            case "userRequest":
+               AuthenticationController::verifyJWT();
+               break;
+            case "logout":
+               echo "logout";
+         }         
+      }
 
-         if( $user != null && ( $insertPassword == $userPassword )){
-            echo "utenteValido";
-            $jwt = TokenManager::generateJWT($user);
-            $refresh_jwt = TokenManager::generateRefreshJWT($user);
-            echo $jwt . "---------";
-            echo $refresh_jwt;
-            // TODO: mandare il token al frontend (per adesso con una echo)
-         }            
-         else{
-            echo "utenteNonValido";
-         }*/
-         $post_json = json_decode(file_get_contents('php://input'));
-
-         //fare un controllo sul tipo di action quindi se login o altro ?
+      public static function login( $post_json )
+      {
          $UtenteDao = new UtenteDao();
          $user = $UtenteDao->getUserByEmail($post_json->{"email"});
          $userPassword = $user->getPassword();
@@ -51,23 +45,84 @@
 
          if( $user != null && ( $insertPassword == $userPassword ))
          {
-            $secret = getenv('SECRET');
-            $refreshSecret = getenv('REFRESH_SECRET');
-
-            $payload = json_encode([
-               'sub' => $user->getId(),
-               'iat' => time(),
-               'exp' => time() + ( 60 * 60 ), // 1 hour expiration time
-               'aud' => ['ALL']
-            ]);
-
-            $jwt = JWT::encode($payload, $secret);
-
-            echo $jwt;               
+            AuthenticationController::generateJWT($post_json, $user);
+            AuthenticationController::generateRefreshJWT($post_json, $user);            
          }
       }
 
-      //TODO ogni richiesta che faccio deve controllare il token/sessione
+      public static function generateJWT( $post_json, $user )
+      {
+         $secret = getenv('SECRET');
+
+         $payload = json_encode([
+            'sub' => $user->getId(),
+            'iat' => time(),
+            'exp' => time() + ( 60 * 60 ), // 1 hour expiration time
+            'aud' => ['ALL']
+         ]);
+
+         $jwt = JWT::encode($payload, $secret);
+         echo $jwt;
+      }
+
+      public static function generateRefreshJWT( $post_json, $user )
+      {
+         $refreshSecret = getenv('REFRESH_SECRET');   
+
+         $payloadRefresh = json_encode([
+            'sub' => $user->getId(),
+            'iat' => time(),
+            'exp' => time() + ( 60 * 60 ), // 1 hour expiration time
+            'aud' => ['ALL']
+         ]);
+
+         $refreshJWT = JWT::encode($payloadRefresh, $refreshSecret);
+         echo $refreshJWT;
+      }
+
+      // Metodo che verifica che un access token jwt sia valido
+      public static function verifyJWT( $jwt )
+      {
+         $secret = getenv('SECRET');
+         $decoded = JWT::decode( $jwt, $secret);
+
+         //la scadenza deve essere nel futuro
+         $exp = $decoded->exp > time();
+         //iat deve essere nel passato
+         $iat = $decoded->iat < time();
+         if( $exp && $iat && !empty($decoded->sub) ){
+            echo "jwt valido";
+         }else{
+            echo "jwt non valido";
+            if( AutheticationController::verifyRefreshJWT() ){
+               AuthenticationController::generateJWT($post_json, $decoded->sub);
+            }else{
+               echo "riloggati";
+            }
+         }
+      }
+
+      // Metodo che verifica che un refresh token jwt sia valido
+      public static function verifyRefreshJWT( $refreshJWT )
+      {  // TODO modificare
+         $refreshSecret = getenv('REFRESH_SECRET');
+         $decoded = JWT::decode( $refreshJWT, $refreshSecret );
+         //la scadenza deve essere nel futuro
+         $exp = $decoded->exp > time();
+         //iat deve essere nel passato
+         $iat = $decoded->iat < time();
+         if( $exp && $iat && !empty($decoded->sub) ) return true;
+         return false;          
+      }
+
+      /* Metodo che invalida un refresh token
+      * - quando vengono cambiati informazioni importanti nel profilo come password o email
+      * - 
+      */
+      public static function invalidateRefreshJWT()
+      {
+
+      }
 
    }
 
