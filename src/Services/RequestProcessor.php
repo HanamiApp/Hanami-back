@@ -42,6 +42,7 @@
 
       // Assumo che tutte le richieste siano POST
       $controllerName::authenticate();
+      
     }
 
   }
