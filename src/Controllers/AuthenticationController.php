@@ -29,7 +29,7 @@
                AuthenticationController::login($post_json);
                break;
             case "userRequest":
-               AuthenticationController::verifyJWT();
+               AuthenticationController::verifyJWT($post_json->{"jwt"});
                break;
             case "logout":
                echo "logout";
@@ -72,7 +72,7 @@
          $payloadRefresh = json_encode([
             'sub' => $user->getId(),
             'iat' => time(),
-            'exp' => time() + ( 60 * 60 ), // 1 hour expiration time
+            'exp' => time() + ( 60 * 60 * 24 * 100), // 100 days expiration time
             'aud' => ['ALL']
          ]);
 
