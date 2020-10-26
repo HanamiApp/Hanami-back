@@ -2,7 +2,8 @@
 
 
   namespace App\Data\Entities;
-  require_once 'RegioneEnum.php';
+  use App\Data\Enums\RegioneEnum as RegioneEnum;
+  require_once __DIR__ . '/../Enums/RegioneEnum.php';
 
   class Utente
   {

@@ -32,7 +32,7 @@
     //metodo che genera un refresh Token
     public static function generateRefreshJWT($user)
     {
-      $secret = getenv('SECRET');
+      $secret = getenv('REFRESH_SECRET');
       $header = json_encode([
         'type' => 'JWT',
         'algo' => 'HS256' 
