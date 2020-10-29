@@ -20,7 +20,7 @@
 
    class AuthenticationController
    {
-      
+      // Metodo che gestisce una richiesta in arrivo
       public function authenticate()
       {
          $post_json = json_decode(file_get_contents('php://input'));
@@ -57,7 +57,7 @@
          $payload = json_encode([
             'sub' => $user->getId(),
             'iat' => time(),
-            'exp' => time() + ( 60 * 60 ), // 1 hour expiration time
+            'exp' => time() + ( 60 * 5 ), // 5 minute expiration time
             'aud' => ['ALL']
          ]);
 
@@ -72,12 +72,14 @@
          $payloadRefresh = json_encode([
             'sub' => $user->getId(),
             'iat' => time(),
-            'exp' => time() + ( 60 * 60 * 24 * 100), // 100 days expiration time
+            'exp' => time() + ( 60 * 60 ), // 1 hour expiration time
             'aud' => ['ALL']
          ]);
 
          $refreshJWT = JWT::encode($payloadRefresh, $refreshSecret);
+         $token = JWTAuth::refresh($refreshJWT);
          echo $refreshJWT;
+         echo $token;
       }
 
       // Metodo che verifica che un access token jwt sia valido
@@ -117,12 +119,9 @@
 
       /* Metodo che invalida un refresh token
       * - quando vengono cambiati informazioni importanti nel profilo come password o email
-      * - 
+      * - logout 
       */
-      public static function invalidateRefreshJWT()
-      {
-
-      }
+      public static function invalidateRefreshJWT( $refreshJWT ){}
 
    }
 

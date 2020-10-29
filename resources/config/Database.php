@@ -15,15 +15,10 @@
 
       public function __construct()
       {
-         /*$this->HOST = getenv('HOST');
+         $this->HOST = getenv('HOST');
          $this->DB_NAME = getenv('DB_NAME');
          $this->USERNAME = getenv('MYSQL_USERNAME');
-         $this->PASSWORD = getenv('MYSQL_PASSWORD');*/
-         $this->HOST = '127.0.0.1';
-         $this->DB_NAME = 'hanami';
-         $this->USERNAME = 'root';
-         $this->PASSWORD = 'Xkiosnioebasta1';
-
+         $this->PASSWORD = getenv('MYSQL_PASSWORD');
       }
 
       public function connect()
