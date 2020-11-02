@@ -2,6 +2,8 @@
 
   
   namespace App\Data\Entities;
+  use App\Data\Enums\GruppoEnum as GruppoEnum;
+  require_once __DIR__ . '/../Enums/GruppoEnum.php';
 
   class Gruppo
   {
@@ -33,7 +35,7 @@
     }
     public function setNome($nome)
     {
-      $this->nome = $nome;
+      $this->nome = GruppoEnum::getValueOf($nome);
     }
 
   }
