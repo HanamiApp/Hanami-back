@@ -93,5 +93,11 @@ namespace App\Data\Entities;
     {
       $this->qrcode = $qrcode;
     }
+
+    public function __toString()
+    {
+      $array = ['id' => $this->getId(), 'nome' => $this->getNome(), 'specie' => $this->getSpecie(), 'genere' => $this->getGenere(), 'co2' => $this->getCo2(), 'descrizione' => $this->getDescrizione(), 'qrcode' => $this->getQRCode()];
+      return $array;
+    }
     
    }

@@ -1,0 +1,40 @@
+App\Data\Models\StatoPianta Object
+(
+    [id:protected] => 1
+    [stato:protected] => trasporto
+    [stato_vitale:protected] => buono stato
+    [giorno:protected] => 2020-10-24
+    [specie:App\Data\Entities\Pianta:private] => pianta
+    [nome:App\Data\Entities\Pianta:private] => paolo
+    [descrizione:App\Data\Entities\Pianta:private] => pianta di loris
+    [genere:App\Data\Entities\Pianta:private] => horror
+    [co2:App\Data\Entities\Pianta:private] => 5.5
+    [qrcode:App\Data\Entities\Pianta:private] => http://chart.apis.google.com/chart?cht=qr&chs=200x200&chl=localhost:8080/pianta/10
+    [id:App\Data\Entities\Pianta:private] => 
+)
+App\Data\Models\StatoPianta Object
+(
+    [id] => 1
+    [stato] => trasporto
+    [stato_vitale] => buono stato
+    [giorno] => 2020-10-24
+    [specie] => pianta
+    [nome] => paolo
+    [descrizione] => pianta di loris
+    [genere] => horror
+    [co2] => 5.5
+    [qrcode] => http://chart.apis.google.com/chart?cht=qr&chs=200x200&chl=localhost:8080/pianta/10
+)
+App\Data\Models\StatoPianta Object
+(
+    [id] => 1
+    [stato] => trasporto
+    [stato_vitale] => buono stato
+    [giorno] => 2020-10-24
+    [specie] => pianta
+    [nome] => paolo
+    [descrizione] => pianta di loris
+    [genere] => horror
+    [co2] => 5.5
+    [qrcode] => http://chart.apis.google.com/chart?cht=qr&chs=200x200&chl=localhost:8080/pianta/10
+)

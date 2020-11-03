@@ -13,8 +13,8 @@
 
    public function __construct()
    {
-      $Db = new Database();
-      $this->connection = $Db->connect();
+      $db = new Database();
+      $this->connection = $db->connect();
       $this->I_STATUS = "INSERT INTO stato_pianta(stato, stato_vitale, giorno, id_pianta) VALUES(:stato, :stato_vitale, :giorno, :id_pianta)";
    }
 
@@ -25,10 +25,10 @@
       $stmt->bindValue(':stato', $StatoPianta->getStato(), PDO::PARAM_STR);
       $stmt->bindValue(':stato_vitale', $StatoPianta->getStatoVitale(), PDO::PARAM_STR);
       $stmt->bindValue(':giorno', $StatoPianta->getGiorno(), PDO::PARAM_STR);
-      $stmt->bindValue(':id_pianta', $StatoPianta->getIdPianta(), PDO::PARAM_STR);
+      $stmt->bindValue(':id_pianta', $StatoPianta->getId(), PDO::PARAM_STR);
 
       $stmt->execute();
-      $StatoPianta->setId( $this->connection->lastInsertId());
+      $StatoPianta->setIdStato($this->connection->lastInsertId());
    }
 
 
