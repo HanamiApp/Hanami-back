@@ -28,7 +28,7 @@
       $this->D_PLANT = "DELETE FROM pianta WHERE id=:id";
       $this->U_QR_PLANT = "UPDATE pianta SET qrcode = :qrcode WHERE id = :id";
       $this->S_PLANT = "SELECT * FROM pianta WHERE id = :id ;";
-      $this->S_PLANT_STATUS = "SELECT * FROM stato_pianta WHERE id_pianta = :id_pianta ;";
+      
 
     }
 
@@ -71,26 +71,8 @@
       $Pianta->setId($PiantaVector['id']);
       $Pianta->setQRCode($PiantaVector['qrcode']);
 
-      $StatoPianta = $this->getStatoPianta($Pianta);
-      echo json_encode($StatoPianta->__toString());
-    }
-
-    public function getStatoPianta($Pianta)
-    {
-      $id = $Pianta->getId();
-      $stmt = $this->connection->prepare($this->S_PLANT_STATUS);
-      $stmt->bindValue(':id_pianta', $id, PDO::PARAM_STR);
-      $stmt->execute();
-      $StatoPiantaVector = $stmt->fetch(PDO::FETCH_ASSOC);
-      $StatoPianta = new StatoPianta($Pianta->getGenere(), $Pianta->getSpecie(), $Pianta->getNome(), $Pianta->getCo2(), $Pianta->getDescrizione());
-      $StatoPianta->setIdStato($StatoPiantaVector['id']);
-      $StatoPianta->setStato($StatoPiantaVector['stato']);
-      $StatoPianta->setStatoVitale($StatoPiantaVector['stato_vitale']);
-      $StatoPianta->setGiorno($StatoPiantaVector['giorno']);
-      $StatoPianta->setQRCode($Pianta->getQRCode());
-      $StatoPianta->setId($Pianta->getId());
-
-      return $StatoPianta;
+      $StatoPiantaDao = new StatoPiantaDao();
+      return $StatoPiantaDao->getStatoPianta($Pianta);
     }
 
   }
