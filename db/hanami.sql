@@ -1,5 +1,5 @@
-CREATE DATABASE IF NOT EXISTS Hanami;
-USE Hanami;
+CREATE DATABASE IF NOT EXISTS hanami;
+USE hanami;
 
 
 DROP TABLE IF EXISTS gruppo_servizio;
@@ -71,7 +71,9 @@ create table pianta(
    genere varchar(50),
    specie varchar(50),
    nome varchar(50) not null,
-   co2 float not null
+   co2 float not null,
+   descrizione text not null, 
+   qrcode text
 );
 
 create table luogo(
@@ -91,10 +93,14 @@ create table stato_regalo(
 );
 
 create table stato_pianta(
-   id int auto_increment primary key,
+   id int auto_increment primary key, 
    stato ENUM('trasporto', 'piantata', 'deceduta') not null,
    stato_vitale ENUM('buono stato', 'assetata', 'rinsecchita', 'incolta') not null,
-   giorno date
+   giorno date,
+   id_pianta int,
+   foreign key (id_pianta) references pianta(id)
+      on delete cascade
+      on update cascade
 );
 
 create table utente_pianta(
