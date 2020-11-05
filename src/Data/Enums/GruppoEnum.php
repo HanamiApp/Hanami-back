@@ -1,7 +1,7 @@
 <?php
 
 
-  namespace App\Data\Entities;
+  namespace App\Data\Enums;
 
   class GruppoEnum
   {

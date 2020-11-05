@@ -2,7 +2,8 @@
 
 
   namespace App\Data\Entities;
-  require_once 'RegioneEnum.php';
+  use App\Data\Enums\RegioneEnum as RegioneEnum;
+  require_once __DIR__ . '/../Enums/RegioneEnum.php';
 
   class Utente
   {
@@ -14,7 +15,7 @@
     private $password;
     private $regione;
 
-    public function __construct($nome, $cognome, $email, $password, $regione)
+    public function __construct($nome = null, $cognome = null, $email = null, $password = null, $regione = null)
     {
       $this->id = null;
       $this->nome = $nome;
@@ -82,7 +83,7 @@
     }
     public function setRegione($regione)
     {
-      $this->regione= RegioneEnum::$regione;
+      $this->regione= RegioneEnum::getValueOf($regione);
     }
 
   }
