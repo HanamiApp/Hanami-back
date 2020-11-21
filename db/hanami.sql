@@ -22,7 +22,7 @@ DROP TABLE IF EXISTS utente;
 
 
 
-Create table utente( 
+CREATE TABLE utente( 
    id int auto_increment primary key,
    nome varchar(20) not null,
    cognome varchar(30) not null,
@@ -33,11 +33,17 @@ Create table utente(
                'piemonte', 'puglia', 'sardegna', 'sicilia', 'toscana', 'trentino-alto adige',
                'umbria', 'valle d aosta', 'veneto') not null
 );
-
+CREATE TABLE refresh_tokens(
+   id_user int primary key,
+   token varchar(255) not null,
+   foreign key (id_user) references utente(id)
+      ON UPDATE CASCADE
+      ON DELETE CASCADE
+);
 /* inserimento utente di default per i test */
 INSERT INTO utente(nome, cognome, email, `password`, regione) VALUES('admin', 'admin', 'admin@admin.com','admin', 'ABRUZZO');
 
-Create table notifica(
+CREATE TABLE notifica(
    id int auto_increment primary key,
    titolo varchar(30) not null,
    testo text not null,
@@ -47,13 +53,13 @@ Create table notifica(
       ON DELETE CASCADE
 );
 
-create table mezzo(
+CREATE TABLE mezzo(
    id int auto_increment primary key,
    nome varchar(25) not null,
    co2 float not null
 );
 
-create table spostamento(
+CREATE TABLE spostamento(
    id int auto_increment primary key,
    tempo int not null, 
    lunghezza int not null, 
@@ -68,14 +74,15 @@ create table spostamento(
       ON DELETE CASCADE
 );
 
-create table specie(
+CREATE TABLE specie(
    id int auto_increment primary key,
    genere varchar(50),
    nome varchar(50),
-   co2 float not null
+   co2 float not null,
+   descrizione text not null
 );
 
-create table luogo(
+CREATE TABLE luogo(
    id int auto_increment primary key,
    nome varchar(30) not null,
    citta varchar(30) not null,
@@ -86,19 +93,19 @@ create table luogo(
    coordinate float
 );
 
-create table stato_regalo(
+CREATE TABLE stato_regalo(
    id int auto_increment primary key,
    stato ENUM('spedito', 'ricevuto', 'completato', 'in completamento') not null
 );
 
-create table stato_pianta(
+CREATE TABLE stato_pianta(
    id int auto_increment primary key,
    stato ENUM('trasporto', 'piantata', 'deceduta') not null,
    stato_vitale ENUM('buono stato', 'assetata', 'rinsecchita', 'incolta') not null,
    giorno date
 );
 
-create table pianta(
+CREATE TABLE pianta(
    id int auto_increment primary key,
    nome varchar(50) not null,
    regalo boolean default 0,
@@ -107,6 +114,7 @@ create table pianta(
    id_stato_regalo int,
    id_utente int,
    id_specie int,
+   qrcode text
    foreign key (id_luogo) references luogo(id)
       on delete cascade
       on update cascade,
@@ -127,7 +135,7 @@ create table pianta(
 /* inserimento di una pianta di prova */
 INSERT INTO pianta(nome) VALUES('baobab');
 
-create table aggiornamento(
+CREATE TABLE aggiornamento(
    id int auto_increment primary key,
    `data` date not null,
    ora time,
@@ -147,12 +155,12 @@ create table aggiornamento(
 INSERT INTO aggiornamento(`data`, intervento, id_pianta, id_utente) VALUES('2020-01-01', 'potatura', 1, 1);
 INSERT INTO aggiornamento(`data`, intervento, id_pianta, id_utente) VALUES('2020-01-02', 'controllo', 1, 1);
 
-create table obiettivo(
+CREATE TABLE obiettivo(
    id int auto_increment primary key,
    nome varchar(30) not null
 );
 
-create table utente_obiettivo(
+CREATE TABLE utente_obiettivo(
    id int auto_increment primary key,
    data_inizio date not null,
    id_obiettivo int,
@@ -165,7 +173,7 @@ create table utente_obiettivo(
       on update cascade
 );
 
-create table task(
+CREATE TABLE task(
    id int auto_increment primary key,
    nome varchar(50) not null, 
    scadenza date not null,
@@ -173,7 +181,7 @@ create table task(
    periodo int not null
 );
 
-create table utente_task(
+CREATE TABLE utente_task(
    id int auto_increment primary key,
    id_task int,
    id_utente int,
@@ -185,7 +193,7 @@ create table utente_task(
       on update cascade
 );
 
-create table gruppo(
+CREATE TABLE gruppo(
    id int auto_increment primary key,
    nome varchar(30) not null
 );
@@ -195,7 +203,7 @@ INSERT INTO gruppo(nome) VALUES('ospite');
 INSERT INTO gruppo(nome) VALUES('amministratore');
 INSERT INTO gruppo(nome) VALUES('giardiniere');
 
-create table utente_gruppo(
+CREATE TABLE utente_gruppo(
    id int auto_increment primary key,
    id_gruppo int,
    id_utente int,
@@ -207,13 +215,13 @@ create table utente_gruppo(
       on update cascade
 );
 
-create table servizio(
+CREATE TABLE servizio(
    id int auto_increment primary key,
    nome varchar(50) not null,
    sconto int default 0
 );
 
-create table gruppo_servizio(
+CREATE TABLE gruppo_servizio(
    id int auto_increment primary key,
    id_servizio int,
    id_gruppo int,
