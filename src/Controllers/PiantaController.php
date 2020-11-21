@@ -27,18 +27,18 @@
   //metodo per la POST
   public static function create()
   {
-      
-    $post_json = json_decode(file_get_contents('php://input'));
+
+    $POST = (array)json_decode(file_get_contents('php://input'));
     $PiantaDao = new PiantaDao();
     //check campi inseriti dall'utente che crea la pianta
     
-    if($post_json->{"genere"} === null || $post_json->{"specie"} === null)
+    if($POST['genere'] === null || $POST['specie'] === null)
       die("WARNING: missing_values_for_genere_or_specie");
-    if($post_json->{"nome"} === null || $post_json->{"co2"} === null || $post_json->{"descrizione"} === null)
+    if($POST['nome'] === null || $POST['co2'] === null || $POST['descrizione'] === null)
       die("ERROR: missing_values_for_nome_or_co2_or_descrizione");
 
     // plant creation
-    $Pianta = new Pianta($post_json->{"genere"}, $post_json->{"specie"}, $post_json->{"nome"}, $post_json->{"co2"}, $post_json->{"descrizione"});
+    $Pianta = new Pianta($POST['genere'], $POST['specie'], $POST['nome'], $POST['co2'], $POST['descrizione']);
     $PiantaDao->store($Pianta);
 
     //creazione qrcode
