@@ -11,8 +11,9 @@
   {
 
     private $connection;
-    private $I_UTENTE;
-    private $S_ID_BY_EMAIL;
+    private $I_UTENTE, $I_RT;
+    private $S_ID_BY_EMAIL, $S_RT_BY_USER_ID;
+    private $D_RT_BY_USER_ID;
 
     public function __construct()
     {
@@ -20,6 +21,9 @@
       $this->connection = $Db->connect();
       $this->I_UTENTE = "INSERT INTO utente(nome, cognome, email, `password`, regione) VALUES(:nome, :cognome, :email, :password, :regione)";
       $this->S_ID_BY_EMAIL = "SELECT * FROM utente WHERE email=:email";
+      $this->S_RT_BY_USER_ID = "SELECT token FROM refresh_tokens WHERE id_user=:id_user";
+      $this->I_RT = "INSERT INTO refresh_tokens(id_user, token) VALUES(:id_user, :token)";
+      $this->D_RT_BY_USER_ID = "DELETE FROM refresh_tokens WHERE id_user=:id_user";    
     }
 
     public function generateUser($row)
@@ -61,7 +65,7 @@
       $row->setId( $this->connection->lastInsertId() );
     }
 
-    //funzione che restituisce un utente data una mail
+    // funzione che restituisce un utente data una mail
     public function getUserByEmail($email)
     {
       $stmt = $this->connection->prepare( $this->S_ID_BY_EMAIL );
@@ -70,6 +74,34 @@
       $row = $stmt->fetch();
       return $this->generateUser($row);
     }
+
+    // funzione che restituisce il token associato all'utente
+    public function getUserRefreshToken( $id_user )
+    {
+      $stmt = $this->connection->prepare( $this->S_RT_BY_USER_ID );
+      $stmt->bindParam(':id_user', $id_user);
+      if (!$stmt->execute()) return null;
+      $row = $stmt->fetch();
+      return $row['token'];
+    }
+
+    // funzione che salva il token dell'utente
+    public function storeRefreshToken( $id_user, $refreshToken )
+    {
+      $stmt = $this->connection->prepare( $this->I_RT );
+      $stmt->bindParam(':id_user', $id_user, PDO::PARAM_INT );
+      $stmt->bindParam(':token', $refreshToken, PDO::PARAM_STR );
+      $stmt->execute();
+    }
+
+    // funzione che cancella il token associato all'utente
+    public function deleteRefreshToken( $id_user )
+    {
+      $stmt = $this->connection->prepare( $this->D_RT_BY_USER_ID );
+      $stmt->bindParam(':id_user', $id_user, PDO::PARAM_INT);
+      $stmt->execute();
+    }
+
 
   }
 

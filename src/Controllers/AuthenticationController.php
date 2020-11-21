@@ -41,8 +41,8 @@
 
          if( $user != null && ( $insertPassword == $userPassword ))
          {
-            $token = TokenManager::generateJWT($post_json, $user);
-            $refreshToken = TokenManager::generateRefreshJWT($post_json, $user);
+            $token = TokenManager::generateJWT($user->getId());
+            $refreshToken = TokenManager::generateRefreshJWT($user->getId());
             echo "token:" . $token . "refreshToken:" . $refreshToken;
          }
       }
