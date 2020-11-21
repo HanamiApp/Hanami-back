@@ -1,5 +1,5 @@
-CREATE DATABASE IF NOT EXISTS Hanami;
-USE Hanami;
+CREATE DATABASE IF NOT EXISTS hanami;
+USE hanami;
 
 DROP TABLE IF EXISTS gruppo_servizio;
 DROP TABLE IF EXISTS servizio;
@@ -102,7 +102,11 @@ CREATE TABLE stato_pianta(
    id int auto_increment primary key,
    stato ENUM('trasporto', 'piantata', 'deceduta') not null,
    stato_vitale ENUM('buono stato', 'assetata', 'rinsecchita', 'incolta') not null,
-   giorno date
+   giorno date,
+   id_pianta int,
+   foreign key (id_pianta) references pianta(id)
+      on delete cascade
+      on update cascade
 );
 
 CREATE TABLE pianta(

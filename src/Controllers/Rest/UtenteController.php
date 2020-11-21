@@ -31,20 +31,21 @@
     // method that responde at POST ( registration method )
     public function create()
     {
-      // TODO: password hashing
-      // TODO: informarsi se il token deve essere messo nel DB
+      // TODO: password hashing (bcrypt ?)
       RequestChecker::validateRequest();
       $UtenteDao = new UtenteDao();
       $GruppoDao = new GruppoDao();
-      $post_json = json_decode(file_get_contents('php://input'));
-      $POST = (array)$post_json;
+      $POST = (array)json_decode(file_get_contents('php://input'));
       // user creation
       $Utente = new Utente($POST['nome'], $POST['cognome'], $POST['email'], $POST['password'], $POST['regione']);
       $gruppo = empty($POST['gruppo']) ? GruppoEnum::OSPITE : GruppoEnum::getValueOf($POST['gruppo']);
       $UtenteDao->store($Utente);
       $Gruppo = $GruppoDao->getByNome($gruppo);
       $GruppoDao->connectUtente($Gruppo, $Utente);
-      echo TokenManager::generateJWT($Utente);
+      // tokens generation
+      $token = TokenManager::generateJWT( $Utente->getId() );
+      $refreshToken = TokenManager::generateRefreshJWT( $Utente->getId() );
+      echo json_encode( ["token" => $token, "refreshToken" => $refreshToken] );
     }
     // method that responde at PUT
     public function update($id = null)

@@ -3,57 +3,113 @@
 
   namespace App\Services\Security;
 
+  use \Firebase\JWT\JWT; 
+  use App\Data\Dao\UtenteDao as UtenteDao;
+
+  require_once 'vendor/autoload.php';
+  require_once 'vendor/firebase/php-jwt/src/BeforeValidException.php';
+  require_once 'vendor/firebase/php-jwt/src/ExpiredException.php';
+  require_once 'vendor/firebase/php-jwt/src/SignatureInvalidException.php';
+  require_once 'vendor/firebase/php-jwt/src/JWT.php';
+  require_once __DIR__ . '/../../Data/Dao/UtenteDao.php';
+
   class TokenManager
   {
 
     // metodo che genera un token JWT
-    public static function generateJWT($Utente)
+    // TODO: togliere post_json parameter
+    public static function generateJWT( $userId )
     {
       $secret = getenv('SECRET');
-      $header = json_encode([
-        'type' => 'JWT',
-        'algo' => 'HS256' 
-      ]);
+
       $payload = json_encode([
-        'sub' => $Utente->getId(),
+        'sub' => $userId,
         'iat' => time(),
-        'exp' => time() + ( 60 * 60 ), // 1 hour expiration time
+        'exp' => time() + ( 60 * 5 ), // 5 minute expiration time
+        //'exp' => time() + ( 20 ), // 5 minute expiration time
         'aud' => ['ALL']
       ]);
-      // encode the Header
-      $base64UrlHeader = base64_encode($header);
-      // encode the Payload
-      $base64UrlPayload = base64_encode($payload);
-      // create signature Hash
-      $signature = hash_hmac('sha256', $base64UrlHeader . '.' . $base64UrlPayload, $secret, true);
-      $base64UrlSignature = base64_encode($signature);
-      // JWT = header.payload.signature
-      $jwt = $base64UrlHeader . '.' . $base64UrlPayload . '.' . $base64UrlSignature;
+
+      $jwt = JWT::encode($payload, $secret);
       return $jwt;
     }
-
-    // metodo che valida il token JWT dato
-    public static function validateJWT($jwt)
+    
+    // metodo che genera un refresh Token
+    public static function generateRefreshJWT( $userId )
     {
-      $tokenParts = explode('.', $jwt);
-      $header = base64_decode($tokenParts[0]);
-      $payload = base64_decode($tokenParts[1]);
-      $signatureProvided = $tokenParts[2];
+      $refreshSecret = getenv('REFRESH_SECRET');   
 
-      // Controlliamo se il Token e scaduto ( expired )
-      if ( $_SERVER['REQUEST_TIME'] > json_decode($payload)->{'exp'} ) return false;
-      
-      // riproduciamo la signature da header, payload e secret
+      $payloadRefresh = json_encode([
+        'sub' => $userId,
+        'iat' => time(),
+        'exp' => time() + ( 60 * 60 ), // 1 hour expiration time
+        //'exp' => time() + ( 40 ), // 1 hour expiration time
+        'aud' => ['ALL']
+      ]);
+
+      $refreshJWT = JWT::encode($payloadRefresh, $refreshSecret);
+      $UtenteDao = new UtenteDao();
+      // salviamo il token nel database
+      $UtenteDao->storeRefreshToken($userId, $refreshJWT);
+      return $refreshJWT;
+    }
+
+    // Metodo che verifica che un access token jwt sia valido
+    public static function verifyJWT( $jwt )
+    {
+      print_r($validTokens);
       $secret = getenv('SECRET');
-      $base64UrlHeader = base64_encode($header);
-      $base64UrlPayload = base64_encode($payload);
-      $signature = hash_hmac('sha256', $base64UrlHeader . '.' . $base64UrlPayload, $secret, true);
-      $base64UrlSignature = base64_encode($signature);
+      $decoded = json_decode( JWT::decode( $jwt, $secret, ['HS256'] ) );
+      $POST = (array)json_decode(file_get_contents('php://input'));
 
-      $isSignatureValid = ( $base64UrlSignature === $signatureProvided );
+      //la scadenza deve essere nel futuro
+      $exp = $decoded->exp > time();
+      //iat deve essere nel passato
+      $iat = $decoded->iat < time();
+      if( $exp && $iat && !empty($decoded->sub) ){
+        echo "jwt valido";
+      }else{
+        echo "jwt non valido";
+        if( TokenManager::verifyRefreshJWT($POST['refresh']) ){
+          echo "rigenero token";
+          echo TokenManager::generateJWT($decoded->sub);
+        }else{
+          echo "riloggati";
+        }
+      }
+    }
 
-      if ( $isSignatureValid ) return true;
-      return false;
+    // Metodo che verifica che un refresh token jwt sia valido
+    public static function verifyRefreshJWT( $refreshJWT )
+    { 
+      $refreshSecret = getenv('REFRESH_SECRET');
+      $decoded = json_decode( JWT::decode( $refreshJWT, $refreshSecret, ['HS256'] ) );
+
+      //la scadenza deve essere nel futuro
+      $exp = $decoded->exp > time();
+      //iat deve essere nel passato
+      $iat = $decoded->iat < time();
+      //refreshJWT deve essere contenuto nell'array associativo
+      //$sub = in_array($refreshJWT, $validTokens);
+      $sub = $decoded->sub; // userID
+      $UtenteDao = new UtenteDao();
+      $userExist = null !== $UtenteDao->getUserRefreshToken($sub);
+
+      if( $exp && $iat && $userExist ) return true;
+      else{
+        TokenManager::invalidateRefreshJWT($sub);
+        return false;
+      }
+    }
+
+    /* Metodo che invalida un refresh token
+      * - quando vengono cambiati informazioni importanti nel profilo come password o email
+      * - logout 
+      */
+    public static function invalidateRefreshJWT( $userId )
+    {
+      $UtenteDao = new UtenteDao();
+      $UtenteDao->deleteRefreshToken($userId);
     }
 
   }
