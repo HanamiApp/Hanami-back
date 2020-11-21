@@ -43,7 +43,7 @@
       $UtenteDao->store($Utente);
       $Gruppo = $GruppoDao->getByNome($gruppo);
       $GruppoDao->connectUtente($Gruppo, $Utente);
-      echo TokenManager::generateJWT($Utente);
+      echo TokenManager::generateJWT($post_json, $Utente);
     }
     // method that responde at PUT
     public function update($id = null)

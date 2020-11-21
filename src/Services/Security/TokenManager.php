@@ -17,6 +17,7 @@
     static $validTokens = array();
 
     // metodo che genera un token JWT
+    // TODO: togliere post_json parameter
     public static function generateJWT($post_json, $user)
     {
       $secret = getenv('SECRET');
@@ -46,8 +47,6 @@
 
       $refreshJWT = JWT::encode($payloadRefresh, $refreshSecret);
       $validTokens[$user->getId()] = $refreshJWT;
-      echo "array:" . $validTokens[$user->getId()] . "=====";
-      echo "refresh:" . $refreshJWT;
       return $refreshJWT;
     }
 
@@ -55,7 +54,7 @@
     public static function verifyJWT( $jwt )
     {
       $secret = getenv('SECRET');
-      $decoded = JWT::decode( $jwt, $secret);
+      $decoded = json_decode( JWT::decode( $jwt, $secret, ['HS256'] ) );
 
       //la scadenza deve essere nel futuro
       $exp = $decoded->exp > time();
