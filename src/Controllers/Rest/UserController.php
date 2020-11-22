@@ -2,6 +2,7 @@
 
 
   namespace App\Controllers\Rest;
+
   use App\Services\Security\RequestChecker as RequestChecker;
   use App\Services\Security\TokenManager as TokenManager;
   use App\Data\Entities\User;
@@ -20,12 +21,24 @@
 
   class UserController
   {
-    // method that responde at GET with all users
+
+    /**
+     * @OA\Get(
+     *          path="/api/user",
+     *          @OA\Response(response="200", description="returns all users")
+     * )
+     */
     public function index()
     {
       echo "User index";
     }
-    // method that responde at GET with the user correspond at given id
+    /**
+     * @OA\Get(
+     *          path="/api/user/{id}",
+     *          @OA\Response(response="200", description="returns the user with specified id"),
+     *          @OA\Parameter(in="path", name="id", description="user id")
+     * )
+     */
     public function get($id = null)
     {
       if ( $id == null ) die('WrongIdProvided'); 
