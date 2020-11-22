@@ -15,7 +15,7 @@
   class RequestProcessor
   {
     // request processor function
-    public static function RestProcess($method, $endpoint, $id = null)
+    public static function RestProcess( $method, $endpoint, $id = null )
     {
       $controllerName = '\App\Controllers\Rest\\' . ucfirst($endpoint) . "Controller";
       // request heandler

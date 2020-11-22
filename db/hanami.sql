@@ -82,6 +82,12 @@ CREATE TABLE `genus`(
    `name` varchar(50)
 );
 
+INSERT INTO `genus`(`name`) VALUES('Abies');
+INSERT INTO `genus`(`name`) VALUES('Pinus');
+INSERT INTO `genus`(`name`) VALUES('Prunus');
+INSERT INTO `genus`(`name`) VALUES('Castanea');
+
+
 CREATE TABLE `species`(
    `id` int auto_increment primary key,
    `name` varchar(50),
@@ -93,6 +99,12 @@ CREATE TABLE `species`(
       ON DELETE cascade
 );
 
+INSERT INTO `species`(`name`, `co2`, `description`, `id_genus`) VALUES('Abete Bianco', 13.65, 'descrizione', 1);
+INSERT INTO `species`(`name`, `co2`, `description`, `id_genus`) VALUES('Pino Mugo', 23.41, 'descrizione', 2);
+INSERT INTO `species`(`name`, `co2`, `description`, `id_genus`) VALUES('Ciliegio', 46.82, 'descrizione', 3);
+INSERT INTO `species`(`name`, `co2`, `description`, `id_genus`) VALUES('Castagno Giapponese', 37.54, 'descrizione', 4);
+
+
 CREATE TABLE `place`(
    `id` int auto_increment primary key,
    `name` varchar(30) not null,
@@ -101,31 +113,37 @@ CREATE TABLE `place`(
                'FRIULI_VENEZIA_GIULIA', 'LAZIO', 'LIGURIA', 'LOMBARDIA', 'MARCHE', 'MOLISE',
                'PIEMONTE', 'PUGLIA', 'SARDEGNA', 'SICILIA', 'TOSCANA', 'TRENTINO_ALTO_ADIGE',
                'UMBRIA', "VALLE_D_AOSTA", 'VENETO') not null,
-   `coordinate_x` float not null,
-   `coordinate_y` float not null
+   `coordinate_x` float,
+   `coordinate_y` float
 );
+
+INSERT INTO `place`(`name`, `city`, `region`) VALUES('Parco della vittoria', 'Monopoli', 'MOLISE');
+INSERT INTO `place`(`name`, `city`, `region`) VALUES('Dragonara', 'Tivoli', 'BASILICATA');
+INSERT INTO `place`(`name`, `city`, `region`) VALUES('Porto cannone', 'Lodi', 'CAMPANIA');
+INSERT INTO `place`(`name`, `city`, `region`) VALUES('Bosco di Caltanissetta', 'Roma', 'SICILIA');
+
 
 CREATE TABLE `gift_state`(
    `id` int auto_increment primary key,
-   `state` ENUM('IN_PROCESS', 'SHIPPED', 'RECEIVED') not null
+   `state` ENUM('IN_PROCESS', 'SHIPPED', 'RECEIVED') default 'IN_PROCESS'
 );
 
 CREATE TABLE `plant_state`(
    `id` int auto_increment primary key,
-   `state` ENUM('IN_PROCESS', 'TRAVELIN', 'PLANTED', 'DIED') not null,
-   `condition` ENUM('HEALTHY', 'THIRSTY', 'DRY', 'UNCUT') not null,  -- in salute, assetata, secca, non tagliata
-   `day` date
+   `state` ENUM('IN_PROCESS', 'TRAVELIN', 'PLANTED', 'DIED') default 'IN_PROCESS',
+   `condition` ENUM('HEALTHY', 'THIRSTY', 'DRY', 'UNCUT') default 'HEALTHY',  -- in salute, assetata, secca, non tagliata
+   `day` date not null
 );
 
 CREATE TABLE `plant`(
    `id` int auto_increment primary key,
    `name` varchar(50) not null,
-   `gift` boolean default 0,
-   `id_place` int,
-   `id_plant_state` int,
+   `has_gift` boolean default 0,
+   `id_place` int not null,
+   `id_plant_state` int not null,
    `id_gift_state` int,
-   `id_user` int,
-   `id_species` int,
+   `id_user` int not null,
+   `id_species` int not null,
    `qrcode` text,
    foreign key (`id_place`) references `place`(`id`)
       ON DELETE cascade
@@ -144,17 +162,14 @@ CREATE TABLE `plant`(
       ON UPDATE cascade
 );
 
-/* inserimento di una pianta di prova */
-INSERT INTO `plant`(`name`) VALUES('baobab');
-
 CREATE TABLE `update`(
    `id` int auto_increment primary key,
    `date` date not null,
-   `hour` time,
+   `hour` time not null,
    `operation` varchar(100) not null,
    `path_img` varchar(1000),
-   `id_plant` int,
-   `id_user` int,
+   `id_plant` int not null,
+   `id_user` int not null,
    foreign key (`id_plant`) references `plant`(`id`)
       ON UPDATE cascade
       ON DELETE cascade,
@@ -164,8 +179,10 @@ CREATE TABLE `update`(
 );
 
 /* inserimento aggiornamento di prova */
-INSERT INTO `update`(`date`, `operation`, `id_plant`, `id_user`) VALUES('2020-01-01', 'potatura', 1, 1);
-INSERT INTO `update`(`date`, `operation`, `id_plant`, `id_user`) VALUES('2020-01-02', 'controllo', 1, 1);
+/* 
+INSERT INTO `update`(`date`, `hour`, `operation`, `id_plant`, `id_user`) VALUES('2020-01-01', '12:12:12', 'potatura', 1, 1);
+INSERT INTO `update`(`date`, `hour`, `operation`, `id_plant`, `id_user`) VALUES('2020-01-02', '10:10:10', 'controllo', 1, 1);
+*/
 
 CREATE TABLE `goal`(
    `id` int auto_increment primary key,

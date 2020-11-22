@@ -1,15 +1,16 @@
 <?php
 
+   // TODO: VEDERE COME INSERIRE SWAGGER NEL PROGETTO
 
    namespace App;
    use App\Resources\Config\EnvLoader;
    use App\Services\RequestProcessor;
-   
    require_once __DIR__ . '/src/Services/RequestProcessor.php';
    // include the EnvLoader module and load all local variables
    require_once __DIR__ . '/resources/config/EnvLoader.php';
    EnvLoader::load();
    
+
    $uri = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
    $explodedUri = explode('/', $uri);
    $method = $_SERVER['REQUEST_METHOD'];
@@ -23,7 +24,7 @@
       $endpoint = $explodedUri[1];
       $id = $explodedUri[2];
       // TODO: cambiare il nome da ProvBaseProcess a BaseProcess quando @noemi lo avra implementato
-      RequestProcessor::ProvBaseProcess($method, $endpoint, $id);
+      RequestProcessor::BaseProcess($method, $endpoint, $id);
    } else {
       // REST call
       $endpoint = $explodedUri[2];

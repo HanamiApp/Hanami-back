@@ -14,7 +14,7 @@
       echo "Tree index";
     }
     // method that responde at GET with the user correspond at given id
-    public function get($id = null)
+    public function get( $id = null )
     {
       if ( $id == null ) die('WrongIdProvided'); 
     }
@@ -24,14 +24,14 @@
       echo "Tree create";
     }
     // method that responde at PUT
-    public function update($id = null)
+    public function update( $id = null )
     {
       RequestChecker::validateRequest();
       if ( $id == null ) die('WrongIdProvided'); 
       echo "Tree update, id: ${id}";
     }
     // method that responde at DELETE
-    public function delete($id = null)
+    public function delete( $id = null )
     {
       RequestChecker::validateRequest();
       if ( $id == null ) die('WrongIdProvided'); 

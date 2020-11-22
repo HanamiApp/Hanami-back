@@ -1,6 +1,5 @@
 <?php
 
-
   namespace App\Services;
 
   class HTTP
@@ -11,18 +10,21 @@
       200 => 'OK',
       201 => 'Created',
       202 => 'Accepted',
+      204 => 'No Content',
+      205 => 'Reset Content',
       400 => 'Bad Request',
       401 => 'Unauthorized',
       403 => 'Forbidden',
       404 => 'Not Found',
       405 => 'Method Not Allowed',
       408 => 'Request Timeout',
+      409 => 'Conflict',
       415 => 'Unsupported Media Type',
       500 => 'Internal Server Error',
       501 => 'Not Implemented'
     ];
 
-    public static function sendJsonResponse($code, $message)
+    public static function sendJsonResponse( $code, $message )
     {
       header('Content-Type: application/json');
       header("HTTP/" . HTTP::HTTP_VERSION . " {$code} " . HTTP::HTTP_STATUS[$code]);

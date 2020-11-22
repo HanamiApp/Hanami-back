@@ -4,14 +4,14 @@
   namespace App\Services\Security;
 
   use \Firebase\JWT\JWT; 
-  use App\Data\Dao\UtenteDao as UtenteDao;
-
+  use App\Data\Dao\UserDao as UserDao;
   require_once 'vendor/autoload.php';
   require_once 'vendor/firebase/php-jwt/src/BeforeValidException.php';
   require_once 'vendor/firebase/php-jwt/src/ExpiredException.php';
   require_once 'vendor/firebase/php-jwt/src/SignatureInvalidException.php';
   require_once 'vendor/firebase/php-jwt/src/JWT.php';
-  require_once __DIR__ . '/../../Data/Dao/UtenteDao.php';
+  require_once __DIR__ . '/../../Data/Dao/UserDao.php';
+
 
   class TokenManager
   {
@@ -25,8 +25,8 @@
       $payload = json_encode([
         'sub' => $userId,
         'iat' => time(),
-        'exp' => time() + ( 60 * 5 ), // 5 minute expiration time
-        //'exp' => time() + ( 20 ), // 5 minute expiration time
+        //'exp' => time() + ( 60 * 5 ), // 5 minute expiration time
+        'exp' => time() + ( 40 ), // expiration for testing
         'aud' => ['ALL']
       ]);
 
@@ -42,15 +42,15 @@
       $payloadRefresh = json_encode([
         'sub' => $userId,
         'iat' => time(),
-        'exp' => time() + ( 60 * 60 ), // 1 hour expiration time
-        //'exp' => time() + ( 40 ), // 1 hour expiration time
+        //'exp' => time() + ( 60 * 60 ), // 1 hour expiration time
+        'exp' => time() + ( 60 ), // expiration for testing
         'aud' => ['ALL']
       ]);
 
       $refreshJWT = JWT::encode($payloadRefresh, $refreshSecret);
-      $UtenteDao = new UtenteDao();
+      $UserDao = new UserDao();
       // salviamo il token nel database
-      $UtenteDao->storeRefreshToken($userId, $refreshJWT);
+      $UserDao->storeRefreshToken($userId, $refreshJWT);
       return $refreshJWT;
     }
 
@@ -92,8 +92,8 @@
       //refreshJWT deve essere contenuto nell'array associativo
       //$sub = in_array($refreshJWT, $validTokens);
       $sub = $decoded->sub; // userID
-      $UtenteDao = new UtenteDao();
-      $userExist = null !== $UtenteDao->getUserRefreshToken($sub);
+      $UserDao = new UserDao();
+      $userExist = null !== $UserDao->getRefreshToken($sub);
 
       if( $exp && $iat && $userExist ) return true;
       else{
@@ -108,8 +108,8 @@
       */
     public static function invalidateRefreshJWT( $userId )
     {
-      $UtenteDao = new UtenteDao();
-      $UtenteDao->deleteRefreshToken($userId);
+      $UserDao = new UserDao();
+      $UserDao->deleteRefreshToken($userId);
     }
 
   }

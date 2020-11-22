@@ -5,7 +5,7 @@
   use App\Services\Security\RequestChecker as RequestChecker;
   use App\Controllers\TreeCardCreator as TreeCardCreator;
   require_once __DIR__ . '/../../Services/Security/RequestChecker.php';
-  require_once __DIR__ . '/../TreeCardCreator.php';
+  require_once __DIR__ . '/TreeCardCreator.php';
 
 
   class CardController

@@ -13,7 +13,7 @@
       echo "Update index";
     }
     // method that responde at GET with the user correspond at given id
-    public function get($id = null)
+    public function get( $id = null )
     {
       if ( $id == null ) die('WrongIdProvided'); 
       echo "Update get with id: {$id}";
@@ -26,14 +26,14 @@
       echo "Update create";
     }
     // method that responde at PUT
-    public function update($id = null)
+    public function update( $id = null )
     {
       RequestChecker::validateRequest();
       if ( $id == null ) die('WrongIdProvided'); 
       echo "Update update, id: ${id}";
     }
     // method that responde at DELETE
-    public function delete($id = null)
+    public function delete( $id = null )
     {
       RequestChecker::validateRequest();
       if ( $id == null || gettype($id) != 'integer' ) die('WrongIdProvided'); 
