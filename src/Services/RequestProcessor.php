@@ -1,5 +1,9 @@
 <?php
 
+  /**
+  * @OA\Info(title="Hanami Api", version="0.1")
+  */
+
   namespace App\Services;
   // include all REST Controllers
   $restControllersDir = __DIR__ . '/../Controllers/Rest';

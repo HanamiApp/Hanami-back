@@ -1,6 +1,7 @@
 {
     "require": {
         "firebase/php-jwt": "^5.2",
-        "damianopetrungaro/php-commitizen": "^0.1.2"
+        "damianopetrungaro/php-commitizen": "^0.1.2",
+        "zircote/swagger-php": "^3.1"
     }
 }
