@@ -3,7 +3,8 @@
 
   namespace App\Data\Enums;
 
-  abstract class RegioneEnum
+  // TODO: vedere come cambiare enum
+  abstract class RegionEnum
   {
     const ABRUZZO = 'abruzzo';
     const BASILICATA = 'basilicata';

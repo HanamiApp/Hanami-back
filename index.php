@@ -1,35 +1,35 @@
 <?php
 
+   // TODO: VEDERE COME INSERIRE SWAGGER NEL PROGETTO
 
    namespace App;
    use App\Resources\Config\EnvLoader;
    use App\Services\RequestProcessor;
-   
    require_once __DIR__ . '/src/Services/RequestProcessor.php';
    // include the EnvLoader module and load all local variables
    require_once __DIR__ . '/resources/config/EnvLoader.php';
    EnvLoader::load();
    
-   header("Access-Controll-Allow-Origin: *");
-   header("Content-Type: application/json; charset=UTF-8");
-   header("Access-Controll-Allow-Methods: GET, POST, PUT, DELETE");
-   header("Content-Type: application/json; charset=UTF-8");
-   header("Access-Controll-Max-Age: 3600");
-   
+
    $uri = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
    $explodedUri = explode('/', $uri);
-   $endpoint = $explodedUri[1];
-   $id = intval($explodedUri[2]);
+   $method = $_SERVER['REQUEST_METHOD'];
+   $baseRoute = $explodedUri[1];
 
-   // dobbiamo differenziare le chiamate RESTFULL da quelle non
-   // localhost:8080/login ( no RESTFULL )
-   // localhost:8080/api/login/{id} ( RESTFULL con /{id} opzionale )
-   if ( count($explodedUri) < 3 ) {
+   // dobbiamo differenziare le chiamate REST da quelle non
+   // localhost:8080/... ( no REST )
+   // localhost:8080/api/... ( REST )
+   if ( $baseRoute !== 'api' ) {
       // no REST call
-      RequestProcessor::BaseProcess($_SERVER['REQUEST_METHOD'], $endpoint = $explodedUri[1]);
+      $endpoint = $explodedUri[1];
+      $id = $explodedUri[2];
+      // TODO: cambiare il nome da ProvBaseProcess a BaseProcess quando @noemi lo avra implementato
+      RequestProcessor::BaseProcess($method, $endpoint, $id);
    } else {
       // REST call
-      RequestProcessor::RestProcess($_SERVER['REQUEST_METHOD'], $endpoint = $explodedUri[2], $id = $explodedUri[3]);
+      $endpoint = $explodedUri[2];
+      $id = $explodedUri[3];
+      RequestProcessor::RestProcess($method, $endpoint, $id);
    }
    
    

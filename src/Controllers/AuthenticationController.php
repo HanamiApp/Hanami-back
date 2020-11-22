@@ -6,12 +6,13 @@
 
    use App\Services\Security\RequestChecker as RequestChecker;
    use App\Services\Security\TokenManager as TokenManager;
-   use App\Data\Entities\Utente;
-   use App\Data\Dao\UtenteDao as UtenteDao;
+   use App\Data\Dao\UserDao as UserDao;
+   use App\Services\HTTP as HTTP;
    require_once __DIR__ . '/../Services/Security/RequestChecker.php';
    require_once __DIR__ . '/../Services/Security/TokenManager.php';
-   require_once __DIR__ . '/../Data/Entities/Utente.php';
-   require_once __DIR__ . '/../Data/Dao/UtenteDao.php';
+   require_once __DIR__ . '/../Data/Dao/UserDao.php';
+   require_once __DIR__ . '/../Services/HTTP.php';
+
 
    class AuthenticationController
    {
@@ -27,24 +28,28 @@
                TokenManager::verifyJWT($post_json->{"jwt"});
                break;
             case "logout":
-               TokenManager::invalidateRefreshJWT($post_json->{"refreshJWT"});
+               TokenManager::invalidateRefreshJWT($post_json->{"refresh"});
+               HTTP::sendJsonResponse(205, "User logged out");
                break;
          }         
       }
 
       public static function login( $post_json )
       {
-         $UtenteDao = new UtenteDao();
-         $user = $UtenteDao->getUserByEmail($post_json->{"email"});
-         $userPassword = $user->getPassword();
+         $UserDao = new UserDao();
+         $User = $UserDao->getByEmail($post_json->{"email"});
+         $userPassword = $User->password;
          $insertPassword = $post_json->{"password"};
 
-         if( $user != null && ( $insertPassword == $userPassword ))
+         if( $User != null && ( $insertPassword == $userPassword ))
          {
-            $token = TokenManager::generateJWT($user->getId());
-            $refreshToken = TokenManager::generateRefreshJWT($user->getId());
-            echo "token:" . $token . "refreshToken:" . $refreshToken;
+            $token = TokenManager::generateJWT($User->id);
+            $refreshToken = TokenManager::generateRefreshJWT($User->id);
+            HTTP::sendJsonResponse(200, ["token" => $token, "refresh" => $refreshToken]);
+         } else {
+            HTTP::sendJsonResponse(400, "login error");
          }
+
       }
 
    }
