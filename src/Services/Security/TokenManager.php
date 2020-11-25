@@ -67,16 +67,11 @@
       //iat deve essere nel passato
       $iat = $decoded->iat < time();
       if( $exp && $iat && !empty($decoded->sub) ){
-        echo "jwt valido";
-      }else{
-        echo "jwt non valido";
-        if( TokenManager::verifyRefreshJWT($POST['refresh']) ){
-          echo "rigenero token";
-          echo TokenManager::generateJWT($decoded->sub);
-        }else{
-          echo "riloggati";
-        }
-      }
+        return $jwt;
+      }else if( TokenManager::verifyRefreshJWT($POST['refresh']) ){
+        
+        return TokenManager::generateJWT($decoded->sub);        
+      }else{ return null; }
     }
 
     // Metodo che verifica che un refresh token jwt sia valido
@@ -89,8 +84,7 @@
       $exp = $decoded->exp > time();
       //iat deve essere nel passato
       $iat = $decoded->iat < time();
-      //refreshJWT deve essere contenuto nell'array associativo
-      //$sub = in_array($refreshJWT, $validTokens);
+      //il refreshToken dell'utente deve essere presente nel db
       $sub = $decoded->sub; // userID
       $UserDao = new UserDao();
       $userExist = null !== $UserDao->getRefreshToken($sub);

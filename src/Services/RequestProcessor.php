@@ -44,12 +44,11 @@
       }
     }
 
-    public static function BaseProcess($method, $endpoint)
+    public static function BaseProcess( $method, $endpoint, $id = null )
     {
-      $controllerName = '\App\Controllers\\' . ucfirst($endpoint) . "Controller";
-
+      $controllerName = '\App\Controllers\\' . "AuthenticationController";
       // Assumo che tutte le richieste siano POST
-      $controllerName::authenticate();
+      $controllerName::$endpoint();
       
     }
 

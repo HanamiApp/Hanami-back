@@ -16,26 +16,10 @@
 
    class AuthenticationController
    {
-      // Metodo che gestisce una richiesta in arrivo
-      public function authenticate()
+
+      public static function login()
       {
          $post_json = json_decode(file_get_contents('php://input'));
-         switch($post_json->{"action"}){
-            case "login":
-               AuthenticationController::login($post_json);
-               break;
-            case "userRequest":
-               TokenManager::verifyJWT($post_json->{"jwt"});
-               break;
-            case "logout":
-               TokenManager::invalidateRefreshJWT($post_json->{"refresh"});
-               HTTP::sendJsonResponse(205, "User logged out");
-               break;
-         }         
-      }
-
-      public static function login( $post_json )
-      {
          $UserDao = new UserDao();
          $User = $UserDao->getByEmail($post_json->{"email"});
          $userPassword = $User->password;
@@ -50,6 +34,27 @@
             HTTP::sendJsonResponse(400, "login error");
          }
 
+      }
+
+      public static function logout()
+      {
+         $post_json = json_decode(file_get_contents('php://input'));
+         $UserDao = new UserDao();
+         $User = $UserDao->getByEmail($post_json->{"email"});
+         TokenManager::invalidateRefreshJWT($User->id);
+         HTTP::sendJsonResponse(205, "User logged out");
+      }
+
+      public static function userRequest()
+      {
+         $post_json = json_decode(file_get_contents('php://input'));
+         $jwt = TokenManager::verifyJWT($post_json->{"jwt"});
+         if( $jwt != null )
+         {
+            HTTP::sendJsonResponse(200, ["token" => $token]);
+         } else {
+            HTTP::sendJsonResponse(400, "UserRequest error");
+         }
       }
 
    }
