@@ -48,15 +48,14 @@
       public static function userRequest()
       {
          $post_json = json_decode(file_get_contents('php://input'));
-         $jwt = TokenManager::verifyJWT($post_json->{"jwt"});
-         if( $jwt != null )
+         $user = TokenManager::verifyJWT($post_json->{"jwt"});
+         if( $user != null )
          {
-            HTTP::sendJsonResponse(200, ["token" => $token]);
+            HTTP::sendJsonResponse(200, ["user" => $user]);
          } else {
             HTTP::sendJsonResponse(400, "UserRequest error");
          }
       }
-
    }
 
 ?>

@@ -66,12 +66,18 @@
       $exp = $decoded->exp > time();
       //iat deve essere nel passato
       $iat = $decoded->iat < time();
-      if( $exp && $iat && !empty($decoded->sub) ){
-        return $jwt;
-      }else if( TokenManager::verifyRefreshJWT($POST['refresh']) ){
-        
-        return TokenManager::generateJWT($decoded->sub);        
-      }else{ return null; }
+      if( $exp && $iat && !empty($decoded->sub) )
+      {
+        $UserDao = new UserDao();
+        return $UserDao->getByEmail($decoded->sub);
+      }else if( TokenManager::verifyRefreshJWT($POST['refresh']) )
+      {
+        TokenManager::generateJWT($decoded->sub); 
+        $UserDao = new UserDao();
+        return $UserDao->getByEmail($decoded->sub);
+      }else{ 
+        return null;
+      }
     }
 
     // Metodo che verifica che un refresh token jwt sia valido
