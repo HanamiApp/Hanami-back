@@ -66,16 +66,17 @@
       $exp = $decoded->exp > time();
       //iat deve essere nel passato
       $iat = $decoded->iat < time();
-      if( $exp && $iat && !empty($decoded->sub) ){
-        echo "jwt valido";
-      }else{
-        echo "jwt non valido";
-        if( TokenManager::verifyRefreshJWT($POST['refresh']) ){
-          echo "rigenero token";
-          echo TokenManager::generateJWT($decoded->sub);
-        }else{
-          echo "riloggati";
-        }
+      if( $exp && $iat && !empty($decoded->sub) )
+      {
+        $UserDao = new UserDao();
+        return $UserDao->getByEmail($decoded->sub);
+      }else if( TokenManager::verifyRefreshJWT($POST['refresh']) )
+      {
+        TokenManager::generateJWT($decoded->sub); 
+        $UserDao = new UserDao();
+        return $UserDao->getByEmail($decoded->sub);
+      }else{ 
+        return null;
       }
     }
 
@@ -89,8 +90,7 @@
       $exp = $decoded->exp > time();
       //iat deve essere nel passato
       $iat = $decoded->iat < time();
-      //refreshJWT deve essere contenuto nell'array associativo
-      //$sub = in_array($refreshJWT, $validTokens);
+      //il refreshToken dell'utente deve essere presente nel db
       $sub = $decoded->sub; // userID
       $UserDao = new UserDao();
       $userExist = null !== $UserDao->getRefreshToken($sub);
