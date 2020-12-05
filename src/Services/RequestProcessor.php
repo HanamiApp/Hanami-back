@@ -40,7 +40,7 @@
           $controllerName::delete($id);
         break;
         default:
-          echo "method HTTP not accepted";
+          HTTP::sendJsonResponse( 400, "method HTTP not accepted" );
       }
     }
 

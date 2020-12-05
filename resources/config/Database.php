@@ -2,6 +2,7 @@
 
 
    namespace App\Resources\Config;
+
    use \PDO  as PDO;
 
    class Database
@@ -33,7 +34,7 @@
             // settiamo la connessione in modo che sollevi un eccezione algi errori dati dagli attributi
             $this->connection->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
          } catch ( PDOException $e ) {
-            echo 'Database Connection Error: ' . $e->getMessage();
+            // errore
          }
          return $this->connection;
       }

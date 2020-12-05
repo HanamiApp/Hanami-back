@@ -2,22 +2,22 @@
 
   namespace App\Controllers\Rest;
 
-  use App\Data\Entities\Plant;
-  use App\Data\Entities\PlantState;
-  use App\Data\Entities\GiftState;
+  use App\Controllers\QRCodeController as QRCodeController;
+  use App\Data\Dao\GiftStateDao as GiftStateDao;
   use App\Data\Dao\PlantDao as PlantDao;
   use App\Data\Dao\PlantStateDao as PlantStateDao;
-  use App\Data\Dao\GiftStateDao as GiftStateDao;
-  use App\Controllers\QRCodeController as QRCodeController;
+  use App\Data\Entities\GiftState;
+  use App\Data\Entities\Plant;
+  use App\Data\Entities\PlantState;
   use App\Services\HTTP as HTTP;
-  require_once __DIR__ . '/../../Data/Entities/Plant.php';
-  require_once __DIR__ . '/../../Data/Entities/PlantState.php';
-  require_once __DIR__ . '/../../Data/Entities/GiftState.php';
+  require_once __DIR__ . '/../../Data/Dao/GiftStateDao.php';
   require_once __DIR__ . '/../../Data/Dao/PlantDao.php';
   require_once __DIR__ . '/../../Data/Dao/PlantStateDao.php';
-  require_once __DIR__ . '/../../Data/Dao/GiftStateDao.php';
-  require_once __DIR__ . '/../QRCodeController.php';
+  require_once __DIR__ . '/../../Data/Entities/GiftState.php';
+  require_once __DIR__ . '/../../Data/Entities/Plant.php';
+  require_once __DIR__ . '/../../Data/Entities/PlantState.php';
   require_once __DIR__ . '/../../Services/HTTP.php';
+  require_once __DIR__ . '/../QRCodeController.php';
 
 
   class PlantController {
@@ -33,7 +33,7 @@
       $PlantDao = new PlantDao();
       $PlantStateDao = new PlantStateDao();
       $PlantState = $PlantDao->getById($id);
-      echo json_encode($PlantState->__toString());
+      HTTP::sendJsonResponse( 200, $PlantState->__toString() );
     }
 
     //metodo per la POST

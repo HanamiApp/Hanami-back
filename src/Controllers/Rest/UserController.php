@@ -30,7 +30,7 @@
      */
     public function index()
     {
-      echo "User index";
+      HTTP::sendJsonResponse( 200, "User index" );
     }
     /**
      * @OA\Get(
@@ -41,8 +41,8 @@
      */
     public function get($id = null)
     {
-      if ( $id == null ) die('WrongIdProvided'); 
-      echo "User get";
+      if ( $id == null ) die( HTTP::sendJsonResponse(400, 'WrongIdProvided') ); 
+      HTTP::sendJsonResponse( 200, "User get" );
     }
     // method that responde at POST ( registration method )
     public function create()
@@ -68,15 +68,15 @@
     public function update( $id = null )
     {
       RequestChecker::validateRequest();
-      if ( $id == null ) die('WrongIdProvided'); 
-      echo "User update, id: ${id}";
+      if ( $id == null ) die( HTTP::sendJsonResponse(400, 'WrongIdProvided') );
+      HTTP::sendJsonResponse( 200, "User update, id: ${id}" );
     }
     // method that responde at DELETE
     public function delete($id = null)
     {
       RequestChecker::validateRequest();
-      if ( $id == null || gettype($id) != 'integer' ) die('WrongIdProvided'); 
-      echo "User delete, id: ${id}";
+      if ( $id == null || gettype($id) != 'integer' ) die( HTTP::sendJsonResponse(400, 'WrongIdProvided') ); 
+      HTTP::sendJsonResponse( 200, "User delete, id: ${id}" );
     }
     
   }

@@ -5,12 +5,14 @@
 
   use \Firebase\JWT\JWT; 
   use App\Data\Dao\UserDao as UserDao;
+  use App\Serivces\HTTP as HTTP;
+  require_once __DIR__ . '/../../Data/Dao/UserDao.php';
+  require_once __DIR__ . '/../../Services/HTTP.php';
   require_once 'vendor/autoload.php';
   require_once 'vendor/firebase/php-jwt/src/BeforeValidException.php';
   require_once 'vendor/firebase/php-jwt/src/ExpiredException.php';
-  require_once 'vendor/firebase/php-jwt/src/SignatureInvalidException.php';
   require_once 'vendor/firebase/php-jwt/src/JWT.php';
-  require_once __DIR__ . '/../../Data/Dao/UserDao.php';
+  require_once 'vendor/firebase/php-jwt/src/SignatureInvalidException.php';
 
 
   class TokenManager
@@ -67,14 +69,13 @@
       //iat deve essere nel passato
       $iat = $decoded->iat < time();
       if( $exp && $iat && !empty($decoded->sub) ){
-        echo "jwt valido";
+        HTTP::sendJsonResponse( 200, "JWT valido" );
       }else{
-        echo "jwt non valido";
+        HTTP::sendJsonResponse( 400, "JWT non valido" );
         if( TokenManager::verifyRefreshJWT($POST['refresh']) ){
-          echo "rigenero token";
-          echo TokenManager::generateJWT($decoded->sub);
+          HTTP::sendJsonResponse( 200, TokenManager::generateJWT($decoded->sub) );
         }else{
-          echo "riloggati";
+          HTTP::sendJsonResponse( 400, "Riloggati" );
         }
       }
     }
