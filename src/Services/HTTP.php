@@ -2,6 +2,9 @@
 
   namespace App\Services;
 
+  require_once "vendor/autoload.php";
+
+
   class HTTP
   {
 
@@ -26,7 +29,6 @@
 
     public static function sendJsonResponse( $code, $message )
     {
-      header('Content-Type: application/json');
       header("HTTP/" . HTTP::HTTP_VERSION . " {$code} " . HTTP::HTTP_STATUS[$code]);
       echo json_encode($message);
     }

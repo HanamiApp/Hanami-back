@@ -5,12 +5,14 @@
 
   use \Firebase\JWT\JWT; 
   use App\Data\Dao\UserDao as UserDao;
+  use App\Serivces\HTTP as HTTP;
+  require_once __DIR__ . '/../../Data/Dao/UserDao.php';
+  require_once __DIR__ . '/../../Services/HTTP.php';
   require_once 'vendor/autoload.php';
   require_once 'vendor/firebase/php-jwt/src/BeforeValidException.php';
   require_once 'vendor/firebase/php-jwt/src/ExpiredException.php';
-  require_once 'vendor/firebase/php-jwt/src/SignatureInvalidException.php';
   require_once 'vendor/firebase/php-jwt/src/JWT.php';
-  require_once __DIR__ . '/../../Data/Dao/UserDao.php';
+  require_once 'vendor/firebase/php-jwt/src/SignatureInvalidException.php';
 
 
   class TokenManager

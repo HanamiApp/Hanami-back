@@ -18,8 +18,6 @@
       $db = new Database();
       $this->connection = $db->connect();
       $this->I_PLANT_STATE = "INSERT INTO `plant_state`(`state`, `condition`, `day`) VALUES(:state, :condition, :day)";
-      // TODO: questa roba dovrá essere fatta da pianta
-      // $this->S_PLANT_STATUS = "SELECT * FROM `stato_pianta` WHERE id_pianta = :id_pianta ;";
    }
 
    public function store( $PlantState )

@@ -64,7 +64,7 @@ CREATE TABLE `vehicle`(
 
 CREATE TABLE `trip`(
    `id` int auto_increment primary key,
-   `time` int not null, 
+   `time` int not null,
    `length` int not null, 
    `co2` float not null,
    `id_user` int,
