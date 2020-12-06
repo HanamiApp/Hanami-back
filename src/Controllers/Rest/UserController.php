@@ -62,7 +62,7 @@
       // tokens generation
       $token = TokenManager::generateJWT( $User->id );
       $refreshToken = TokenManager::generateRefreshJWT( $User->id );
-      HTTP::sendJsonResponse(201, ["userId" => $User->id, "token" => $token, "refreshToken" => $refreshToken] );
+      HTTP::sendJsonResponse(201, ["userId" => $User->id], ["token" => $token, "refreshToken" => $refreshToken] );
     }
     // method that responde at PUT
     public function update( $id = null )
