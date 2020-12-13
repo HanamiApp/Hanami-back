@@ -29,7 +29,7 @@
          {
             $token = TokenManager::generateJWT($User->id);
             $refreshToken = TokenManager::generateRefreshJWT($User->id);
-            HTTP::sendJsonResponse(200, ["token" => $token, "refresh" => $refreshToken]);
+            HTTP::sendJsonResponse(200, ["userId" => $User->id], ["token" => $token, "refresh" => $refreshToken]);
          } else {
             HTTP::sendJsonResponse(400, "login error");
          }

@@ -27,10 +27,18 @@
       501 => 'Not Implemented'
     ];
 
-    public static function sendJsonResponse( $code, $message )
+    public static function sendJsonResponse( $code, $data, $cookieData = null )
     {
+      if( $cookieData != null ) HTTP::setCookie( $cookieData );
       header("HTTP/" . HTTP::HTTP_VERSION . " {$code} " . HTTP::HTTP_STATUS[$code]);
-      echo json_encode($message);
+      echo json_encode($data);
+    }
+
+    public static function setCookie( $cookieData )
+    {
+      $cookieOptions = [ 'httponly' => true, 'path' => '/', 'domain' => '' ];
+      $value = json_encode($cookieData);
+      setcookie( "tokens", $value, $cookieOptions);
     }
 
   }
