@@ -22,28 +22,19 @@
   class UserController
   {
 
-    /**
-     * @OA\Get(
-     *          path="/api/user",
-     *          @OA\Response(response="200", description="returns all users")
-     * )
-     */
+    // method that responde at GET
     public function index()
     {
       HTTP::sendJsonResponse( 200, "User index" );
     }
-    /**
-     * @OA\Get(
-     *          path="/api/user/{id}",
-     *          @OA\Response(response="200", description="returns the user with specified id"),
-     *          @OA\Parameter(in="path", name="id", description="user id")
-     * )
-     */
+
+    // method that responde at GET/{id}
     public function get($id = null)
     {
       if ( $id == null ) die( HTTP::sendJsonResponse(400, 'WrongIdProvided') ); 
       HTTP::sendJsonResponse( 200, "User get" );
     }
+
     // method that responde at POST ( registration method )
     public function create()
     {
@@ -64,6 +55,7 @@
       $refreshToken = TokenManager::generateRefreshJWT( $User->id );
       HTTP::sendJsonResponse(201, ["userId" => $User->id], ["token" => $token, "refreshToken" => $refreshToken] );
     }
+    
     // method that responde at PUT
     public function update( $id = null )
     {

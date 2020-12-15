@@ -2,6 +2,8 @@
 
   namespace App\Services;
 
+  use App\Services\Logger as Logger;
+  require_once __DIR__ . "/Logger.php";
   require_once "vendor/autoload.php";
 
 
@@ -31,7 +33,8 @@
     {
       if( $cookieData != null ) HTTP::setCookie( $cookieData );
       header("HTTP/" . HTTP::HTTP_VERSION . " {$code} " . HTTP::HTTP_STATUS[$code]);
-      echo json_encode($data);
+      echo json_encode(["data" => $data, "logs" => Logger::all()]);
+      die();
     }
 
     public static function setCookie( $cookieData )

@@ -21,6 +21,7 @@
    $method = $_SERVER['REQUEST_METHOD'];
    if( $method === 'OPTIONS' ) return 0;
    $baseRoute = $explodedUri[1];
+   
    // dobbiamo differenziare le chiamate REST da quelle non
    // localhost:8080/... ( no REST )
    // localhost:8080/api/... ( REST )

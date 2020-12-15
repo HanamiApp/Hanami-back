@@ -76,8 +76,6 @@
     public function updateQRCode( $Plant )
     {
       if ( empty($Plant) ) return false;
-      print_r(json_encode(["qrCode" => $Plant->qrCode, "id_plant" => $Plant->id]));
-      die();
       $stmt = $this->connection->prepare( $this->U_QR );
       $stmt->bindParam(':qr_code', $Plant->qrCode, PDO::PARAM_STR);
       $stmt->bindParam(':id_plant', $Plant->id, PDO::PARAM_INT);
