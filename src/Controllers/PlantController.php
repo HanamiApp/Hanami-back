@@ -1,6 +1,6 @@
 <?php
 
-  namespace App\Controllers\Rest;
+  namespace App\Controllers;
 
   use App\Controllers\QRCodeController as QRCodeController;
   use App\Data\Dao\GiftStateDao as GiftStateDao;
@@ -10,26 +10,27 @@
   use App\Data\Entities\Plant;
   use App\Data\Entities\PlantState;
   use App\Services\HTTP as HTTP;
-  require_once __DIR__ . '/../../Data/Dao/GiftStateDao.php';
-  require_once __DIR__ . '/../../Data/Dao/PlantDao.php';
-  require_once __DIR__ . '/../../Data/Dao/PlantStateDao.php';
-  require_once __DIR__ . '/../../Data/Entities/GiftState.php';
-  require_once __DIR__ . '/../../Data/Entities/Plant.php';
-  require_once __DIR__ . '/../../Data/Entities/PlantState.php';
-  require_once __DIR__ . '/../../Services/HTTP.php';
-  require_once __DIR__ . '/../QRCodeController.php';
+  require_once __DIR__ . '/../Data/Dao/GiftStateDao.php';
+  require_once __DIR__ . '/../Data/Dao/PlantDao.php';
+  require_once __DIR__ . '/../Data/Dao/PlantStateDao.php';
+  require_once __DIR__ . '/../Data/Entities/GiftState.php';
+  require_once __DIR__ . '/../Data/Entities/Plant.php';
+  require_once __DIR__ . '/../Data/Entities/PlantState.php';
+  require_once __DIR__ . '/../Services/HTTP.php';
+  require_once __DIR__ . '/QRCodeController.php';
 
 
   class PlantController {
     
     public static function index()
     {
-      // getall
+      HTTP::sendJsonResponse( 200, "Plant index" );
     }
 
     //metodo per la GET
-    public static function get( $id )
+    public static function get( ...$params )
     {
+      $id = $params[0];
       $PlantDao = new PlantDao();
       $PlantStateDao = new PlantStateDao();
       $PlantState = $PlantDao->getById($id);
@@ -72,13 +73,13 @@
     }
 
     // method that responde at PUT
-    public function update( $id = null )
+    public function update( ...$params )
     {
       // dopo
     }
       
     // method that responde at DELETE
-    public function delete( $id )
+    public function delete( ...$params )
     {
       //
     }
