@@ -1,6 +1,9 @@
 <?php
 
-   include __DIR__ . '/EnvLoader.php';
+
+   namespace App\Resources\Config;
+
+   use \PDO  as PDO;
 
    class Database
    {
@@ -13,11 +16,10 @@
 
       public function __construct()
       {
-         $envLoader = new EnvLoader(__DIR__ . '/../../');
-         $this->HOST = $envLoader->getVariable('HOST');
-         $this->DB_NAME = $envLoader->getVariable('DB_NAME');
-         $this->USERNAME = $envLoader->getVariable('MYSQL_USERNAME');
-         $this->PASSWORD = $envLoader->getVariable('MYSQL_PASSWORD');
+         $this->HOST = getenv('HOST');
+         $this->DB_NAME = getenv('DB_NAME');
+         $this->USERNAME = getenv('MYSQL_USERNAME');
+         $this->PASSWORD = getenv('MYSQL_PASSWORD');
       }
 
       public function connect()
@@ -32,7 +34,7 @@
             // settiamo la connessione in modo che sollevi un eccezione algi errori dati dagli attributi
             $this->connection->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
          } catch ( PDOException $e ) {
-            echo 'Database Connection Error: ' . $e->getMessage();
+            // errore
          }
          return $this->connection;
       }
