@@ -5,6 +5,8 @@
    use App\Resources\Config\EnvLoader;
    use App\Services\RequestProcessor;
    use App\Services\RequestMapper;
+   use App\Services\Logger;
+   require_once __DIR__ . '/src/Services/Logger.php';
    require_once __DIR__ . '/src/Services/RequestMapper.php';
    require_once __DIR__ . '/src/Services/RequestProcessor.php';
    // include the EnvLoader module and load all local variables
@@ -18,9 +20,10 @@
 
    EnvLoader::load();
 
-   $uri = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
+   $uri = $_SERVER['REQUEST_URI'];
    $explodedUri = explode('/', $uri);
    $method = $_SERVER['REQUEST_METHOD'];
+   // TODO: capire perche dobbiamo skippare le richieste OPTIONS
    if( $method === 'OPTIONS' ) return 0;
    $baseRoute = $explodedUri[1];
 

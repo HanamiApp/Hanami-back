@@ -5,10 +5,25 @@
   class Routes
   {
 
-    public const ROUTES = [
-      "/users/me" => "UserController@me",
-      "/plants" => "PlantController@index",
-      "/plants/{id}" => "PlantController@get"
+    // GET
+    public static $GET_ROUTES = [
+      "/users/me"       => "UserController@me",
+      "/users/:id"     => "UserController@get",
+      "/users"          => "UserController@index"
+    ];
+    // POST
+    public static $POST_ROUTES = [
+      "/users"          => "UserController@create"
+    ];
+    // PUT
+    public static $PUT_ROUTES = [
+      "/users/:id"     => "UserController@update"
+    ];
+    // PATCH
+    public static $PATCH_ROUTES = [];
+    // DELETE
+    public static $DELETE_ROUTES = [
+      "/users/:id"     => "UserController@delete"
     ];
 
   }

@@ -24,7 +24,7 @@
 
     public function me()
     {
-      HTTP::sendJsonResponse( 200, "me" );
+      HTTP::sendJsonResponse( 200, "User me" );
     }
 
     // method that responde at GET
@@ -34,11 +34,10 @@
     }
 
     // method that responde at GET/{id}
-    public function get( ...$params )
+    public function get( $id )
     {
-      $id = $params[0];
       if ( $id == null ) die( HTTP::sendJsonResponse(400, 'WrongIdProvided') ); 
-      HTTP::sendJsonResponse( 200, "User get" );
+      HTTP::sendJsonResponse( 200, "User get with ${id}" );
     }
 
     // method that responde at POST ( registration method )
@@ -63,17 +62,15 @@
     }
     
     // method that responde at PUT
-    public function update( ...$params )
+    public function update( $id )
     {
-      $id = $params[0];
       RequestChecker::validateRequest();
       if ( $id == null ) die( HTTP::sendJsonResponse(400, 'WrongIdProvided') );
       HTTP::sendJsonResponse( 200, "User update, id: ${id}" );
     }
     // method that responde at DELETE
-    public function delete( ...$params )
-    { 
-      $id = $params[0];
+    public function delete( $id )
+    {
       RequestChecker::validateRequest();
       if ( $id == null || gettype($id) != 'integer' ) die( HTTP::sendJsonResponse(400, 'WrongIdProvided') ); 
       HTTP::sendJsonResponse( 200, "User delete, id: ${id}" );
