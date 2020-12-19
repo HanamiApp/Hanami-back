@@ -27,9 +27,11 @@ DROP TABLE IF EXISTS `user`;
 CREATE TABLE `user`( 
    `id` int auto_increment primary key,
    `first_name` varchar(20) not null,
+   `username` varchar(20) not null,
    `last_name` varchar(30) not null,
    `email` varchar(100) not null unique,
    `password` varchar(30) not null,
+   `path_photo` varchar(100),
    `region` ENUM('ABRUZZO', 'BASILICATA', 'CALABRIA', 'CAMPANIA', 'EMILIA_ROMAGNA', 
                'FRIULI_VENEZIA_GIULIA', 'LAZIO', 'LIGURIA', 'LOMBARDIA', 'MARCHE', 'MOLISE',
                'PIEMONTE', 'PUGLIA', 'SARDEGNA', 'SICILIA', 'TOSCANA', 'TRENTINO_ALTO_ADIGE',
@@ -67,6 +69,7 @@ CREATE TABLE `trip`(
    `time` int not null, 
    `length` int not null, 
    `co2` float not null,
+   `day_trip`date not null,
    `id_user` int,
    `id_vehicle` int,
    foreign key(`id_user`) references `user`(`id`)
@@ -79,7 +82,8 @@ CREATE TABLE `trip`(
 
 CREATE TABLE `genus`(
    `id` int auto_increment primary key,
-   `name` varchar(50)
+   `name` varchar(50),
+   `path_photo` varchar(100)
 );
 
 INSERT INTO `genus`(`name`) VALUES('Abies');
@@ -92,6 +96,7 @@ CREATE TABLE `species`(
    `id` int auto_increment primary key,
    `name` varchar(50),
    `co2` float not null,
+   `fruit` tinyint(1) not null default 0,
    `description` text not null,
    `id_genus` int,
    foreign key (`id_genus`) references `genus`(`id`)
@@ -99,10 +104,10 @@ CREATE TABLE `species`(
       ON DELETE cascade
 );
 
-INSERT INTO `species`(`name`, `co2`, `description`, `id_genus`) VALUES('Abete Bianco', 13.65, 'descrizione', 1);
-INSERT INTO `species`(`name`, `co2`, `description`, `id_genus`) VALUES('Pino Mugo', 23.41, 'descrizione', 2);
-INSERT INTO `species`(`name`, `co2`, `description`, `id_genus`) VALUES('Ciliegio', 46.82, 'descrizione', 3);
-INSERT INTO `species`(`name`, `co2`, `description`, `id_genus`) VALUES('Castagno Giapponese', 37.54, 'descrizione', 4);
+INSERT INTO `species`(`name`, `co2`, `fruit`, `description`, `id_genus`) VALUES('Abete Bianco', 13.65, 0, 'descrizione', 1);
+INSERT INTO `species`(`name`, `co2`, `fruit`, `description`, `id_genus`) VALUES('Pino Mugo', 23.41, 1,  'descrizione', 2);
+INSERT INTO `species`(`name`, `co2`, `fruit`, `description`, `id_genus`) VALUES('Ciliegio', 46.82, 1,  'descrizione', 3);
+INSERT INTO `species`(`name`, `co2`, `fruit`, `description`, `id_genus`) VALUES('Castagno Giapponese', 37.54, 0, 'descrizione', 4);
 
 
 CREATE TABLE `place`(

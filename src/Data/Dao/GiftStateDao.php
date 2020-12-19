@@ -27,7 +27,7 @@
     {
       if ( empty($GiftState) ) return false;
       $stmt = $this->connection->prepare( $this->I_STATE );
-      $stmt->bindParam(':state', $GiftState->state, PDO::PARAM_STR);
+      $stmt->bindValue(':state', $GiftState->state, PDO::PARAM_STR);
       $stmt->execute();
       $GiftState->id = $this->connection->lastInsertId();
       return true;

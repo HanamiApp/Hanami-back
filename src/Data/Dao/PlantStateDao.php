@@ -3,23 +3,27 @@
 
   namespace App\Data\Dao;
   use App\Resources\Config\Database as Database;
+  use App\Data\Entities\PlantState as PlantState;
   use \PDO as PDO;
-  use App\Data\Models\PlantState as PlantState;
   require_once __DIR__ . '/../../../resources/config/Database.php';
+  require_once __DIR__ . '/../Entities/PlantState.php';
+
 
 
   class PlantStateDao {
 
    private $connection;
    private $I_PLANT_STATE;
+   private $S_PLANT_STATE_BY_ID;
+   private $S_ALL_PLANT_STATE;
 
    public function __construct()
    {
       $db = new Database();
       $this->connection = $db->connect();
+      $this->S_PLANT_STATE_BY_ID = "SELECT * FROM `plant_state` WHERE `id` = :id";
+      $this->S_ALL_PLANT_STATE = "SELECT * from `plant_state`";
       $this->I_PLANT_STATE = "INSERT INTO `plant_state`(`state`, `condition`, `day`) VALUES(:state, :condition, :day)";
-      // TODO: questa roba dovrá essere fatta da pianta
-      // $this->S_PLANT_STATUS = "SELECT * FROM `stato_pianta` WHERE id_pianta = :id_pianta ;";
    }
 
    public function store( $PlantState )
@@ -32,23 +36,41 @@
       $PlantState->id = $this->connection->lastInsertId();
    }
 
-   // public function getStatoPianta($Pianta)
-   // {
-   //    $id = $Pianta->getId();
-   //    $stmt = $this->connection->prepare($this->S_PLANT_STATUS);
-   //    $stmt->bindValue(':id_pianta', $id, PDO::PARAM_STR);
-   //    $stmt->execute();
-   //    $StatoPiantaVector = $stmt->fetch(PDO::FETCH_ASSOC);
-   //    $PlantState = new PlantState($Pianta->getGenere(), $Pianta->getSpecie(), $Pianta->getNome(), $Pianta->getCo2(), $Pianta->getDescrizione());
-   //    $PlantState->setIdStato($StatoPiantaVector['id']);
-   //    $PlantState->setStato($StatoPiantaVector['stato']);
-   //    $PlantState->setStatoVitale($StatoPiantaVector['stato_vitale']);
-   //    $PlantState->setGiorno($StatoPiantaVector['giorno']);
-   //    $PlantState->setQRCode($Pianta->getQRCode());
-   //    $PlantState->setId($Pianta->getId());
+   public function getById( $id )
+   {
+      $stmt = $this->connection->prepare( $this->S_PLANT_STATE_BY_ID);
+      $stmt->bindValue(':id', $id, PDO::PARAM_INT);
+      $stmt->execute();
+      $row = $stmt->fetch(PDO::FETCH_ASSOC);
+      
+      return $this->generatePlantState($row);
+   }
 
-   //    return $PlantState;
-   // }
+   public function getAll()
+   {
+      $array = array();
+      $array = [];
+      $result = $this->connection->query( $this->S_ALL_PLANT_STATE )->fetchAll(PDO::FETCH_ASSOC);
+
+      foreach($result as $row){
+          array_push( $array, $this->generatePlantState($row) );
+      }
+
+      return $array;
+   }
+
+   public function generatePlantState($row)
+   {
+      if ( !isset($row) ) return null;
+      $PlantState = new PlantState();
+      $PlantState->id = $row['id'];
+      $PlantState->condition = $row['condition'];
+      $PlantState->state = $row['state'];
+      $PlantState->day = $row['day'];
+
+      return $PlantState;
+   }
+
 
   }
 ?>
