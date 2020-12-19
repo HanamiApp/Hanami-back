@@ -3,6 +3,8 @@
 
   namespace App\Data\Entities;
   use App\Data\Enums\RegionEnum as RegionEnum;
+  use App\Services\Logger as Logger;
+  require_once __DIR__ . '/../../Services/Logger.php';
   require_once __DIR__ . '/../Enums/RegionEnum.php';
 
   class User
@@ -41,7 +43,7 @@
     }
 
     //toString
-    public function __toString()
+    public function __toArray()
     {
       return [
         'id' => $this->id,

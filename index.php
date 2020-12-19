@@ -4,6 +4,10 @@
    
    use App\Resources\Config\EnvLoader;
    use App\Services\RequestProcessor;
+   use App\Services\RequestMapper;
+   use App\Services\Logger;
+   require_once __DIR__ . '/src/Services/Logger.php';
+   require_once __DIR__ . '/src/Services/RequestMapper.php';
    require_once __DIR__ . '/src/Services/RequestProcessor.php';
    // include the EnvLoader module and load all local variables
    require_once __DIR__ . '/resources/config/EnvLoader.php';
@@ -16,26 +20,13 @@
 
    EnvLoader::load();
 
-   $uri = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
+   $uri = $_SERVER['REQUEST_URI'];
    $explodedUri = explode('/', $uri);
    $method = $_SERVER['REQUEST_METHOD'];
+   // TODO: capire perche dobbiamo skippare le richieste OPTIONS
    if( $method === 'OPTIONS' ) return 0;
    $baseRoute = $explodedUri[1];
-   // dobbiamo differenziare le chiamate REST da quelle non
-   // localhost:8080/... ( no REST )
-   // localhost:8080/api/... ( REST )
-   if ( $baseRoute !== 'api' ) {
-      // no REST call
-      $endpoint = $explodedUri[1];
-      $id = $explodedUri[2];
-      // TODO: cambiare il nome da ProvBaseProcess a BaseProcess quando @noemi lo avra implementato
-      RequestProcessor::BaseProcess($method, $endpoint, $id);
-   } else {
-      $endpoint = $explodedUri[2];
-      // REST call
-      $id = $explodedUri[3];
-      RequestProcessor::RestProcess($method, $endpoint, $id);
-   }
-   
+
+   RequestMapper::mapRequest($method, $uri);
    
 ?>

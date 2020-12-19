@@ -4,6 +4,8 @@
   use App\Resources\Config\Database as Database;
   use App\Data\Entities\User as User;
   use \PDO as PDO;
+  use App\Services\HTTP as HTTP;
+  require_once __DIR__ . '/../../Services/HTTP.php';
   require_once __DIR__ . '/../../../resources/config/Database.php';
   require_once __DIR__ . '/../Entities/User.php';
 
@@ -13,23 +15,23 @@
 
     private $connection;
     private $I_USER, $I_RT; // RT = refresh_token
-    private $S_ID_BY_EMAIL, $S_RT_BY_USER_ID;
+    private $S_ID_BY_EMAIL, $S_RT_BY_USER_ID, $S_USER_BY_ID;
     private $D_RT_BY_USER_ID;
 
     public function __construct()
     {
       $Db = new Database();
       $this->connection = $Db->connect();
+      $this->S_USER_BY_ID = "SELECT * FROM `user` WHERE `id`=:id"; 
       $this->I_USER = "INSERT INTO `user`(`first_name`, `last_name`, `username`, `email`, `password`, `region`, `path_photo`) VALUES(:first_name, :last_name, :username, :email, :password, :region, :pathPhoto)";
       $this->S_ID_BY_EMAIL = "SELECT * FROM `user` WHERE `email`=:email";
       $this->S_RT_BY_USER_ID = "SELECT `token` FROM `refresh_token` WHERE `id_user`=:id_user";
       $this->I_RT = "INSERT INTO `refresh_token`(`id_user`, `token`) VALUES(:id_user, :token)";
-      $this->D_RT_BY_USER_ID = "DELETE FROM `refresh_token` WHERE `id_user`=:id_user";    
+      $this->D_RT_BY_USER_ID = "DELETE FROM `refresh_token` WHERE `id_user`=:id_user";
     }
 
     private function generateUser( $row )
     {
-      if ( empty($row) ) return null;
       $User = new User();
       $User->id = $row['id'];
       $User->firstName = $row['first_name'];
@@ -45,7 +47,6 @@
     // funzione che restituisce l'utente con l'id dato
     public function getById( $id )
     {
-      if ( !isset($id) ) return null;
       $stmt = $this->connection->prepare( $this->S_USER_BY_ID );
       $stmt->bindParam(':id', $id, PDO::PARAM_INT);
       $stmt->execute();

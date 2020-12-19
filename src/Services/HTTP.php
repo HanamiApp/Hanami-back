@@ -2,6 +2,8 @@
 
   namespace App\Services;
 
+  use App\Services\Logger as Logger;
+  require_once __DIR__ . "/Logger.php";
   require_once "vendor/autoload.php";
 
 
@@ -10,11 +12,13 @@
 
     const HTTP_VERSION = '1.1';
     const HTTP_STATUS = [
+      // 2xx
       200 => 'OK',
       201 => 'Created',
       202 => 'Accepted',
       204 => 'No Content',
       205 => 'Reset Content',
+      // 4xx
       400 => 'Bad Request',
       401 => 'Unauthorized',
       403 => 'Forbidden',
@@ -23,15 +27,24 @@
       408 => 'Request Timeout',
       409 => 'Conflict',
       415 => 'Unsupported Media Type',
+      // 5xx
       500 => 'Internal Server Error',
       501 => 'Not Implemented'
     ];
 
-    public static function sendJsonResponse( $code, $data, $cookieData = null )
+    public static function sendJsonResponse( $code, $data = "", $cookieData = null )
     {
-      if( $cookieData != null ) HTTP::setCookie( $cookieData );
+      if( !empty($cookieData) ) HTTP::setCookie( $cookieData );
       header("HTTP/" . HTTP::HTTP_VERSION . " {$code} " . HTTP::HTTP_STATUS[$code]);
-      echo json_encode($data);
+      print_r(json_encode(["data" => $data, "logs" => Logger::all()]));
+      die();
+    }
+
+    public static function sendResponse( $code, $data = "" )
+    {
+      header("HTTP/" . HTTP::HTTP_VERSION . " {$code} " . HTTP::HTTP_STATUS[$code]);
+      print_r(["data" => $data, "logs" => Logger::all()]);
+      die();
     }
 
     public static function setCookie( $cookieData )

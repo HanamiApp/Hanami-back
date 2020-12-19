@@ -1,7 +1,7 @@
 <?php
 
 
-  namespace App\Controllers\Rest;
+  namespace App\Controllers;
 
   use App\Services\Security\RequestChecker as RequestChecker;
   use App\Services\Security\TokenManager as TokenManager;
@@ -10,40 +10,36 @@
   use App\Data\Dao\UserDao as UserDao;
   use App\Data\Dao\GroupDao as GroupDao;
   use App\Services\HTTP as HTTP;
-  require_once __DIR__ . '/../../Services/Security/RequestChecker.php';
-  require_once __DIR__ . '/../../Services/Security/TokenManager.php';
-  require_once __DIR__ . '/../../Data/Entities/User.php';
-  require_once __DIR__ . '/../../Data/Enums/GroupEnum.php';
-  require_once __DIR__ . '/../../Data/Dao/UserDao.php';
-  require_once __DIR__ . '/../../Data/Dao/GroupDao.php';
-  require_once __DIR__ . '/../../Services/HTTP.php';
+  require_once __DIR__ . '/../Services/Security/RequestChecker.php';
+  require_once __DIR__ . '/../Services/Security/TokenManager.php';
+  require_once __DIR__ . '/../Data/Entities/User.php';
+  require_once __DIR__ . '/../Data/Enums/GroupEnum.php';
+  require_once __DIR__ . '/../Data/Dao/UserDao.php';
+  require_once __DIR__ . '/../Data/Dao/GroupDao.php';
+  require_once __DIR__ . '/../Services/HTTP.php';
 
 
   class UserController
   {
 
-    /**
-     * @OA\Get(
-     *          path="/api/user",
-     *          @OA\Response(response="200", description="returns all users")
-     * )
-     */
+    public function me()
+    {
+      HTTP::sendJsonResponse( 200, "User me" );
+    }
+
+    // method that responde at GET
     public function index()
     {
       HTTP::sendJsonResponse( 200, "User index" );
     }
-    /**
-     * @OA\Get(
-     *          path="/api/user/{id}",
-     *          @OA\Response(response="200", description="returns the user with specified id"),
-     *          @OA\Parameter(in="path", name="id", description="user id")
-     * )
-     */
-    public function get($id = null)
+
+    // method that responde at GET/{id}
+    public function get( $id )
     {
       if ( $id == null ) die( HTTP::sendJsonResponse(400, 'WrongIdProvided') ); 
-      HTTP::sendJsonResponse( 200, "User get" );
+      HTTP::sendJsonResponse( 200, "User get with ${id}" );
     }
+
     // method that responde at POST ( registration method )
     public function create()
     {
@@ -55,7 +51,6 @@
       // user creation
       $User = new User($POST['first_name'],$POST['last_name'], $POST['username'], $POST['email'], $POST['password'], $POST['region'], $POST['path_photo']);
       $group = empty($POST['group']) ? GroupEnum::GUEST : GroupEnum::getValueOf($POST['group']);
-      var_dump($User);
       $isCreated = $UserDao->store($User);
       if ( !$isCreated ) die( HTTP::sendJsonResponse(409, "Email already used") );
       $Group = $GroupDao->getByName($group);
@@ -65,15 +60,16 @@
       $refreshToken = TokenManager::generateRefreshJWT( $User->id );
       HTTP::sendJsonResponse(201, ["userId" => $User->id], ["token" => $token, "refreshToken" => $refreshToken] );
     }
+    
     // method that responde at PUT
-    public function update( $id = null )
+    public function update( $id )
     {
       RequestChecker::validateRequest();
       if ( $id == null ) die( HTTP::sendJsonResponse(400, 'WrongIdProvided') );
       HTTP::sendJsonResponse( 200, "User update, id: ${id}" );
     }
     // method that responde at DELETE
-    public function delete($id = null)
+    public function delete( $id )
     {
       RequestChecker::validateRequest();
       if ( $id == null || gettype($id) != 'integer' ) die( HTTP::sendJsonResponse(400, 'WrongIdProvided') ); 

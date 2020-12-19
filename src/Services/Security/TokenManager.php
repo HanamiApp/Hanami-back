@@ -5,9 +5,11 @@
 
   use \Firebase\JWT\JWT; 
   use App\Data\Dao\UserDao as UserDao;
-  use App\Serivces\HTTP as HTTP;
+  use App\Services\HTTP as HTTP;
+  use App\Services\Logger as Logger;
   require_once __DIR__ . '/../../Data/Dao/UserDao.php';
   require_once __DIR__ . '/../../Services/HTTP.php';
+  require_once __DIR__ . '/../../Services/Logger.php';
   require_once 'vendor/autoload.php';
   require_once 'vendor/firebase/php-jwt/src/BeforeValidException.php';
   require_once 'vendor/firebase/php-jwt/src/ExpiredException.php';
@@ -39,6 +41,7 @@
     // metodo che genera un refresh Token
     public static function generateRefreshJWT( $userId )
     {
+      $UserDao = new UserDao();
       $refreshSecret = getenv('REFRESH_SECRET');   
 
       $payloadRefresh = json_encode([
@@ -50,41 +53,46 @@
       ]);
 
       $refreshJWT = JWT::encode($payloadRefresh, $refreshSecret);
-      $UserDao = new UserDao();
       // salviamo il token nel database
       $UserDao->storeRefreshToken($userId, $refreshJWT);
       return $refreshJWT;
     }
 
     // Metodo che verifica che un access token jwt sia valido
-    public static function verifyJWT( $jwt )
+    public static function verifyJWT( $jwt, $refresh )
     {
-      print_r($validTokens);
+      $UserDao = new UserDao();
+
       $secret = getenv('SECRET');
       $decoded = json_decode( JWT::decode( $jwt, $secret, ['HS256'] ) );
-      $POST = (array)json_decode(file_get_contents('php://input'));
-
+      
       //la scadenza deve essere nel futuro
       $exp = $decoded->exp > time();
       //iat deve essere nel passato
       $iat = $decoded->iat < time();
-      if( $exp && $iat && !empty($decoded->sub) )
-      {
-        $UserDao = new UserDao();
-        return $UserDao->getByEmail($decoded->sub);
-      }else if( TokenManager::verifyRefreshJWT($POST['refresh']) )
-      {
-        TokenManager::generateJWT($decoded->sub); 
-        $UserDao = new UserDao();
-        return $UserDao->getByEmail($decoded->sub);
-      }else{ 
+
+      if( $exp && $iat && !empty($decoded->sub) ) {
+        // token valido
+        Logger::add('TOKEN MANAGER: token valido');
+        return $UserDao->getById($decoded->sub);
+      } else if ( TokenManager::verifyRefreshJWT($refresh) ) {
+        // rigenero token
+        Logger::add('TOKEN MANAGER: token non valido, rigenero');
+        $newJWT = TokenManager::generateJWT($decoded->sub);
+        HTTP::setCookie(["token" => $newJWT, "refresh" => $refresh]);
+        return $UserDao->getById($decoded->sub);
+      } else {
+        Logger::add('TOKEN MANAGER: token non valido');
+        // non valido
         return null;
       }
     }
 
     // Metodo che verifica che un refresh token jwt sia valido
     public static function verifyRefreshJWT( $refreshJWT )
-    { 
+    {
+      $UserDao = new UserDao();
+
       $refreshSecret = getenv('REFRESH_SECRET');
       $decoded = json_decode( JWT::decode( $refreshJWT, $refreshSecret, ['HS256'] ) );
 
@@ -94,7 +102,6 @@
       $iat = $decoded->iat < time();
       //il refreshToken dell'utente deve essere presente nel db
       $sub = $decoded->sub; // userID
-      $UserDao = new UserDao();
       $userExist = null !== $UserDao->getRefreshToken($sub);
 
       if( $exp && $iat && $userExist ) return true;
