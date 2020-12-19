@@ -4,6 +4,7 @@
 
   use App\Controllers\QRCodeController as QRCodeController;
   use App\Data\Dao\GiftStateDao as GiftStateDao;
+  use App\Data\DTO\PlantWithStateDTO as PlantWithStateDTO;
   use App\Data\Dao\PlantDao as PlantDao;
   use App\Data\Dao\PlantStateDao as PlantStateDao;
   use App\Data\Entities\GiftState;
@@ -18,13 +19,24 @@
   require_once __DIR__ . '/../../Data/Entities/PlantState.php';
   require_once __DIR__ . '/../../Services/HTTP.php';
   require_once __DIR__ . '/../QRCodeController.php';
+  require_once __DIR__ . '/../../Data/DTO/PlantWithStateDTO.php';
 
 
   class PlantController {
     
     public static function index()
     {
-      // getall
+      $PlantDao = new PlantDao();
+      $PlantStateDao = new PlantStateDao();
+
+      $arrayPlant = $PlantDao->getAll();
+      $arrayPlantState = $PlantStateDao->getAll();
+      $arrayPlantsDTO = array();
+
+      for($i = 0 ; $i < count($arrayPlant) ; $i++)
+          array_push( $arrayPlantsDTO , new PlantWithStateDTO($arrayPlant[$i], $arrayPlantState[$i]) );
+          
+      echo json_encode($arrayPlantsDTO);
     }
 
     //metodo per la GET
@@ -32,8 +44,16 @@
     {
       $PlantDao = new PlantDao();
       $PlantStateDao = new PlantStateDao();
-      $PlantState = $PlantDao->getById($id);
-      HTTP::sendJsonResponse( 200, $PlantState->__toString() );
+
+      $Plant = new Plant();
+      $PlantState = new PlantState();
+
+      $Plant = $PlantDao->getById($id);
+      $PlantState = $PlantStateDao->getById($Plant->plantStateId);
+
+      $PlantWithStateDTO = new PlantWithStateDTO($Plant, $PlantState);
+
+      echo json_encode($PlantWithStateDTO->toString());
     }
 
     //metodo per la POST
@@ -51,19 +71,19 @@
       // plant creation
       $Plant = new Plant();
       $Plant->name = $POST['name'];
-      $Plant->hasGift = $POST['hasGift'];
-      $Plant->placeId = $POST['placeId'];
+      $Plant->hasGift = $POST['has_gift'];
+      $Plant->placeId = $POST['id_place'];
       $Plant->plantStateId = $PlantState->id;
-      // controllo se la pianta e un regalo
-      if ( $Plant->hasGift ) {
+      // controllo se la pianta è un regalo
+      if ( $Plant->hasGift ){
         // creo uno stato base per il regalo
         $GiftState = new GiftState();
         $GiftStateDao->store($GiftState);
         $Plant->giftStateId = $GiftState->id;
       }
       // TODO: sostituire la riga seguente con l'id dell'utente correntemente autenticato
-      $Plant->userId = $POST['userId'];
-      $Plant->speciesId = $POST['speciesId'];
+      $Plant->userId = $POST['id_user'];
+      $Plant->speciesId = $POST['id_species'];
       $PlantDao->store($Plant);
       // creazione qrcode
       $Plant->qrCode = QRCodeController::generateQRCodeURL($Plant, 200, 200);
