@@ -30,7 +30,7 @@
         'sub' => $userId,
         'iat' => time(),
         //'exp' => time() + ( 60 * 5 ), // 5 minute expiration time
-        'exp' => time() + ( 40 ), // expiration for testing
+        'exp' => time() + ( 20 ), // expiration for testing
         'aud' => ['ALL']
       ]);
 
@@ -48,7 +48,7 @@
         'sub' => $userId,
         'iat' => time(),
         //'exp' => time() + ( 60 * 60 ), // 1 hour expiration time
-        'exp' => time() + ( 60 ), // expiration for testing
+        'exp' => time() + ( 35 ), // expiration for testing
         'aud' => ['ALL']
       ]);
 

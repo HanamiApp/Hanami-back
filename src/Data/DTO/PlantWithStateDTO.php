@@ -2,7 +2,7 @@
 
   namespace App\Data\DTO;
 
-  class PlantWithStateDTO{
+class PlantWithStateDTO{
 
    public $plantId;
    public $name;
@@ -19,6 +19,7 @@
 
    public function __construct($Plant, $PlantState)
    {
+      // Plant
       $this->plantId = $Plant->id;
       $this->name = $Plant->name;
       $this->hasGift = $Plant->hasGift;
@@ -27,6 +28,7 @@
       $this->userId = $Plant->userId;
       $this->speciesId = $Plant->speciesId;
       $this->qrcode = $Plant->qrCode;
+      // Plant State
       $this->plantStateId = $PlantState->id;
       $this->state= $PlantState->state;
       $this->condition = $PlantState->condition;

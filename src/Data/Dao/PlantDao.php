@@ -5,6 +5,8 @@
   use App\Resources\Config\Database as Database;
   use App\Data\Entities\Plant as Plant;
   use \PDO as PDO;
+  use App\Services\Logger;
+  require_once __DIR__ . '/../../Services/Logger.php';
   require_once __DIR__ . '/../../../resources/config/Database.php';
   
   class PlantDao
@@ -28,7 +30,7 @@
 
     public function generatePlant( $row )
     {
-      if ( !isset($row) ) return null;
+      if ( empty($row) ) return null;
       $Plant = new Plant();
       $Plant->id = $row['id'];
       $Plant->name = $row['name'];

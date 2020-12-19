@@ -5,6 +5,8 @@
   use App\Data\Entities\User as User;
   use \PDO as PDO;
   use App\Services\HTTP as HTTP;
+  use App\Services\Logger;
+  require_once __DIR__ . '/../../Services/Logger.php';
   require_once __DIR__ . '/../../Services/HTTP.php';
   require_once __DIR__ . '/../../../resources/config/Database.php';
   require_once __DIR__ . '/../Entities/User.php';
@@ -15,7 +17,7 @@
 
     private $connection;
     private $I_USER, $I_RT; // RT = refresh_token
-    private $S_ID_BY_EMAIL, $S_RT_BY_USER_ID, $S_USER_BY_ID;
+    private $S_BY_EMAIL, $S_RT_BY_USER_ID, $S_USER_BY_ID;
     private $D_RT_BY_USER_ID;
 
     public function __construct()
@@ -24,7 +26,7 @@
       $this->connection = $Db->connect();
       $this->S_USER_BY_ID = "SELECT * FROM `user` WHERE `id`=:id"; 
       $this->I_USER = "INSERT INTO `user`(`first_name`, `last_name`, `username`, `email`, `password`, `region`, `path_photo`) VALUES(:first_name, :last_name, :username, :email, :password, :region, :pathPhoto)";
-      $this->S_ID_BY_EMAIL = "SELECT * FROM `user` WHERE `email`=:email";
+      $this->S_BY_EMAIL = "SELECT * FROM `user` WHERE `email`=:email";
       $this->S_RT_BY_USER_ID = "SELECT `token` FROM `refresh_token` WHERE `id_user`=:id_user";
       $this->I_RT = "INSERT INTO `refresh_token`(`id_user`, `token`) VALUES(:id_user, :token)";
       $this->D_RT_BY_USER_ID = "DELETE FROM `refresh_token` WHERE `id_user`=:id_user";
@@ -32,6 +34,7 @@
 
     private function generateUser( $row )
     {
+      if ( empty($row) ) return null;
       $User = new User();
       $User->id = $row['id'];
       $User->firstName = $row['first_name'];
@@ -75,7 +78,7 @@
     public function getByEmail( $email )
     {
       // TODO: aggiungere controllo nel caso l'utente non ci sia nel db
-      $stmt = $this->connection->prepare( $this->S_ID_BY_EMAIL );
+      $stmt = $this->connection->prepare( $this->S_BY_EMAIL );
       $stmt->bindParam(':email', $email, PDO::PARAM_STR);
       $stmt->execute();
       return $this->generateUser($stmt->fetch());

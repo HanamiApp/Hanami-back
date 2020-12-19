@@ -1,12 +1,11 @@
 <?php
-   namespace App\Controllers\Rest;
 
-   use App\Data\Entities\Plant as Plant;
+   namespace App\Controllers;
+
    use App\Data\DTO\SpeciesDTO;
    use App\Data\Dao\SpeciesDao as SpeciesDao;
-
-   require_once __DIR__ . '/../../Data/Dao/SpeciesDao.php';
-   require_once __DIR__ . '/../../Data/DTO/SpeciesDTO.php';
+   require_once __DIR__ . '/../Data/Dao/SpeciesDao.php';
+   require_once __DIR__ . '/../Data/DTO/SpeciesDTO.php';
 
    class SpeciesController{
 

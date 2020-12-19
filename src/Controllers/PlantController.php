@@ -11,6 +11,8 @@
   use App\Data\Entities\Plant;
   use App\Data\Entities\PlantState;
   use App\Services\HTTP as HTTP;
+  use App\Controllers\AuthenticationController;
+  require_once __DIR__ . '/AuthenticationController.php';
   require_once __DIR__ . '/../Data/Dao/GiftStateDao.php';
   require_once __DIR__ . '/../Data/Dao/PlantDao.php';
   require_once __DIR__ . '/../Data/Dao/PlantStateDao.php';
@@ -36,25 +38,27 @@
       for($i = 0 ; $i < count($arrayPlant) ; $i++)
           array_push( $arrayPlantsDTO , new PlantWithStateDTO($arrayPlant[$i], $arrayPlantState[$i]) );
           
-      echo json_encode($arrayPlantsDTO);
+      HTTP::sendJsonResponse(200, $arrayPlantsDTO);
     }
 
     //metodo per la GET
-    public static function get( ...$params )
+    public static function get( $id )
     {
-      $id = $params[0];
       $PlantDao = new PlantDao();
       $PlantStateDao = new PlantStateDao();
-
-      $Plant = new Plant();
-      $PlantState = new PlantState();
 
       $Plant = $PlantDao->getById($id);
       $PlantState = $PlantStateDao->getById($Plant->plantStateId);
 
-      $PlantWithStateDTO = new PlantWithStateDTO($Plant, $PlantState);
+      $PlantWithStateDTO = null;
+      if ( !empty($Plant) || !empty($PlantState) ) {
+        $PlantWithStateDTO = new PlantWithStateDTO($Plant, $PlantState);
+      }
 
-      echo json_encode($PlantWithStateDTO->toString());
+      if ( !isset($PlantWithStateDTO) ) {
+        HTTP::sendJsonResponse(404, $PlantWithStateDTO);
+      } 
+      HTTP::sendJsonResponse(200, $PlantWithStateDTO->toString());
     }
 
     //metodo per la POST
@@ -72,7 +76,7 @@
       // plant creation
       $Plant = new Plant();
       $Plant->name = $POST['name'];
-      $Plant->hasGift = $POST['has_gift'];
+      $Plant->hasGift = (!isset($POST['has_gift'])) ? 0 : $POST['has_gift'];
       $Plant->placeId = $POST['id_place'];
       $Plant->plantStateId = $PlantState->id;
       // controllo se la pianta è un regalo
@@ -89,17 +93,17 @@
       // creazione qrcode
       $Plant->qrCode = QRCodeController::generateQRCodeURL($Plant, 200, 200);
       $PlantDao->updateQRCode($Plant);
-      HTTP::sendJsonResponse(201, "Plant created");
+      HTTP::sendJsonResponse(201, $Plant->id);
     }
 
     // method that responde at PUT
-    public function update( ...$params )
+    public function update()
     {
       // dopo
     }
       
     // method that responde at DELETE
-    public function delete( ...$params )
+    public function delete()
     {
       //
     }

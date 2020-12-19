@@ -9,15 +9,16 @@
    require_once __DIR__ . '/src/Services/Logger.php';
    require_once __DIR__ . '/src/Services/RequestMapper.php';
    require_once __DIR__ . '/src/Services/RequestProcessor.php';
-   // include the EnvLoader module and load all local variables
    require_once __DIR__ . '/resources/config/EnvLoader.php';
 
+   // settings headers
    header("Access-Control-Allow-Headers: origin, x-requested-with, content-type");
    header("Access-Control-Allow-Methods: GET, POST, PUT, PATCH, DELETE, OPTIONS");
    header("Access-Control-Allow-Origin: http://localhost:8080");
    header("Access-Control-Allow-Credentials: true");
    header("Content-Type: application/json");
 
+   // loaging environment
    EnvLoader::load();
 
    $uri = $_SERVER['REQUEST_URI'];

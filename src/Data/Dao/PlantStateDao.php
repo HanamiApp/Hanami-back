@@ -26,6 +26,18 @@
       $this->I_PLANT_STATE = "INSERT INTO `plant_state`(`state`, `condition`, `day`) VALUES(:state, :condition, :day)";
    }
 
+   public function generatePlantState($row)
+   {
+      if ( empty($row) ) return null;
+      $PlantState = new PlantState();
+      $PlantState->id = $row['id'];
+      $PlantState->condition = $row['condition'];
+      $PlantState->state = $row['state'];
+      $PlantState->day = $row['day'];
+
+      return $PlantState;
+   }
+
    public function store( $PlantState )
    {
       $stmt = $this->connection->prepare( $this->I_PLANT_STATE);
@@ -58,19 +70,6 @@
 
       return $array;
    }
-
-   public function generatePlantState($row)
-   {
-      if ( !isset($row) ) return null;
-      $PlantState = new PlantState();
-      $PlantState->id = $row['id'];
-      $PlantState->condition = $row['condition'];
-      $PlantState->state = $row['state'];
-      $PlantState->day = $row['day'];
-
-      return $PlantState;
-   }
-
 
   }
 ?>

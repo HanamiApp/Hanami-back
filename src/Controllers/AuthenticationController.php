@@ -3,11 +3,12 @@
    namespace App\Controllers;
 
    use \Firebase\JWT\JWT;
-
    use App\Services\Security\RequestChecker as RequestChecker;
    use App\Services\Security\TokenManager as TokenManager;
    use App\Data\Dao\UserDao as UserDao;
    use App\Services\HTTP as HTTP;
+   use App\Services\Logger;
+   require_once __DIR__ . '/../Services/Logger.php';
    require_once __DIR__ . '/../Services/Security/RequestChecker.php';
    require_once __DIR__ . '/../Services/Security/TokenManager.php';
    require_once __DIR__ . '/../Data/Dao/UserDao.php';
@@ -45,15 +46,16 @@
          HTTP::sendJsonResponse(205, "User logged out");
       }
 
-      public static function userRequest()
+      public static function validateRequest( $permissions )
       {
-         $post_json = json_decode(file_get_contents('php://input'));
-         $user = TokenManager::verifyJWT($post_json->{"jwt"});
-         if( $user != null )
-         {
-            HTTP::sendJsonResponse(200, ["user" => $user]);
-         } else {
-            HTTP::sendJsonResponse(400, "UserRequest error");
+         if ( count($permissions) === 0 ) return;
+         $cookieData = json_decode(str_replace("tokens=", "", urldecode($_SERVER['HTTP_COOKIE'])));
+         $token = $cookieData->token;
+         $refresh = $cookieData->refresh;
+         $User = TokenManager::verifyJWT($token, $refresh);
+         $isAuthorized = true;
+         if( !isset($User) || !$isAuthorized ) {
+            HTTP::sendJsonResponse(401, "Azione non autorizzata");
          }
       }
    }
