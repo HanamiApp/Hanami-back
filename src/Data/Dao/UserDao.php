@@ -22,8 +22,8 @@
     {
       $Db = new Database();
       $this->connection = $Db->connect();
-      $this->I_USER = "INSERT INTO `user`(`first_name`, `last_name`, `email`, `password`, `region`) VALUES(:first_name, :last_name, :email, :password, :region)";
       $this->S_USER_BY_ID = "SELECT * FROM `user` WHERE `id`=:id"; 
+      $this->I_USER = "INSERT INTO `user`(`first_name`, `last_name`, `username`, `email`, `password`, `region`, `path_photo`) VALUES(:first_name, :last_name, :username, :email, :password, :region, :pathPhoto)";
       $this->S_ID_BY_EMAIL = "SELECT * FROM `user` WHERE `email`=:email";
       $this->S_RT_BY_USER_ID = "SELECT `token` FROM `refresh_token` WHERE `id_user`=:id_user";
       $this->I_RT = "INSERT INTO `refresh_token`(`id_user`, `token`) VALUES(:id_user, :token)";
@@ -36,9 +36,11 @@
       $User->id = $row['id'];
       $User->firstName = $row['first_name'];
       $User->lastName = $row['last_name'];
+      $User->username = $row['username'];
       $User->email = $row['email'];
       $User->password = $row['password'];
       $User->region = $row['region'];
+      $User->pathPhoto = $row['path_photo'];
       return $User;
     }
 
@@ -57,11 +59,13 @@
       // TODO: aggiungere gestione degli errori decente
       if ( $this->getByEmail($User->email) !== null ) return false;
       $stmt = $this->connection->prepare( $this->I_USER );
-      $stmt->bindParam(':first_name', $User->firstName, PDO::PARAM_STR);
-      $stmt->bindParam(':last_name', $User->lastName, PDO::PARAM_STR);
-      $stmt->bindParam(':email', $User->email, PDO::PARAM_STR);
-      $stmt->bindParam(':password', $User->password, PDO::PARAM_STR);
-      $stmt->bindParam(':region', $User->region, PDO::PARAM_STR);
+      $stmt->bindValue(':first_name', $User->firstName, PDO::PARAM_STR);
+      $stmt->bindValue(':last_name', $User->lastName, PDO::PARAM_STR);
+      $stmt->bindValue(':username', $User->username, PDO::PARAM_STR);
+      $stmt->bindValue(':email', $User->email, PDO::PARAM_STR);
+      $stmt->bindValue(':password', $User->password, PDO::PARAM_STR);
+      $stmt->bindValue(':region', $User->region, PDO::PARAM_STR);
+      $stmt->bindValue(':pathPhoto', $User->pathPhoto, PDO::PARAM_STR);
       $stmt->execute();
       $User->id = $this->connection->lastInsertId();
       return true;

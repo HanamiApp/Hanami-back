@@ -49,7 +49,7 @@
       $GroupDao = new GroupDao();
       $POST = (array)json_decode(file_get_contents('php://input'));
       // user creation
-      $User = new User($POST['firstName'], $POST['lastName'], $POST['email'], $POST['password'], $POST['region']);
+      $User = new User($POST['first_name'],$POST['last_name'], $POST['username'], $POST['email'], $POST['password'], $POST['region'], $POST['path_photo']);
       $group = empty($POST['group']) ? GroupEnum::GUEST : GroupEnum::getValueOf($POST['group']);
       $isCreated = $UserDao->store($User);
       if ( !$isCreated ) die( HTTP::sendJsonResponse(409, "Email already used") );

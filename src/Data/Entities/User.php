@@ -16,9 +16,11 @@
     private $email;
     private $password;
     private $region;
+    private $username;
+    private $pathPhoto;
 
     // constructor
-    public function __construct( $firstName = null, $lastName = null, $email = null, $password = null, $region = null )
+    public function __construct( $firstName = null, $lastName = null, $username = null, $email = null, $password = null, $region = null, $pathPhoto = null )
     {
       $this->id = null;
       $this->firstName = $firstName;
@@ -26,6 +28,8 @@
       $this->email = $email;
       $this->password = $password;
       $this->region = $region;
+      $this->username = $username;
+      $this->pathPhoto = $pathPhoto;
     }
 
     // __get and __set
@@ -45,9 +49,11 @@
         'id' => $this->id,
         'firstName' => $this->firstName,
         'lastName' => $this->lastName,
+        'username' => $this->username,
         'email' => $this->email,
         'password' => $this->password,
-        'region' => $this->region
+        'region' => $this->region,
+        'path_photo' => $this->pathPhoto
       ];
     }
 
