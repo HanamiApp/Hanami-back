@@ -26,13 +26,13 @@
     {
       if ( empty($row) ) return null;
       $Update = new Update();
-      $Update->id = $row['id'];
+      $Update->id = (int)$row['id'];
       $Update->date = $row['date'];
       $Update->hour = $row['hour'];
       $Update->operation = $row['operation'];
       $Update->pathImg = $row['path_img'];
-      $Update->plantId = $row['id_plant'];
-      $Update->userId = $row['id_user'];
+      $Update->plantId = (int)$row['id_plant'];
+      $Update->userId = (int)$row['id_user'];
       return $Update;
     }
 

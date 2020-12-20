@@ -28,7 +28,7 @@
     {
       if ( !isset($row) ) return null;
       $Group = new Group();
-      $Group->id = $row['id'];
+      $Group->id = (int)$row['id'];
       $Group->name = $row['name'];
       return $Group;
     }

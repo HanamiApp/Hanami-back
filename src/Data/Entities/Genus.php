@@ -4,12 +4,14 @@
 
   Class Genus{
 
-    Private $id;
-    Private $name;
+    private $id;
+    private $name;
+    private $pathImage;
 
-    Public function __constructor($name = null){
-       $this->id = null;
-       $this->name = null;
+    public function __constructor( $name = null, $pathImage = null ){
+      $this->id = $name;
+      $this->name = $name;
+      $this->pathImage = $pathImage;
     }
 
     // __get and __set
@@ -22,12 +24,13 @@
       $this->$variable = $value;
     }
 
-    //toString
-    public function __toString()
+    // toArray
+    public function __toArray()
     {
       return [
         'id' => $this->id,
-        'name' => $this->name
+        'name' => $this->name,
+        'pathImage' => $this->pathImage
       ];
     }
 

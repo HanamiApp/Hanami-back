@@ -32,14 +32,14 @@
     {
       if ( empty($row) ) return null;
       $Plant = new Plant();
-      $Plant->id = $row['id'];
+      $Plant->id = (int)$row['id'];
       $Plant->name = $row['name'];
-      $Plant->hasGift = $row['has_gift'];
-      $Plant->placeId = $row['id_place'];
-      $Plant->plantStateId = $row['id_plant_state'];
-      $Plant->giftStateId = $row['id_gift_state'];
-      $Plant->userId = $row['id_user'];
-      $Plant->speciesId = $row['id_species'];
+      $Plant->hasGift = (bool)$row['has_gift'];
+      $Plant->placeId = (int)$row['id_place'];
+      $Plant->plantStateId = (int)$row['id_plant_state'];
+      $Plant->giftStateId = (int)$row['id_gift_state'];
+      $Plant->userId = (int)$row['id_user'];
+      $Plant->speciesId = (int)$row['id_species'];
       $Plant->qrCode = $row['qrcode'];
       return $Plant;
     }

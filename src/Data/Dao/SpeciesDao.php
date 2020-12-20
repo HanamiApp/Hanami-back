@@ -6,7 +6,8 @@
   use App\Data\Entities\Species;
   use App\Data\Dao\PlantStateDao as PlantStateDao;
   use App\Controllers\QRCodeController as QRCodeController;
-
+  use App\Services\Logger;
+  require_once __DIR__ . '/../../Services/Logger.php';
   require_once __DIR__ . '/../../../resources/config/Database.php';
   require_once __DIR__ . '/../Entities/Species.php';
 
@@ -34,11 +35,11 @@
     {
       if ( !isset($row) ) return null;
       $Species = new Species();
-      $Species->id = $row['id'];
-      $Species->idGenus = $row['id_genus'];
+      $Species->id = (int)$row['id'];
+      $Species->idGenus = (int)$row['id_genus'];
       $Species->name = $row['name'];
-      $Species->fruit = $row['fruit'];
-      $Species->co2 = $row['co2'];
+      $Species->fruit = (bool)$row['fruit'];
+      $Species->co2 = (float)$row['co2'];
       $Species->description = $row['description'];
       return $Species;
     }
@@ -57,13 +58,16 @@
 
     public function getAll()
     {
-      $array = array();
       $array = [];
-      $result =  $this->connection->query($this->S_SPECIES)->fetchAll(PDO::FETCH_ASSOC);
+      // $result = $this->connection->query($this->S_SPECIES)->fetchAll(PDO::FETCH_ASSOC);
       
-      foreach($result as $row)
-          array_push( $array, $this->generateSpecies($row) );
-
+      // foreach($result as $row)
+      //     array_push( $array, $this->generateSpecies($row) );
+      $stmt = $this->connection->prepare( $this->S_SPECIES );
+      $stmt->execute();
+      while( $row = $stmt->fetch() ) {
+        array_push( $array, $this->generateSpecies($row) );
+      }
       return $array;
     }
 

@@ -12,7 +12,8 @@
       "/users"          => "UserController@index:[ALL]",
       "/plants"         => "PlantController@index:[ALL]",
       "/plants/:id"     => "PlantController@get:[ALL]",
-      "/species"        => "SpeciesController@index:[ALL]"
+      "/species"        => "SpeciesController@index:[ALL]",
+      "/genus/:id"      => "GenusController@get"    
     ];
     // POST
     public static $POST_ROUTES = [
@@ -20,6 +21,7 @@
       "/login"          => "AuthenticationController@login",
       "/logout"         => "AuthenticationController@logout:[ALL]",
       "/plants"         => "PlantController@create:[ALL]",
+      "/species/search" => "SpeciesController@search"
     ];
     // PUT
     public static $PUT_ROUTES = [
