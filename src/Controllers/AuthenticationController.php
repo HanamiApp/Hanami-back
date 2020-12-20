@@ -2,12 +2,9 @@
 
    namespace App\Controllers;
 
-   use \Firebase\JWT\JWT;
-   use App\Services\Security\RequestChecker as RequestChecker;
    use App\Services\Security\TokenManager as TokenManager;
    use App\Data\Dao\UserDao as UserDao;
    use App\Services\HTTP as HTTP;
-   use App\Services\Logger;
    require_once __DIR__ . '/../Services/Logger.php';
    require_once __DIR__ . '/../Services/Security/RequestChecker.php';
    require_once __DIR__ . '/../Services/Security/TokenManager.php';
@@ -53,6 +50,7 @@
          $token = $cookieData->token;
          $refresh = $cookieData->refresh;
          $User = TokenManager::verifyJWT($token, $refresh);
+         $_SESSION['user_id'] = $User->id;
          $isAuthorized = true;
          if( !isset($User) || !$isAuthorized ) {
             HTTP::sendJsonResponse(401, "Azione non autorizzata");

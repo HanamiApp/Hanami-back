@@ -30,7 +30,7 @@
    {
       if ( empty($row) ) return null;
       $PlantState = new PlantState();
-      $PlantState->id = $row['id'];
+      $PlantState->id = (int)$row['id'];
       $PlantState->condition = $row['condition'];
       $PlantState->state = $row['state'];
       $PlantState->day = $row['day'];

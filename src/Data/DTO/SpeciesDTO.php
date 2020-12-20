@@ -2,7 +2,8 @@
 
   namespace App\Data\DTO;
 
-  class SpeciesDTO{
+  class SpeciesDTO
+  {
 
    public $id;
    public $name;
@@ -25,11 +26,11 @@
    {
       return [
          'id_specie' => $this->id,
-        'name_specie' => $this->name,
-        'id_genus' => $this->idGenus,
-        'albero_da_frutto' => $this->fruit,
-        'co2' => $this->co2,
-        'description' => $this->description
+         'name_specie' => $this->name,
+         'id_genus' => $this->idGenus,
+         'albero_da_frutto' => $this->fruit,
+         'co2' => $this->co2,
+         'description' => $this->description
       ];
    }
 

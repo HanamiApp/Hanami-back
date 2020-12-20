@@ -20,10 +20,13 @@
   class TokenManager
   {
 
+    private static $UserDao;
+
     // metodo che genera un token JWT
     // TODO: togliere post_json parameter
     public static function generateJWT( $userId )
     {
+      self::$UserDao = new UserDao();
       $secret = getenv('SECRET');
 
       $payload = json_encode([
@@ -41,7 +44,7 @@
     // metodo che genera un refresh Token
     public static function generateRefreshJWT( $userId )
     {
-      $UserDao = new UserDao();
+      self::$UserDao = new UserDao();
       $refreshSecret = getenv('REFRESH_SECRET');   
 
       $payloadRefresh = json_encode([
@@ -53,16 +56,17 @@
       ]);
 
       $refreshJWT = JWT::encode($payloadRefresh, $refreshSecret);
+      // prima di salvare il token nel database elimino ( se esiste ) quello vecchio
+      self::invalidateRefreshJWT( $userId );
       // salviamo il token nel database
-      $UserDao->storeRefreshToken($userId, $refreshJWT);
+      self::$UserDao->storeRefreshToken($userId, $refreshJWT);
       return $refreshJWT;
     }
 
     // Metodo che verifica che un access token jwt sia valido
     public static function verifyJWT( $jwt, $refresh )
     {
-      $UserDao = new UserDao();
-
+      self::$UserDao = new UserDao();
       $secret = getenv('SECRET');
       $decoded = json_decode( JWT::decode( $jwt, $secret, ['HS256'] ) );
       
@@ -74,13 +78,13 @@
       if( $exp && $iat && !empty($decoded->sub) ) {
         // token valido
         Logger::add('TOKEN MANAGER: token valido');
-        return $UserDao->getById($decoded->sub);
+        return self::$UserDao->getById($decoded->sub);
       } else if ( TokenManager::verifyRefreshJWT($refresh) ) {
         // rigenero token
         Logger::add('TOKEN MANAGER: token non valido, rigenero');
         $newJWT = TokenManager::generateJWT($decoded->sub);
         HTTP::setCookie(["token" => $newJWT, "refresh" => $refresh]);
-        return $UserDao->getById($decoded->sub);
+        return self::$UserDao->getById($decoded->sub);
       } else {
         Logger::add('TOKEN MANAGER: token non valido');
         // non valido
@@ -91,8 +95,7 @@
     // Metodo che verifica che un refresh token jwt sia valido
     public static function verifyRefreshJWT( $refreshJWT )
     {
-      $UserDao = new UserDao();
-
+      self::$UserDao = new UserDao();
       $refreshSecret = getenv('REFRESH_SECRET');
       $decoded = json_decode( JWT::decode( $refreshJWT, $refreshSecret, ['HS256'] ) );
 
@@ -102,7 +105,7 @@
       $iat = $decoded->iat < time();
       //il refreshToken dell'utente deve essere presente nel db
       $sub = $decoded->sub; // userID
-      $userExist = null !== $UserDao->getRefreshToken($sub);
+      $userExist = null !== self::$UserDao->getRefreshToken($sub);
 
       if( $exp && $iat && $userExist ) return true;
       else{
@@ -117,8 +120,8 @@
       */
     public static function invalidateRefreshJWT( $userId )
     {
-      $UserDao = new UserDao();
-      $UserDao->deleteRefreshToken($userId);
+      self::$UserDao = new UserDao();
+      self::$UserDao->deleteRefreshToken($userId);
     }
 
   }

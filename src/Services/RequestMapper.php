@@ -2,8 +2,8 @@
 
   namespace App\Services;
 
-use App\Controllers\AuthenticationController;
-use App\Services\HTTP;
+  use App\Controllers\AuthenticationController;
+  use App\Services\HTTP;
   use App\Services\Routes;
   require_once __DIR__ . '/Routes.php';
   require_once __DIR__ . '/HTTP.php';
@@ -31,10 +31,10 @@ use App\Services\HTTP;
           break;
         }
       }
+      // controllo se la rotta e accetata
+      if ( empty($unexplodedRoute) ) HTTP::sendJsonResponse(404, "route ${uri} not found");
       // separo le varie parti della rotta
       $exploded = RequestMapper::explodeRoute($unexplodedRoute);
-      // controllo se la rotta e accetata
-      if ( !isset($exploded) ) HTTP::sendJsonResponse(404, "route ${uri} not found");
       $controller = $exploded[0];
       $function = $exploded[1];
       $permissions = RequestMapper::generatePermissions($exploded[2]);
