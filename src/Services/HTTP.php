@@ -40,6 +40,13 @@
       die();
     }
 
+    public static function sendImageResponse( $code, $content )
+    {
+      header("content-type: image/png");
+      header("HTTP/" . HTTP::HTTP_VERSION . " {$code} " . HTTP::HTTP_STATUS[$code]);
+      print_r($content);
+    }
+
     public static function sendResponse( $code, $data = "" )
     {
       header("HTTP/" . HTTP::HTTP_VERSION . " {$code} " . HTTP::HTTP_STATUS[$code]);

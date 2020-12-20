@@ -64,18 +64,32 @@
     public function create()
     {
       // TODO: password hashing (bcrypt ?)
-      $POST = (array)json_decode(file_get_contents('php://input'));
+      // $POST = (array)json_decode(file_get_contents('php://input'));
       // user creation
-      $UserDTO = new UserDTO($POST);
+      $_POST = (array)json_decode($_POST['data']);
+      $UserDTO = new UserDTO($_POST);
       $UserEntity = $UserDTO->toEntity();
-      $group = empty($POST['group']) ? GroupEnum::GUEST : GroupEnum::getValueOf($POST['group']);
+      $group = empty($_POST['group']) ? GroupEnum::GUEST : GroupEnum::getValueOf($_POST['group']);
+      // constrollo se l'utente gia esiste
+      $DBUser = $this->UserDao->getByEmail($UserEntity->email);
+      if ( isset($DBUser) ) HTTP::sendJsonResponse( 409, "Email already used" );
+      // altrimenti inserisco l'utente
       $isCreated = $this->UserDao->store($UserEntity);
-      if ( !$isCreated ) die( HTTP::sendJsonResponse(409, "Email already used") );
+      if ( !$isCreated ) HTTP::sendJsonResponse( 500, "User not created" );
+      // setto il gruppo corrispondente
       $Group = $this->GroupDao->getByName($group);
       $this->GroupDao->connectUser($Group, $UserEntity);
       // tokens generation
-      $token = TokenManager::generateJWT( $UserEntity->id );
-      $refreshToken = TokenManager::generateRefreshJWT( $UserEntity->id );
+      $userId = $UserEntity->id;
+      $token = TokenManager::generateJWT( $userId );
+      $refreshToken = TokenManager::generateRefreshJWT( $userId );
+      // file
+      preg_match('/\.([a-zA-Z]+)/', $_FILES['photo']['name'], $fileType);
+      $fileType = $fileType[1];
+      $dir = __DIR__ . "/../Photo/profile${userId}.${fileType}";
+      $outcome = move_uploaded_file($_FILES['photo']['tmp_name'], $dir);
+      // file error casep
+      if (!$outcome) HTTP::sendJsonResponse(500, "Errore nel caricamento della foto");
       // response
       HTTP::sendJsonResponse(201, ["userId" => $UserEntity->id], ["token" => $token, "refreshToken" => $refreshToken] );
     }

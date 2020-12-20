@@ -50,6 +50,7 @@
          $token = $cookieData->token;
          $refresh = $cookieData->refresh;
          $User = TokenManager::verifyJWT($token, $refresh);
+         $_SESSION['user_id'] = $User->id;
          $isAuthorized = true;
          if( !isset($User) || !$isAuthorized ) {
             HTTP::sendJsonResponse(401, "Azione non autorizzata");

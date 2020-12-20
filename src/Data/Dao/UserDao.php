@@ -77,7 +77,6 @@
     public function store( $User )
     {
       // TODO: aggiungere gestione degli errori decente
-      if ( $this->getByEmail($User->email) !== null ) return false;
       $stmt = $this->connection->prepare( $this->I_USER );
       $stmt->bindValue(':first_name', $User->firstName, PDO::PARAM_STR);
       $stmt->bindValue(':last_name', $User->lastName, PDO::PARAM_STR);
