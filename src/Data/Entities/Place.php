@@ -7,23 +7,22 @@
 
   Class Place{
 
-    Private $id;
-    Private $name;
-    Private $city;
-    Private $region;
-    Private $coordinate;
+    private $id;
+    private $name;
+    private $city;
+    private $region;
+    Private $latitude;
+    private $longitude;
 
-
-    Public function __construct($name=null, $city=null, $region=null, $coordinate=null){
-
+    public function __construct($name = null, $city = null, $region = null, $latitude = null, $longitude = null)
+    {
       $this->id = null;
       $this->name = $name;
       $this->city = $city;
       $this->region = $region;
-      $this->coordinate = $coordinate;
-
+      $this->latitude = $latitude;
+      $this->longitude = $longitude;
     }
-
 
     // __get and __set
     public function __get( $variable )
@@ -35,15 +34,16 @@
       $this->$variable = $value;
     }
 
-    //toString
-    public function __toString()
+    // toArray
+    public function __toArray()
     {
       return [
         'id' => $this->id,
         'name' => $this->name,
         'city' => $this->city,
         'region' => $this->region,
-        'coordinate' => $this->coordinate
+        'latitude' => $this->latitude,
+        'longitude' => $this->longitude
       ];
     }
 
