@@ -42,7 +42,7 @@
       $this->$variable = $value;
     }
 
-    //toString
+    // toString
     public function __toArray()
     {
       return [
@@ -53,7 +53,7 @@
         'email' => $this->email,
         'password' => $this->password,
         'region' => $this->region,
-        'path_photo' => $this->pathPhoto
+        'pathPhoto' => $this->pathPhoto
       ];
     }
 

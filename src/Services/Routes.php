@@ -9,7 +9,7 @@
     public static $GET_ROUTES = [
       "/users/me"           => "UserController@me:[ALL]",
       "/users/:id"          => "UserController@get:[ALL]",
-      "/users"              => "UserController@index:[ALL]",
+      "/users"              => "UserController@index",
       "/plants"             => "PlantController@index:[ALL]",
       "/plants/:id"         => "PlantController@get:[ALL]",
       "/species"            => "SpeciesController@index:[ALL]",
@@ -32,7 +32,7 @@
     public static $PATCH_ROUTES = [];
     // DELETE
     public static $DELETE_ROUTES = [
-      "/users/:id"          => "UserController@delete:[ALL]"
+      "/users/:id"          => "UserController@delete"
     ];
 
   }

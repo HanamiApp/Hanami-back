@@ -29,7 +29,7 @@
       // queries
       $this->S_ALL = "SELECT * FROM `user`";
       $this->S_USER_BY_ID = "SELECT * FROM `user` WHERE `id`=:id"; 
-      $this->I_USER = "INSERT INTO `user`(`first_name`, `last_name`, `username`, `email`, `password`, `region`, `path_photo`) VALUES(:first_name, :last_name, :username, :email, :password, :region, :pathPhoto)";
+      $this->I_USER = "INSERT INTO `user`(`first_name`, `last_name`, `username`, `email`, `password`, `region`, `path_photo`) VALUES(:first_name, :last_name, :username, :email, :password, :region, :path_photo)";
       $this->S_BY_EMAIL = "SELECT * FROM `user` WHERE `email`=:email";
       $this->S_RT_BY_USER_ID = "SELECT `token` FROM `refresh_token` WHERE `id_user`=:id_user";
       $this->I_RT = "INSERT INTO `refresh_token`(`id_user`, `token`) VALUES(:id_user, :token)";
@@ -84,7 +84,7 @@
       $stmt->bindValue(':email', $User->email, PDO::PARAM_STR);
       $stmt->bindValue(':password', $User->password, PDO::PARAM_STR);
       $stmt->bindValue(':region', $User->region, PDO::PARAM_STR);
-      $stmt->bindValue(':pathPhoto', $User->pathPhoto, PDO::PARAM_STR);
+      $stmt->bindValue(':path_photo', $User->pathPhoto, PDO::PARAM_STR);
       $stmt->execute();
       $User->id = $this->connection->lastInsertId();
       return true;

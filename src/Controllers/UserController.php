@@ -74,6 +74,7 @@
       $DBUser = $this->UserDao->getByEmail($UserEntity->email);
       if ( isset($DBUser) ) HTTP::sendJsonResponse( 409, "Email already used" );
       // altrimenti inserisco l'utente
+      $UserEntity->pathPhoto = '/photo/:profile';
       $isCreated = $this->UserDao->store($UserEntity);
       if ( !$isCreated ) HTTP::sendJsonResponse( 500, "User not created" );
       // setto il gruppo corrispondente
