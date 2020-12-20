@@ -27,8 +27,8 @@ DROP TABLE IF EXISTS `user`;
 CREATE TABLE `user`( 
    `id` int auto_increment primary key,
    `first_name` varchar(20) not null,
-   `username` varchar(20) not null,
    `last_name` varchar(30) not null,
+   `username` varchar(20) not null,
    `email` varchar(100) not null unique,
    `password` varchar(30) not null,
    `path_photo` varchar(100),
@@ -46,7 +46,7 @@ CREATE TABLE `refresh_token`(
       ON DELETE cascade
 );
 /* inserimento `user` di default per i test */
-INSERT INTO `user`(`first_name`, `last_name`, `email`, `password`, `region`) VALUES('admin', 'admin', 'admin@admin.com','admin', 'ABRUZZO');
+INSERT INTO `user`(`first_name`, `last_name`, `username`, `email`, `password`, `region`) VALUES('admin', 'admin', 'admin', 'admin@admin.com','admin', 'ABRUZZO');
 
 CREATE TABLE `notice`(
    `id` int auto_increment primary key,
@@ -112,20 +112,38 @@ INSERT INTO `species`(`name`, `co2`, `fruit`, `description`, `id_genus`) VALUES(
 
 CREATE TABLE `place`(
    `id` int auto_increment primary key,
-   `name` varchar(30) not null,
-   `city` varchar(30) not null,
+   `name` varchar(100) not null,
+   `city` varchar(100) not null,
    `region` ENUM('ABRUZZO', 'BASILICATA', 'CALABRIA', 'CAMPANIA', 'EMILIA_ROMAGNA', 
                'FRIULI_VENEZIA_GIULIA', 'LAZIO', 'LIGURIA', 'LOMBARDIA', 'MARCHE', 'MOLISE',
                'PIEMONTE', 'PUGLIA', 'SARDEGNA', 'SICILIA', 'TOSCANA', 'TRENTINO_ALTO_ADIGE',
                'UMBRIA', "VALLE_D_AOSTA", 'VENETO') not null,
-   `coordinate_x` float,
-   `coordinate_y` float
+   `latitude` float,
+   `longitude` float
 );
 
-INSERT INTO `place`(`name`, `city`, `region`) VALUES('Parco della vittoria', 'Monopoli', 'MOLISE');
-INSERT INTO `place`(`name`, `city`, `region`) VALUES('Dragonara', 'Tivoli', 'BASILICATA');
-INSERT INTO `place`(`name`, `city`, `region`) VALUES('Porto cannone', 'Lodi', 'CAMPANIA');
-INSERT INTO `place`(`name`, `city`, `region`) VALUES('Bosco di Caltanissetta', 'Roma', 'SICILIA');
+-- INSERT INTO `place`(`name`, `city`, `region`, `coordinate_x`, `coordinate_y`) VALUES('Bosco di Agrigento', 'Agrigento', 'SICILIA', 37.18, 13.36);
+-- INSERT INTO `place`(`name`, `city`, `region`, `coordinate_x`, `coordinate_y`) VALUES('Bosco di Alessandria', 'Alessandria', 'SICILIA', 44.55, 08.37);
+-- INSERT INTO `place`(`name`, `city`, `region`, `coordinate_x`, `coordinate_y`) VALUES('Bosco di Ancona', 'Ancona', 'SICILIA', 43.37, 13.31);
+-- INSERT INTO `place`(`name`, `city`, `region`, `coordinate_x`, `coordinate_y`) VALUES('Bosco di Aosta', 'Aosta', 'SICILIA', 45.44, 07.19);
+-- INSERT INTO `place`(`name`, `city`, `region`, `coordinate_x`, `coordinate_y`) VALUES('Bosco di Arezzo', 'Arezzo', 'SICILIA', 43.28, 11.53);
+-- INSERT INTO `place`(`name`, `city`, `region`, `coordinate_x`, `coordinate_y`) VALUES('Bosco di Bari', 'Bari', 'SICILIA', 41.07, 16.53);
+-- INSERT INTO `place`(`name`, `city`, `region`, `coordinate_x`, `coordinate_y`) VALUES('Bosco di Belluno', 'Belluno', 'SICILIA', 46.08, 12.13);
+-- INSERT INTO `place`(`name`, `city`, `region`, `coordinate_x`, `coordinate_y`) VALUES('Bosco di Benevento', 'Benevento', 'SICILIA', 41.08, 14.46);
+-- INSERT INTO `place`(`name`, `city`, `region`, `coordinate_x`, `coordinate_y`) VALUES('Bosco di Bergamo', 'Bergamo', 'SICILIA', 45.42, 09.40);
+-- INSERT INTO `place`(`name`, `city`, `region`, `coordinate_x`, `coordinate_y`) VALUES('Bosco di Chieti', 'Chieti', 'SICILIA', 42.21, 14.10);
+-- INSERT INTO `place`(`name`, `city`, `region`, `coordinate_x`, `coordinate_y`) VALUES('Bosco di Como', 'Como', 'SICILIA', 45.48, 09.05);
+-- INSERT INTO `place`(`name`, `city`, `region`, `coordinate_x`, `coordinate_y`) VALUES('Bosco di Cosenza', 'Cosenza', 'SICILIA', 39.17, 16.15);
+-- INSERT INTO `place`(`name`, `city`, `region`, `coordinate_x`, `coordinate_y`) VALUES('Bosco di Cremona', 'Cremona', 'SICILIA', 45.08, 10.02);
+-- INSERT INTO `place`(`name`, `city`, `region`, `coordinate_x`, `coordinate_y`) VALUES('Bosco di Aquila', "L'Aquila", 'SICILIA', 42.21, 13.24);
+-- INSERT INTO `place`(`name`, `city`, `region`, `coordinate_x`, `coordinate_y`) VALUES('Bosco di La Spezia', 'La Spezia', 'SICILIA', 44.07, 09.50);
+-- INSERT INTO `place`(`name`, `city`, `region`, `coordinate_x`, `coordinate_y`) VALUES('Bosco di Latina', 'Latina', 'SICILIA', 41.28, 12.53);
+-- INSERT INTO `place`(`name`, `city`, `region`, `coordinate_x`, `coordinate_y`) VALUES('Bosco di Lecce', 'Lecce', 'SICILIA', 40.21, 18.11);
+-- INSERT INTO `place`(`name`, `city`, `region`, `coordinate_x`, `coordinate_y`) VALUES('Bosco di Lodi', 'Lodi', 'SICILIA', 45.19, 09.30);
+-- INSERT INTO `place`(`name`, `city`, `region`, `coordinate_x`, `coordinate_y`) VALUES('Bosco di Pescara', 'Pescara', 'SICILIA', 42.27, 14.13);
+-- INSERT INTO `place`(`name`, `city`, `region`, `coordinate_x`, `coordinate_y`) VALUES('Bosco di Piacenza', 'Piacenza', 'SICILIA', 45.03, 09.41);
+-- INSERT INTO `place`(`name`, `city`, `region`, `coordinate_x`, `coordinate_y`) VALUES('Bosco di Pisa', 'Pisa', 'SICILIA', 43.43, 10.24);
+
 
 
 CREATE TABLE `gift_state`(
