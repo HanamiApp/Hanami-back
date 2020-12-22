@@ -56,7 +56,7 @@
 
     public static function setCookie( $cookieData )
     {
-      $cookieOptions = [ 'httponly' => true, 'path' => '/', 'domain' => '' ];
+      $cookieOptions = [ 'httponly' => true, 'path' => '/', 'domain' => '', 'SameSite' => 'Lax' ];
       $value = json_encode($cookieData);
       setcookie( "tokens", $value, $cookieOptions);
     }

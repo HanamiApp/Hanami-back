@@ -47,6 +47,8 @@
       {
          if ( count($permissions) === 0 ) return;
          $cookieData = json_decode(str_replace("tokens=", "", urldecode($_SERVER['HTTP_COOKIE'])));
+         // se il cookie non c'e allora l'Utente non e autorizzato
+         if ( !isset($cookieData) ) HTTP::sendJsonResponse(401, "Utente non autorizzato");
          $token = $cookieData->token;
          $refresh = $cookieData->refresh;
          $User = TokenManager::verifyJWT($token, $refresh);
