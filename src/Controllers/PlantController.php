@@ -64,6 +64,8 @@
     //metodo per la POST
     public static function create()
     {
+      $loggedId = $_SESSION['user_id'];
+
       $POST = (array)json_decode(file_get_contents('php://input'));
       $PlantDao = new PlantDao();
       $PlantStateDao = new PlantStateDao();
@@ -87,7 +89,7 @@
         $Plant->giftStateId = $GiftState->id;
       }
       // TODO: sostituire la riga seguente con l'id dell'utente correntemente autenticato
-      $Plant->userId = $POST['id_user'];
+      $Plant->userId = $loggedId;
       $Plant->speciesId = $POST['id_species'];
       $PlantDao->store($Plant);
       // creazione qrcode

@@ -14,7 +14,7 @@
       "/plants/:id"         => "PlantController@get:[ALL]",
       "/species"            => "SpeciesController@index:[ALL]",
       "/genus/:id"          => "GenusController@get:[ALL]",
-      "/photo/:file_name"   => "PhotoController@getPhoto:[ALL]",
+      "/photo/:file_name"   => "PhotoController@getPhoto:[ALL]",  
       "/places"             => "PlaceController@index:[ALL]"
     ];
     // POST
@@ -34,7 +34,7 @@
     public static $PATCH_ROUTES = [];
     // DELETE
     public static $DELETE_ROUTES = [
-      "/users/:id"          => "UserController@delete"
+      "/users/:id"          => "UserController@delete:[ALL]"
     ];
 
   }
