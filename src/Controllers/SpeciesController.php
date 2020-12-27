@@ -47,7 +47,7 @@
             $outcome = true;
             foreach( $filters as $key => $value ) {
                if ( gettype($Specie->{$key}) === 'string' ) {
-                  $outcome = $outcome && preg_match('/'.$value.'/', $Specie->{$key});
+                  $outcome = $outcome && preg_match('/(?i)'.$value.'/', $Specie->{$key});
                } else {
                   $outcome = $outcome && $Specie->{$key} === $value;
                }
