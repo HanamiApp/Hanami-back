@@ -2,7 +2,11 @@
 
   namespace App\Data\Entities;
 
-  Class Genus{
+  use App\Data\Entities\Interfaces\IEntity;
+  require_once __DIR__ . '/interfaces/IEntity.php';
+
+  Class Genus implements IEntity
+  {
 
     private $id;
     private $name;
@@ -25,7 +29,7 @@
     }
 
     // toArray
-    public function __toArray()
+    public function toArray()
     {
       return [
         'id' => $this->id,

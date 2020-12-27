@@ -85,9 +85,9 @@
       $stmt->bindValue(':password', $User->password, PDO::PARAM_STR);
       $stmt->bindValue(':region', $User->region, PDO::PARAM_STR);
       $stmt->bindValue(':path_photo', $User->pathPhoto, PDO::PARAM_STR);
-      $stmt->execute();
+      $outcome = $stmt->execute();
       $User->id = $this->connection->lastInsertId();
-      return true;
+      return $outcome;
     }
 
     // funzione che restituisce un utente data una mail

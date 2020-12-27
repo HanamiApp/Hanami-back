@@ -14,7 +14,7 @@
 
     public function __construct( $Input )
     {
-      if ( !is_array($Input) ) $Input = $Input->__toArray();
+      if ( !is_array($Input) ) $Input = $Input->toArray();
       $this->filterBy = $Input['filterBy'];
     }
 

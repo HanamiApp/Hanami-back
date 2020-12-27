@@ -4,10 +4,12 @@
   namespace App\Data\Entities;
   use App\Data\Enums\RegionEnum as RegionEnum;
   use App\Services\Logger as Logger;
+  use App\Data\Entities\Interfaces\IEntity;
+  require_once __DIR__ . '/interfaces/IEntity.php';
   require_once __DIR__ . '/../../Services/Logger.php';
   require_once __DIR__ . '/../Enums/RegionEnum.php';
 
-  class User
+  class User implements IEntity
   {
 
     private $id;
@@ -43,7 +45,7 @@
     }
 
     // toString
-    public function __toArray()
+    public function toArray()
     {
       return [
         'id' => $this->id,

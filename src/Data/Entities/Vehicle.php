@@ -1,22 +1,22 @@
 <?php
 
-  
   namespace App\Data\Entities;
 
   use App\Data\Entities\Interfaces\IEntity;
   require_once __DIR__ . '/interfaces/IEntity.php';
 
-  class GiftState implements IEntity
+  class Vehicle implements IEntity
   {
 
     private $id;
-    private $state;
+    private $name;
+    private $co2_multiplier;
 
-    // constructor
-    public function __construct( $state = 'IN_PROCESS' )
+    public function __construct( $name = null, $co2_multiplier = null )
     {
       $this->id = null;
-      $this->state = $state;
+      $this->name = $name;
+      $this->co2_multiplier = $co2_multiplier;
     }
 
     // __get and __set
@@ -33,12 +33,12 @@
     public function toArray()
     {
       return [
-        'id'    => $this->id,
-        'state' => $this->state
+        'id'              => $this->id,
+        'name'            => $this->name,
+        'co2_multiplier'  => $this->co2_multiplier
       ];
     }
 
   }
-
 
 ?>
