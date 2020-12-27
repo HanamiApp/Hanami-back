@@ -27,7 +27,8 @@
       "/plants"             => "PlantController@create:[ALL]",
       "/species/search"     => "SpeciesController@search:[ALL]",
       "/places/defaults"    => "PlaceController@storeFromJson:[ALL]",
-      "/vehicles"           => "VehicleController@create:[ALL]"
+      "/vehicles"           => "VehicleController@create:[ALL]",
+      "/places/search"      => "PlaceController@search:[ALL]"
     ];
     // PUT
     public static $PUT_ROUTES = [
