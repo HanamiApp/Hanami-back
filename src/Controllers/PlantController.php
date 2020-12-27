@@ -82,7 +82,7 @@
       $Plant->placeId = $POST['id_place'];
       $Plant->plantStateId = $PlantState->id;
       // controllo se la pianta è un regalo
-      if ( $Plant->hasGift ){
+      if ( $Plant->hasGift ) {
         // creo uno stato base per il regalo
         $GiftState = new GiftState();
         $GiftStateDao->store($GiftState);

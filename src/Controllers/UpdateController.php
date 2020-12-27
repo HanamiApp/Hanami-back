@@ -35,7 +35,7 @@
       $refresh = $cookieData->refresh;
       $User = TokenManager::verifyJWT($token, $refresh);
       if ( !isset($User) ) HTTP::sendJsonResponse( 401, null );
-      HTTP::sendJsonResponse( 200, $User->__toArray() );
+      HTTP::sendJsonResponse( 200, $User->toArray() );
       // echo urldecode($_SERVER['HTTP_COOKIE']);
       // HTTP::sendJsonResponse(201, json_decode(urldecode($_SERVER['HTTP_COOKIE'])));
       // HTTP::sendJsonResponse( 200, "Update create" );

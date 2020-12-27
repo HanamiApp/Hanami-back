@@ -40,7 +40,7 @@
       $stmt->bindParam(':id', $id, PDO::PARAM_INT);
       $stmt->execute();
       $row = $stmt->fetch(PDO::FETCH_ASSOC);
-      HTTP::sendJsonResponse( 200, $this->generateGenus($row)->__toArray() );
+      HTTP::sendJsonResponse( 200, $this->generateGenus($row)->toArray() );
     }
 
   }
