@@ -24,7 +24,8 @@
       "/logout"             => "AuthenticationController@logout:[ALL]",
       "/plants"             => "PlantController@create:[ALL]",
       "/species/search"     => "SpeciesController@search:[ALL]",
-      "/places/defaults"    => "PlaceController@storeFromJson:[ALL]"
+      "/places/defaults"    => "PlaceController@storeFromJson:[ALL]",
+      "/places/search"      => "PlaceController@search:[ALL]"
     ];
     // PUT
     public static $PUT_ROUTES = [
