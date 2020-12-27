@@ -3,8 +3,10 @@
 
   namespace App\Data\Entities;
   
-  
-  class Update
+  use App\Data\Entities\Interfaces\IEntity;
+  require_once __DIR__ . '/interfaces/IEntity.php';
+
+  class Update implements IEntity
   {
 
     private $id;
@@ -38,7 +40,7 @@
     }
 
     // toString
-    public function __toString()
+    public function toArray()
     {
       return [
         'id' => $this->id,

@@ -2,10 +2,13 @@
 
   namespace App\Data\Entities;
 
+  use App\Data\Entities\Interfaces\IEntity;
   use App\Data\Enums\RegionEnum as RegionEnum;
+  require_once __DIR__ . '/interfaces/IEntity.php';
   require_once __DIR__ . '/../Enums/RegionEnum.php';
 
-  Class Place{
+  Class Place implements IEntity
+  {
 
     private $id;
     private $name;
@@ -35,7 +38,7 @@
     }
 
     // toArray
-    public function __toArray()
+    public function toArray()
     {
       return [
         'id' => $this->id,

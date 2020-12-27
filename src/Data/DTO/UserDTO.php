@@ -19,7 +19,7 @@
 
     public function __construct( $UserEntity )
     {
-      if ( !is_array($UserEntity) ) $UserEntity = $UserEntity->__toArray();
+      if ( !is_array($UserEntity) ) $UserEntity = $UserEntity->toArray();
       $this->id = $UserEntity['id'];
       $this->firstName = $UserEntity['firstName'];
       $this->lastName = $UserEntity['lastName'];

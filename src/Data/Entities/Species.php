@@ -3,10 +3,11 @@
 namespace App\Data\Entities;
 
 use App\Services\Logger;
-
+use App\Data\Entities\Interfaces\IEntity;
+require_once __DIR__ . '/interfaces/IEntity.php';
 require_once __DIR__ . '/../../Services/Logger.php';
 
-class Species
+class Species implements IEntity
 {
 
   private $id;
@@ -34,9 +35,6 @@ class Species
   }
   public function __set($variable, $value)
   {
-    Logger::add($value);
-    Logger::add(gettype($value));
-    Logger::add("-----------------------");
     $this->$variable = $value;
   }
 
@@ -54,7 +52,7 @@ class Species
   }
 
   // ToString
-  public function __toArray()
+  public function toArray()
   {
     return [
       'id' => $this->id,

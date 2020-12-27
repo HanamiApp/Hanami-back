@@ -14,7 +14,7 @@
 
     public function __construct( $PlaceEntity )
     {
-      if ( !is_array($PlaceEntity) ) $PlaceEntity = $PlaceEntity->__toArray();
+      if ( !is_array($PlaceEntity) ) $PlaceEntity = $PlaceEntity->toArray();
       $this->id = $PlaceEntity['id'];
       $this->name = $PlaceEntity['name'];
       $this->city = $PlaceEntity['city'];

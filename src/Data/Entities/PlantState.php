@@ -2,7 +2,10 @@
 
   namespace App\Data\Entities;
 
-  class PlantState
+  use App\Data\Entities\Interfaces\IEntity;
+  require_once __DIR__ . '/interfaces/IEntity.php';
+
+  class PlantState implements IEntity
   {
 
     private $id;
@@ -30,7 +33,7 @@
     }
 
     // ToString
-    public function __toString()
+    public function toArray()
     {
       return [
         'id' => $this->id, 
