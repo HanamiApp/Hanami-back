@@ -61,8 +61,26 @@ CREATE TABLE `notice`(
 CREATE TABLE `vehicle`(
    `id` int auto_increment primary key,
    `name` varchar(25) not null,
-   `co2` float not null
+   `co2_multiplier` float not null
 );
+INSERT INTO `vehicle`(`name`, `co2_multiplier`) VALUES('ciclomotore', 0.073);
+INSERT INTO `vehicle`(`name`, `co2_multiplier`) VALUES('motocicletta', 0.094);
+INSERT INTO `vehicle`(`name`, `co2_multiplier`) VALUES('auto elettrica', 0.043);
+INSERT INTO `vehicle`(`name`, `co2_multiplier`) VALUES('auto piccola', 0.11);
+INSERT INTO `vehicle`(`name`, `co2_multiplier`) VALUES('auto media', 0.133);
+INSERT INTO `vehicle`(`name`, `co2_multiplier`) VALUES('auto grande', 0.183);
+INSERT INTO `vehicle`(`name`, `co2_multiplier`) VALUES('auto ibrida', 0.084);
+INSERT INTO `vehicle`(`name`, `co2_multiplier`) VALUES('taxi', 0.17);
+INSERT INTO `vehicle`(`name`, `co2_multiplier`) VALUES('autobus', 0.069);
+INSERT INTO `vehicle`(`name`, `co2_multiplier`) VALUES('minibus', 0.055);
+INSERT INTO `vehicle`(`name`, `co2_multiplier`) VALUES('treno', 0.06);
+INSERT INTO `vehicle`(`name`, `co2_multiplier`) VALUES('metropolitana', 0.06);
+INSERT INTO `vehicle`(`name`, `co2_multiplier`) VALUES('tram', 0.04);
+INSERT INTO `vehicle`(`name`, `co2_multiplier`) VALUES('filobus', 0.04);
+INSERT INTO `vehicle`(`name`, `co2_multiplier`) VALUES('traghetto', 0.115);
+INSERT INTO `vehicle`(`name`, `co2_multiplier`) VALUES('battello', 0.53);
+INSERT INTO `vehicle`(`name`, `co2_multiplier`) VALUES('aereo', 0.285);
+
 
 CREATE TABLE `trip`(
    `id` int auto_increment primary key,
