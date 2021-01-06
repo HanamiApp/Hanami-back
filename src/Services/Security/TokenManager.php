@@ -32,7 +32,7 @@
       $payload = json_encode([
         'sub' => $userId,
         'iat' => time(),
-        'exp' => time() + ( 10 ), // 5 minute expiration time
+        'exp' => time() + ( 60 * 5 ), // 5 minute expiration time
         'aud' => ['ALL']
       ]);
 
@@ -49,7 +49,7 @@
       $payloadRefresh = json_encode([
         'sub' => $userId,
         'iat' => time(),
-        'exp' => time() + ( 30 ), // 1 hour expiration time
+        'exp' => time() + ( 60 * 60 ), // 1 hour expiration time
         'aud' => ['ALL']
       ]);
 
