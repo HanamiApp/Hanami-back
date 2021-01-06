@@ -3,6 +3,7 @@
 
   namespace App\Controllers;
 
+  use App\Controllers\Api\AvatarController;
   use App\Services\Security\TokenManager as TokenManager;
   use App\Data\Entities\User;
   use App\Data\Enums\GroupEnum as GroupEnum;
@@ -11,6 +12,7 @@
   use App\Services\HTTP as HTTP;
   use App\Data\DTO\UserDTO;
   use App\Services\Logger;
+  require_once __DIR__ . '/Api/AvatarController.php';
   require_once __DIR__ . '/../Services/Logger.php';
   require_once __DIR__ . '/../Data/DTO/UserDTO.php';
   require_once __DIR__ . '/../Services/Security/RequestChecker.php';
@@ -63,10 +65,11 @@
     // method that responde at POST ( registration method )
     public function create()
     {
+      // TODO: ordinare questo controller
       // TODO: password hashing (bcrypt ?)
       // $POST = (array)json_decode(file_get_contents('php://input'));
       // user creation
-      $_POST = (array)json_decode($_POST['data']);
+      $_POST = (array)json_decode($_POST['user']);
       $UserDTO = new UserDTO($_POST);
       $UserEntity = $UserDTO->toEntity();
       $group = empty($_POST['group']) ? GroupEnum::GUEST : GroupEnum::getValueOf($_POST['group']);
@@ -84,13 +87,25 @@
       $userId = $UserEntity->id;
       $token = TokenManager::generateJWT( $userId );
       $refreshToken = TokenManager::generateRefreshJWT( $userId );
-      // file
-      preg_match('/\.([a-zA-Z]+)/', $_FILES['photo']['name'], $fileType);
-      $fileType = $fileType[1];
-      $dir = __DIR__ . "/../Photo/profile${userId}.${fileType}";
-      $outcome = move_uploaded_file($_FILES['photo']['tmp_name'], $dir);
-      // file error casep
-      if (!$outcome) HTTP::sendJsonResponse(500, "Errore nel caricamento della foto");
+      // File ( Photo )
+      $fileDir = __DIR__ . "/../Photo/profile${userId}";
+      if ( !empty($_FILES['photo']) ) {
+        // caso il cui la foto e presente
+        preg_match('/\.([a-zA-Z]+)/', $_FILES['photo']['name'], $fileType);
+        $extension = '.' . $fileType[1];
+        Logger::add($_FILES['photo']);
+        $outcome = move_uploaded_file($_FILES['photo']['tmp_name'], $fileDir . $extension);
+        // file error case
+        if (!$outcome) HTTP::sendJsonResponse(500, "Errore nel caricamento della foto");
+      } else {
+        // caso in cui la foto non e presente
+        $extension = '.png';
+        $avatar = AvatarController::getRandomPNGAvatar();
+        // $outcome = move_uploaded_file($avatar, __DIR__ . 'ciao.png');
+        $outcome = file_put_contents($fileDir . $extension, $avatar);
+        // file error case
+        if (!$outcome) HTTP::sendJsonResponse(500, "Errore nel caricamento della foto");
+      }
       // response
       HTTP::sendJsonResponse(201, ["userId" => $UserEntity->id], ["token" => $token, "refreshToken" => $refreshToken] );
     }

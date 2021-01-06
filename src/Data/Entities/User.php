@@ -17,20 +17,16 @@
     private $lastName;
     private $email;
     private $password;
-    private $region;
-    private $username;
     private $pathPhoto;
 
     // constructor
-    public function __construct( $firstName = null, $lastName = null, $username = null, $email = null, $password = null, $region = null, $pathPhoto = null )
+    public function __construct( $firstName = null, $lastName = null, $email = null, $password = null, $pathPhoto = null )
     {
       $this->id = null;
       $this->firstName = $firstName;
       $this->lastName = $lastName;
       $this->email = $email;
       $this->password = $password;
-      $this->region = $region;
-      $this->username = $username;
       $this->pathPhoto = $pathPhoto;
     }
 
@@ -51,10 +47,8 @@
         'id' => $this->id,
         'firstName' => $this->firstName,
         'lastName' => $this->lastName,
-        'username' => $this->username,
         'email' => $this->email,
         'password' => $this->password,
-        'region' => $this->region,
         'pathPhoto' => $this->pathPhoto
       ];
     }

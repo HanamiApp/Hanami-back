@@ -40,11 +40,11 @@
           "city" => $item->city,
           "latitude" => (float)$item->lat,
           "longitude" => (float)$item->lng,
-          "region" => $this->parseRegion($item->admin_name)
+          "region" => $item->region
         ];
         $this->PlaceDao->store($temp);
       }
-      HTTP::sendJsonResponse( 201, $array);
+      HTTP::sendJsonResponse( 201, $array );
     }
 
     public function search() {
@@ -70,71 +70,6 @@
         return new PlaceDTO($Place);
       }, $result);
       HTTP::sendJsonResponse( 200, $PlacesDTO );
-    }
-
-    private function parseRegion( $region ) {
-      switch( $region ) {
-        case 'Molise':
-          return 'MOLISE';
-          break;
-        case 'Valle d’Aosta':
-          return 'VALLE_D_AOSTA';
-          break;
-        case 'Basilicata':
-          return 'BASILICATA';
-          break;
-        case 'Lazio':
-          return 'LAZIO';
-          break;
-        case 'Lombardy':
-          return 'LOMBARDIA';
-          break;
-        case 'Piedmont':
-          return 'PIEMONTE';
-          break;
-        case 'Campania':
-          return 'CAMPANIA';
-          break;
-        case 'Sicilia':
-          return 'SICILIA';
-          break;
-        case 'Liguria':
-          return 'LIGURIA';
-          break;
-        case 'Emilia-Romagna':
-          return 'EMILIA_ROMAGNA';
-          break;
-        case 'Tuscany':
-          return 'TOSCANA';
-          break;
-        case 'Puglia':
-          return 'PUGLIA';
-          break;
-        case 'Sardegna':
-          return 'SARDEGNA';
-          break;
-        case 'Veneto':
-          return 'VENETO';
-          break;
-        case 'Friuli-Venezia Giulia':
-          return 'FRIULI_VENEZIA_GIULIA';
-          break;
-        case 'Calabria':
-          return 'CALABRIA';
-          break;
-        case 'Umbria':
-          return 'UMBRIA';
-          break;
-        case 'Abruzzo':
-          return 'ABRUZZO';
-          break;
-        case 'Trentino-Alto Adige':
-          return 'TRENTINO_ALTO_ADIGE';
-          break;
-        case 'Marche':
-          return 'MARCHE';
-          break;
-      }
     }
 
   }

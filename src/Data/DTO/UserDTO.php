@@ -13,8 +13,6 @@
     public $lastName;
     public $email;
     public $password;
-    public $region;
-    public $username;
     public $pathPhoto;
 
     public function __construct( $UserEntity )
@@ -25,8 +23,6 @@
       $this->lastName = $UserEntity['lastName'];
       $this->email = $UserEntity['email'];
       $this->password = $UserEntity['password'];
-      $this->region = $UserEntity['region'];
-      $this->username = $UserEntity['username'];
       $this->pathPhoto = $UserEntity['pathPhoto'];
     }
 
@@ -38,8 +34,6 @@
       $Entity->lastName = $this->lastName;
       $Entity->email = $this->email;
       $Entity->password = $this->password;
-      $Entity->region = $this->region;
-      $Entity->username = $this->username;
       $Entity->pathPhoto = $this->pathPhoto;
       return $Entity;
     }
@@ -52,8 +46,6 @@
       $Entity->lastName = $this->lastName ?? $UserEntity->lastName;
       $Entity->email = $this->email ?? $UserEntity->email;
       $Entity->password = $this->password ?? $UserEntity->password;
-      $Entity->region = $this->region ?? $UserEntity->region;
-      $Entity->username = $this->username ?? $UserEntity->username;
       $Entity->pathPhoto = $this->pathPhoto ?? $UserEntity->pathPhoto;
       return $Entity;
     }

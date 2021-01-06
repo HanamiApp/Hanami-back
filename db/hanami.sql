@@ -28,15 +28,12 @@ CREATE TABLE `user`(
    `id` int auto_increment primary key,
    `first_name` varchar(20) not null,
    `last_name` varchar(30) not null,
-   `username` varchar(20) not null,
    `email` varchar(100) not null unique,
    `password` varchar(30) not null,
-   `path_photo` varchar(100),
-   `region` ENUM('ABRUZZO', 'BASILICATA', 'CALABRIA', 'CAMPANIA', 'EMILIA_ROMAGNA', 
-               'FRIULI_VENEZIA_GIULIA', 'LAZIO', 'LIGURIA', 'LOMBARDIA', 'MARCHE', 'MOLISE',
-               'PIEMONTE', 'PUGLIA', 'SARDEGNA', 'SICILIA', 'TOSCANA', 'TRENTINO_ALTO_ADIGE',
-               'UMBRIA', "VALLE_D_AOSTA", 'VENETO') not null
+   `path_photo` varchar(100)
 );
+/* inserimento `user` di default per i test */
+INSERT INTO `user`(`first_name`, `last_name`, `email`, `password`) VALUES('admin', 'admin', 'admin@admin.com','admin');
 
 CREATE TABLE `refresh_token`(
    `id_user` int primary key,
@@ -45,8 +42,6 @@ CREATE TABLE `refresh_token`(
       ON UPDATE cascade
       ON DELETE cascade
 );
-/* inserimento `user` di default per i test */
-INSERT INTO `user`(`first_name`, `last_name`, `username`, `email`, `password`, `region`) VALUES('admin', 'admin', 'admin', 'admin@admin.com','admin', 'ABRUZZO');
 
 CREATE TABLE `notice`(
    `id` int auto_increment primary key,
